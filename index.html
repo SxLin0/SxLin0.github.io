@@ -4,101 +4,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage of Xiaoxiao</title>
+    <title>Xiaoxiao's Portfolio</title>
     <style>
+        :root {
+            --primary-color: #ff4757;
+            --secondary-color: #2d3436;
+            --accent-color: #70a1ff;
+            --gradient: linear-gradient(135deg, #ff6b6b 0%, #ff4757 100%);
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--gradient);
             margin: 0;
-            padding: 0;
-            color: #333;
+            padding: 40px 20px;
+            color: var(--secondary-color);
+            line-height: 1.6;
         }
 
         .container {
             max-width: 800px;
             margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
         }
 
         .header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            position: relative;
         }
 
         .header img {
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
-            border: 4px solid #ff6347;
+            border: 4px solid var(--primary-color);
+            box-shadow: 0 8px 20px rgba(255, 71, 87, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .header img:hover {
+            transform: rotate(5deg) scale(1.05);
         }
 
         .header h2 {
-            font-size: 24px;
-            color: #ff6347;
-            margin-top: 10px;
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin: 20px 0;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .header hr {
-            width: 50%;
-            margin: 10px auto;
-            border: 1px solid #ff6347;
+            width: 60%;
+            height: 2px;
+            background: var(--accent-color);
+            border: none;
+            margin: 20px auto;
+            opacity: 0.8;
         }
 
         .introduction {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
         }
 
-        .introduction h3 {
-            font-size: 18px;
-            color: #ff6347;
-            margin-bottom: 10px;
+        h3 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        h3::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 80%;
+            background: var(--accent-color);
+            border-radius: 4px;
         }
 
         .contact-details {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
         }
 
         .contact-details ul {
-            list-style: none;
-            padding: 0;
+            padding-left: 20px;
         }
 
         .contact-details li {
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .contact-details a {
-            color: #ff6347;
-            text-decoration: none;
-        }
-
-        .contact-details a:hover {
-            text-decoration: underline;
-        }
-
-        .github-link {
-            display: inline-block;
-            margin-bottom: 20px;
-        }
-
-        .github-link a {
-            color: #ff6347;
-            text-decoration: none;
+        .contact-details li::before {
+            content: "•";
+            color: var(--primary-color);
             font-weight: bold;
         }
 
-        .github-link a:hover {
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: var(--primary-color);
             text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        .github-link {
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        .github-link a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 25px;
+            background: var(--gradient);
+            color: white !important;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .github-link a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+            text-decoration: none;
         }
 
         .favorite-song {
             text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
         }
 
-        .favorite-song audio {
+        audio {
             width: 100%;
-            margin-top: 10px;
+            margin-top: 15px;
+            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.1));
+        }
+
+        audio::-webkit-media-controls-panel {
+            background: var(--gradient);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+
+            .header img {
+                width: 140px;
+                height: 140px;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
@@ -106,39 +197,45 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src=":\photo.jpg" alt="Profile Picture"
-                width="150" height="150">
+            <img src="photo.jpg" alt="Xiaoxiao's Profile">
             <h2><i>春风得意马蹄疾，一日看尽长安花</i> 😊</h2>
             <hr>
         </div>
 
         <div class="introduction">
-            <h3>Personal Introduction:</h3>
-            Hi! My name is <b>Xiaoxiao</b> (QAQ).<br>
-            I'm <s>19</s> 20 years old, a sophomore in <a href="https://ise.nju.edu.cn/index.htm" target="_blank"><i>the
-                    School of Intelligent Software and Engineering in Nanjing University</i></a>.<br><br>
-            I'm fond of playing video games, listening to music, and some sports like playing basketball and riding
-            bikes.<br>
-            I really like coding. Welcome to discuss coding with me!<br><br>
+            <h3>Personal Introduction</h3>
+            <p>Hi! I'm <b>Xiaoxiao</b> (QAQ).</p>
+            <p>I'm <s>19</s> 20 years old, a sophomore at <a href="https://ise.nju.edu.cn/index.htm"
+                    target="_blank">Nanjing University's School of Intelligent Software and Engineering</a>.</p>
+            <p>🎮 Passionate about gaming | 🎧 Music enthusiast | 🏀 Sports lover | 🚴 Cycling adventurer</p>
+            <p>💻 Coding is my passion! Let's collaborate and create something amazing!</p>
         </div>
 
         <div class="contact-details">
-            <h3>Contact Details:</h3>
+            <h3>Contact Me</h3>
             <ul>
-                <li>Email: 2125808970@qq.com</li>
-                <li>QQ: 2125808970</li>
-                <li>Phone: 18737395252</li>
+                <li>📧 Email: <a href="mailto:2125808970@qq.com">2125808970@qq.com</a></li>
+                <li>🐧 QQ: 2125808970</li>
             </ul>
         </div>
 
         <div class="github-link">
-            Here is my GitHub storage: <a href="https://github.com/SxLin0?tab=repositories"
-                target="_blank">GitHub~</a><br>
+            <a href="https://github.com/SxLin0?tab=repositories" target="_blank">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
+                    <path
+                        d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                </svg>
+                Explore My GitHub
+            </a>
         </div>
 
         <div class="favorite-song">
-            This is one of my favorite songs and I hope you like it 😊.<br>
-            <audio autoplay controls loop preload="auto" src=":\bgm.mp3"></audio>
+            <h3>My Favorite Song</h3>
+            <p>Hope you'll enjoy this track as much as I do! 🎶</p>
+            <audio controls loop preload="auto">
+                <source src="music.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
         </div>
     </div>
 </body>
