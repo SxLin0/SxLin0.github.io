@@ -2,47 +2,145 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homepage of Xiaoxiao</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
 
-<body background="background.jpeg">
-    </head>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-    <body>
-        <div style="text-align:center;">
-            <p>
-                <img src="photo.png" width="150px" height="150px">
-            </p>
-            <h2><i>春风得意马蹄疾，一日看尽长安花</i>&#128512;
-            </h2>
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header img {
+            border-radius: 50%;
+            border: 4px solid #ff6347;
+        }
+
+        .header h2 {
+            font-size: 24px;
+            color: #ff6347;
+            margin-top: 10px;
+        }
+
+        .header hr {
+            width: 50%;
+            margin: 10px auto;
+            border: 1px solid #ff6347;
+        }
+
+        .introduction {
+            margin-bottom: 20px;
+        }
+
+        .introduction h3 {
+            font-size: 18px;
+            color: #ff6347;
+            margin-bottom: 10px;
+        }
+
+        .contact-details {
+            margin-bottom: 20px;
+        }
+
+        .contact-details ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .contact-details li {
+            margin-bottom: 5px;
+        }
+
+        .contact-details a {
+            color: #ff6347;
+            text-decoration: none;
+        }
+
+        .contact-details a:hover {
+            text-decoration: underline;
+        }
+
+        .github-link {
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .github-link a {
+            color: #ff6347;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .github-link a:hover {
+            text-decoration: underline;
+        }
+
+        .favorite-song {
+            text-align: center;
+        }
+
+        .favorite-song audio {
+            width: 100%;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="C:\Users\lin\Desktop\pictures\0134ec2c541bba874a102429ea70dff.jpg" alt="Profile Picture"
+                width="150" height="150">
+            <h2><i>春风得意马蹄疾，一日看尽长安花</i> 😊</h2>
             <hr>
         </div>
-        <h3>Personal Introduction:<br></h3>
-        Hi! My name is <b>Xiaoxiao </b> (QAQ). <br>
-        I'm <s>19</s> 20 years old, a sopghomore in <a href="https://ise.nju.edu.cn/index.htm"><i>the School of
-                Intelligent
-                Software
-                and Engineering in Nanjing University</i></a>.<br>
-        <br>
-        I'm fond of playing video games, listening to music and some sports like playing baskerball and riding
-        bikes.<br>
-        I realy like coding. Welcome to dicuss coding with me!<br>
-        <br>
-        Here are some of my contact details :<br>
-        <ul>
-            <li>Email: 2125808970@qq.com</li>
-            <li>QQ : 2125808970</li>
-            <li>Phone : 18737395252</li>
-        </ul>
-        Here is my GitHub storage:
-        <a href="https://github.com/SxLin0?tab=repositories" target="_blank">GitHub</a><br>
-        This is one of my favorate songs and I hope you like it&#128541.<br>
-        <audio controls>
-            <source src="bgm.mp3" type="audio/mp3" />
-        </audio>
 
-    </body>
+        <div class="introduction">
+            <h3>Personal Introduction:</h3>
+            Hi! My name is <b>Xiaoxiao</b> (QAQ).<br>
+            I'm <s>19</s> 20 years old, a sophomore in <a href="https://ise.nju.edu.cn/index.htm" target="_blank"><i>the
+                    School of Intelligent Software and Engineering in Nanjing University</i></a>.<br><br>
+            I'm fond of playing video games, listening to music, and some sports like playing basketball and riding
+            bikes.<br>
+            I really like coding. Welcome to discuss coding with me!<br><br>
+        </div>
+
+        <div class="contact-details">
+            <h3>Contact Details:</h3>
+            <ul>
+                <li>Email: 2125808970@qq.com</li>
+                <li>QQ: 2125808970</li>
+                <li>Phone: 18737395252</li>
+            </ul>
+        </div>
+
+        <div class="github-link">
+            Here is my GitHub storage: <a href="https://github.com/SxLin0?tab=repositories"
+                target="_blank">GitHub</a><br>
+        </div>
+
+        <div class="favorite-song">
+            This is one of my favorite songs and I hope you like it 😊.<br>
+            <audio autoplay controls loop preload="auto" src="d:\CloudMusic\五月天 - 倔强.mp3"></audio>
+        </div>
+    </div>
+</body>
 
 </html>
