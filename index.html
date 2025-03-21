@@ -40,7 +40,6 @@
         .header {
             text-align: center;
             margin-bottom: 30px;
-            position: relative;
         }
 
         .header img {
@@ -73,7 +72,9 @@
             opacity: 0.8;
         }
 
-        .introduction {
+        .introduction,
+        .contact-details,
+        .playlist {
             margin-bottom: 30px;
             padding: 20px;
             background: #f8f9fa;
@@ -98,13 +99,6 @@
             height: 80%;
             background: var(--accent-color);
             border-radius: 4px;
-        }
-
-        .contact-details {
-            margin-bottom: 30px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 12px;
         }
 
         .contact-details ul {
@@ -159,12 +153,75 @@
             text-decoration: none;
         }
 
-        .favorite-song {
-            text-align: center;
-            margin-top: 30px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 12px;
+        .playlist ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .playlist li {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin: 10px 0;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .playlist li:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .playlist li.active {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .playlist li .cover {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            margin-right: 15px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .playlist li .info {
+            flex: 1;
+        }
+
+        .playlist li .info .title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .playlist li .info .artist {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .playlist li .duration {
+            font-size: 0.9rem;
+            color: #666;
+            margin-left: auto;
+            margin-right: 20px;
+        }
+
+        .playlist li .play-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--primary-color);
+            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>') no-repeat center;
+            -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>') no-repeat center;
+            transition: background 0.3s ease;
+        }
+
+        .playlist li:hover .play-icon {
+            background: var(--accent-color);
         }
 
         audio {
@@ -197,7 +254,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="photo.jpg" alt="Xiaoxiao's Profile">
+            <img src="src\photo.jpg" alt="Xiaoxiao's Profile">
             <h2><i>春风得意马蹄疾，一日看尽长安花</i> 😊</h2>
             <hr>
         </div>
@@ -231,15 +288,92 @@
                 basis🫠.</p>
         </div>
 
-        <div class="favorite-song">
-            <h3>My Favorite Song</h3>
-            <p>Hope you'll enjoy this track as much as I do! 🎶</p>
-            <audio controls loop preload="auto">
-                <source src="music.mp3" type="audio/mpeg">
+        <div class="playlist">
+            <h3>My Playlist🎶</h3>
+            <p>Hope you'll enjoy this track as much as I do!</p>
+            <ul id="playlist">
+                <li data-src="src/music.mp3">
+                    <div class="cover" style="background-image: url('src/cover.jpg');"></div>
+                    <div class="info">
+                        <div class="title">倔强</div>
+                        <div class="artist">五月天</div>
+                    </div>
+                    <div class="duration">4:23</div>
+                    <div class="play-icon"></div>
+                </li>
+                <li data-src="src/music1.mp3">
+                    <div class="cover" style="background-image: url('src/cover1.jpg');"></div>
+                    <div class="info">
+                        <div class="title">如烟</div>
+                        <div class="artist">五月天</div>
+                    </div>
+                    <div class="duration">5:13</div>
+                    <div class="play-icon"></div>
+                </li>
+                <li data-src="src/music2.mp3">
+                    <div class="cover" style="background-image: url('src/cover2.jpg');"></div>
+                    <div class="info">
+                        <div class="title">逆光</div>
+                        <div class="artist">孙燕姿</div>
+                    </div>
+                    <div class="duration">4:54</div>
+                    <div class="play-icon"></div>
+                </li>
+                <li data-src="src/music3.mp3">
+                    <div class="cover" style="background-image: url('src/cover3.jpg');"></div>
+                    <div class="info">
+                        <div class="title">搁浅</div>
+                        <div class="artist">周杰伦</div>
+                    </div>
+                    <div class="duration">3:58</div>
+                    <div class="play-icon"></div>
+                </li>
+                <li data-src="src/music4.mp3">
+                    <div class="cover" style="background-image: url('src/cover4.jpg');"></div>
+                    <div class="info">
+                        <div class="title">Lemon Tree</div>
+                        <div class="artist">Fool's Garden</div>
+                    </div>
+                    <div class="duration">3:11</div>
+                    <div class="play-icon"></div>
+                </li>
+                <li data-src="src/music5.mp3">
+                    <div class="cover" style="background-image: url('src/cover5.jpg');"></div>
+                    <div class="info">
+                        <div class="title">单车</div>
+                        <div class="artist">陈奕迅</div>
+                    </div>
+                    <div class="duration">3:31</div>
+                    <div class="play-icon"></div>
+                </li>
+            </ul>
+            <audio id="audio-player" controls>
+                <source src="" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
         </div>
     </div>
+    <script>
+        const playlist = document.getElementById('playlist');
+        const audioPlayer = document.getElementById('audio-player');
+        const items = playlist.getElementsByTagName('li');
+
+        for (let i = 0; i < items.length; i++) {
+            items[i].addEventListener('click', function () {
+                const songSrc = this.getAttribute('data-src');
+                audioPlayer.src = songSrc;
+                audioPlayer.play();
+
+                for (let j = 0; j < items.length; j++) {
+                    items[j].classList.remove('active');
+                }
+
+                this.classList.add('active');
+
+                audioPlayer.scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+    </script>
 </body>
 
 </html>
