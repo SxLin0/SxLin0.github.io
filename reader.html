@@ -25,7 +25,7 @@
         }
 
         .reader-shell {
-            max-width: 900px;
+            max-width: 1080px;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.96);
             border-radius: 20px;
@@ -93,14 +93,48 @@
         }
 
         .reader-content {
-            padding: 34px;
+            padding: 24px;
+            background: #f1f4f8;
         }
 
-        .article-body {
-            margin: 0;
-            white-space: pre-wrap;
-            overflow-wrap: anywhere;
-            font: inherit;
+        .document-frame {
+            display: block;
+            width: 100%;
+            min-height: 78vh;
+            border: 0;
+            border-radius: 10px;
+            background: #fff;
+            box-shadow: inset 0 0 0 1px rgba(45, 52, 54, 0.08);
+        }
+
+        .reader-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .action-link {
+            display: inline-flex;
+            align-items: center;
+            min-height: 38px;
+            padding: 0 14px;
+            border-radius: 8px;
+            color: #fff;
+            background: var(--primary-color);
+        }
+
+        .action-link.secondary {
+            color: var(--accent-color);
+            background: #f8f9fa;
+            border: 1px solid rgba(112, 161, 255, 0.34);
+        }
+
+        .action-link:hover {
+            color: #fff;
+            text-decoration: none;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 14px rgba(255, 71, 87, 0.24);
         }
 
         .error {
@@ -116,9 +150,16 @@
                 padding: 18px 12px;
             }
 
-            .reader-header,
-            .reader-content {
+            .reader-header {
                 padding: 22px;
+            }
+
+            .reader-content {
+                padding: 12px;
+            }
+
+            .document-frame {
+                min-height: 72vh;
             }
         }
     </style>
@@ -135,7 +176,7 @@
             <div class="reader-meta" id="reader-meta"></div>
         </header>
         <section class="reader-content">
-            <pre class="article-body" id="article-body">Loading content...</pre>
+            <iframe class="document-frame" id="document-frame" title="Writing preview"></iframe>
         </section>
     </main>
 
@@ -146,6 +187,8 @@
                 section: 'Articles',
                 format: 'docx',
                 source: 'content/readable/articles/software-major.txt',
+                preview: 'content/print/software-major.html',
+                pdf: 'content/pdf/software-major.pdf',
                 original: 'content/articles/关于填报软件工程专业的一些看法.docx'
             },
             'capital-scientific-thinking': {
@@ -153,6 +196,8 @@
                 section: 'Articles',
                 format: 'docx',
                 source: 'content/readable/articles/capital-scientific-thinking.txt',
+                preview: 'content/print/capital-scientific-thinking.html',
+                pdf: 'content/pdf/capital-scientific-thinking.pdf',
                 original: 'content/articles/《资本论》中的科学思维%20.docx'
             },
             'digital-labor-alienation': {
@@ -160,6 +205,8 @@
                 section: 'Articles',
                 format: 'docx',
                 source: 'content/readable/articles/digital-labor-alienation.txt',
+                preview: 'content/print/digital-labor-alienation.html',
+                pdf: 'content/pdf/digital-labor-alienation.pdf',
                 original: 'content/articles/数字时代劳动异化的四重维度与解放路径.docx'
             },
             'summer-thoughts': {
@@ -167,6 +214,8 @@
                 section: 'Poem & Essay',
                 format: 'md',
                 source: 'content/poem-essay/夏日咏怀.md',
+                preview: 'content/print/summer-thoughts.html',
+                pdf: 'content/pdf/summer-thoughts.pdf',
                 original: 'content/poem-essay/夏日咏怀.md'
             },
             'night-boat-home': {
@@ -174,6 +223,8 @@
                 section: 'Poem & Essay',
                 format: 'md',
                 source: 'content/poem-essay/夜行舟归家.md',
+                preview: 'content/print/night-boat-home.html',
+                pdf: 'content/pdf/night-boat-home.pdf',
                 original: 'content/poem-essay/夜行舟归家.md'
             },
             'untitled-mid-autumn': {
@@ -181,6 +232,8 @@
                 section: 'Poem & Essay',
                 format: 'md',
                 source: 'content/poem-essay/无题.md',
+                preview: 'content/print/untitled-mid-autumn.html',
+                pdf: 'content/pdf/untitled-mid-autumn.pdf',
                 original: 'content/poem-essay/无题.md'
             },
             'yellow-river': {
@@ -188,6 +241,8 @@
                 section: 'Poem & Essay',
                 format: 'md',
                 source: 'content/poem-essay/登黄河古迹怀古.md',
+                preview: 'content/print/yellow-river.html',
+                pdf: 'content/pdf/yellow-river.pdf',
                 original: 'content/poem-essay/登黄河古迹怀古.md'
             },
             'red-beans': {
@@ -195,6 +250,8 @@
                 section: 'Poem & Essay',
                 format: 'md',
                 source: 'content/poem-essay/红豆.md',
+                preview: 'content/print/red-beans.html',
+                pdf: 'content/pdf/red-beans.pdf',
                 original: 'content/poem-essay/红豆.md'
             },
             'spring-essay': {
@@ -202,6 +259,8 @@
                 section: 'Poem & Essay',
                 format: 'docx',
                 source: 'content/readable/poem-essay/spring-essay.txt',
+                preview: 'content/print/spring-essay.html',
+                pdf: 'content/pdf/spring-essay.pdf',
                 original: 'content/poem-essay/浅谈“春”.docx'
             }
         };
@@ -210,23 +269,28 @@
         const work = works[params.get('work')];
         const title = document.getElementById('reader-title');
         const meta = document.getElementById('reader-meta');
-        const body = document.getElementById('article-body');
+        const frame = document.getElementById('document-frame');
         const sourceLink = document.getElementById('source-link');
 
-        function cleanText(text) {
-            return text
-                .replace(/[\u200e\u200f]/g, '')
-                .replace(/\u2028/g, '\n')
-                .replace(/^\*\*(.+?)\*\*/m, '$1')
-                .trim();
+        function setActions() {
+            const actions = document.createElement('div');
+            actions.className = 'reader-actions';
+            actions.innerHTML = `
+                <a class="action-link" href="${work.pdf}" target="_blank" rel="noopener">Open PDF</a>
+                <a class="action-link secondary" href="${work.pdf}" download>Download PDF</a>
+                <a class="action-link secondary" href="${work.source}" target="_blank" rel="noopener">Text Source</a>
+            `;
+            document.querySelector('.reader-header').appendChild(actions);
         }
 
-        async function loadWork() {
+        function loadWork() {
             if (!work) {
                 title.textContent = 'Work Not Found';
                 meta.innerHTML = '<span class="chip">404</span>';
-                body.className = 'error';
-                body.textContent = 'The requested work does not exist. Please return home and choose another title.';
+                frame.replaceWith(Object.assign(document.createElement('div'), {
+                    className: 'error',
+                    textContent: 'The requested work does not exist. Please return home and choose another title.'
+                }));
                 sourceLink.style.display = 'none';
                 return;
             }
@@ -237,18 +301,8 @@
             sourceLink.href = work.original;
             sourceLink.setAttribute('target', '_blank');
             sourceLink.setAttribute('rel', 'noopener');
-
-            try {
-                const response = await fetch(work.source);
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
-
-                body.textContent = cleanText(await response.text());
-            } catch (error) {
-                body.className = 'error';
-                body.textContent = 'Content failed to load. You can still open the original file from the link above.';
-            }
+            frame.src = work.preview;
+            setActions();
         }
 
         loadWork();
