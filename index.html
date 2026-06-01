@@ -23,9 +23,18 @@
             line-height: 1.6;
         }
 
+        .page-shell {
+            display: grid;
+            grid-template-columns: minmax(260px, 320px) minmax(0, 800px);
+            gap: 28px;
+            max-width: 1180px;
+            margin: 0 auto;
+            align-items: start;
+        }
+
         .container {
             max-width: 800px;
-            margin: 0 auto;
+            margin: 0;
             padding: 40px;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
@@ -80,6 +89,84 @@
             padding: 20px;
             background: #f8f9fa;
             border-radius: 12px;
+        }
+
+        .library-panel {
+            position: sticky;
+            top: 24px;
+            padding: 24px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+        }
+
+        .library-panel h2 {
+            color: var(--primary-color);
+            font-size: 1.45rem;
+            line-height: 1.25;
+            margin: 0 0 8px;
+        }
+
+        .library-intro {
+            color: #57606f;
+            font-size: 0.95rem;
+            margin: 0 0 18px;
+        }
+
+        .library-section {
+            margin-top: 22px;
+        }
+
+        .library-section h3 {
+            font-size: 1.12rem;
+            margin: 0 0 12px;
+        }
+
+        .work-list {
+            display: grid;
+            gap: 12px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .work-card {
+            display: block;
+            padding: 13px 14px;
+            background: #fff;
+            border: 1px solid rgba(112, 161, 255, 0.24);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(45, 52, 54, 0.08);
+        }
+
+        .work-card:hover {
+            transform: translateY(-2px);
+            text-decoration: none;
+            box-shadow: 0 7px 16px rgba(45, 52, 54, 0.13);
+        }
+
+        .work-title {
+            display: block;
+            color: var(--secondary-color);
+            font-weight: 700;
+            line-height: 1.35;
+        }
+
+        .work-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+            color: #747d8c;
+            font-size: 0.83rem;
+        }
+
+        .work-chip {
+            padding: 2px 8px;
+            background: rgba(112, 161, 255, 0.14);
+            border-radius: 999px;
+            color: #3867d6;
         }
 
         h3 {
@@ -236,6 +323,20 @@
         }
 
         @media (max-width: 768px) {
+            body {
+                padding: 20px 14px;
+            }
+
+            .page-shell {
+                display: block;
+            }
+
+            .library-panel {
+                position: static;
+                margin-bottom: 22px;
+                padding: 20px;
+            }
+
             .container {
                 padding: 25px;
             }
@@ -253,6 +354,78 @@
 </head>
 
 <body>
+    <main class="page-shell">
+        <aside class="library-panel" aria-label="Works library">
+            <h2>Writing Library</h2>
+            <p class="library-intro">A small shelf for articles, poems and essays. Click any title to read it on its own page.</p>
+
+            <section class="library-section">
+                <h3>Articles</h3>
+                <ul class="work-list">
+                    <li>
+                        <a class="work-card" href="reader.html?work=software-major">
+                            <span class="work-title">关于填报软件工程专业的一些看法</span>
+                            <span class="work-meta"><span class="work-chip">docx</span><span>Major advice</span></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="work-card" href="reader.html?work=capital-scientific-thinking">
+                            <span class="work-title">《资本论》中的科学思维</span>
+                            <span class="work-meta"><span class="work-chip">docx</span><span>Reading report</span></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="work-card" href="reader.html?work=digital-labor-alienation">
+                            <span class="work-title">数字时代劳动异化的四重维度与解放路径</span>
+                            <span class="work-meta"><span class="work-chip">docx</span><span>Marxism and software</span></span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="library-section">
+                <h3>Poem &amp; Essay</h3>
+                <ul class="work-list">
+                    <li>
+                        <a class="work-card" href="reader.html?work=summer-thoughts">
+                            <span class="work-title">夏日咏怀</span>
+                            <span class="work-meta"><span class="work-chip">md</span><span>Poem</span></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="work-card" href="reader.html?work=night-boat-home">
+                            <span class="work-title">夜行舟归家</span>
+                            <span class="work-meta"><span class="work-chip">md</span><span>Poem</span></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="work-card" href="reader.html?work=untitled-mid-autumn">
+                            <span class="work-title">无题</span>
+                            <span class="work-meta"><span class="work-chip">md</span><span>Poem</span></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="work-card" href="reader.html?work=yellow-river">
+                            <span class="work-title">登黄河古迹怀古</span>
+                            <span class="work-meta"><span class="work-chip">md</span><span>Poem</span></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="work-card" href="reader.html?work=red-beans">
+                            <span class="work-title">红豆</span>
+                            <span class="work-meta"><span class="work-chip">md</span><span>Poem</span></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="work-card" href="reader.html?work=spring-essay">
+                            <span class="work-title">浅谈“春”</span>
+                            <span class="work-meta"><span class="work-chip">docx</span><span>Essay</span></span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+
     <div class="container">
         <div class="header">
             <img src="src/photo.jpg" alt="Xiaoxiao's Profile">
@@ -348,6 +521,7 @@
             </audio>
         </div>
     </div>
+    </main>
     <script>
         const playlist = document.getElementById('playlist');
         const audioPlayer = document.getElementById('audio-player');

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="src/photo.jpg" type="image/png">
+    <title>Writing Reader - Xiaoxiao's Homepage</title>
+    <style>
+        :root {
+            --primary-color: #ff4757;
+            --secondary-color: #2d3436;
+            --accent-color: #70a1ff;
+            --gradient: linear-gradient(135deg, #ff6b6b 0%, #ff4757 100%);
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 34px 18px;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--secondary-color);
+            background: var(--gradient);
+            line-height: 1.8;
+        }
+
+        .reader-shell {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .reader-header {
+            padding: 28px 34px;
+            border-bottom: 1px solid rgba(112, 161, 255, 0.22);
+            background: #fff;
+        }
+
+        .reader-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--primary-color);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        .nav-link {
+            display: inline-flex;
+            align-items: center;
+            min-height: 36px;
+            padding: 0 13px;
+            border: 1px solid rgba(112, 161, 255, 0.34);
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+
+        .reader-title {
+            margin: 0;
+            color: var(--primary-color);
+            font-size: clamp(1.7rem, 4vw, 2.45rem);
+            line-height: 1.25;
+        }
+
+        .reader-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
+            color: #747d8c;
+            font-size: 0.95rem;
+        }
+
+        .chip {
+            padding: 2px 10px;
+            border-radius: 999px;
+            color: #3867d6;
+            background: rgba(112, 161, 255, 0.14);
+        }
+
+        .reader-content {
+            padding: 34px;
+        }
+
+        .article-body {
+            margin: 0;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            font: inherit;
+        }
+
+        .error {
+            padding: 18px;
+            border-radius: 8px;
+            background: #fff4f4;
+            color: #c0392b;
+            font-weight: 600;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 18px 12px;
+            }
+
+            .reader-header,
+            .reader-content {
+                padding: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="reader-shell">
+        <header class="reader-header">
+            <nav class="reader-nav" aria-label="Reader navigation">
+                <a class="nav-link" href="index.html">Back Home</a>
+                <a class="nav-link" id="source-link" href="#">Original File</a>
+            </nav>
+            <h1 class="reader-title" id="reader-title">Loading...</h1>
+            <div class="reader-meta" id="reader-meta"></div>
+        </header>
+        <section class="reader-content">
+            <pre class="article-body" id="article-body">Loading content...</pre>
+        </section>
+    </main>
+
+    <script>
+        const works = {
+            'software-major': {
+                title: '关于填报软件工程专业的一些看法',
+                section: 'Articles',
+                format: 'docx',
+                source: 'content/readable/articles/software-major.txt',
+                original: 'content/articles/关于填报软件工程专业的一些看法.docx'
+            },
+            'capital-scientific-thinking': {
+                title: '《资本论》中的科学思维',
+                section: 'Articles',
+                format: 'docx',
+                source: 'content/readable/articles/capital-scientific-thinking.txt',
+                original: 'content/articles/《资本论》中的科学思维%20.docx'
+            },
+            'digital-labor-alienation': {
+                title: '数字时代劳动异化的四重维度与解放路径',
+                section: 'Articles',
+                format: 'docx',
+                source: 'content/readable/articles/digital-labor-alienation.txt',
+                original: 'content/articles/数字时代劳动异化的四重维度与解放路径.docx'
+            },
+            'summer-thoughts': {
+                title: '夏日咏怀',
+                section: 'Poem & Essay',
+                format: 'md',
+                source: 'content/poem-essay/夏日咏怀.md',
+                original: 'content/poem-essay/夏日咏怀.md'
+            },
+            'night-boat-home': {
+                title: '夜行舟归家',
+                section: 'Poem & Essay',
+                format: 'md',
+                source: 'content/poem-essay/夜行舟归家.md',
+                original: 'content/poem-essay/夜行舟归家.md'
+            },
+            'untitled-mid-autumn': {
+                title: '无题',
+                section: 'Poem & Essay',
+                format: 'md',
+                source: 'content/poem-essay/无题.md',
+                original: 'content/poem-essay/无题.md'
+            },
+            'yellow-river': {
+                title: '登黄河古迹怀古',
+                section: 'Poem & Essay',
+                format: 'md',
+                source: 'content/poem-essay/登黄河古迹怀古.md',
+                original: 'content/poem-essay/登黄河古迹怀古.md'
+            },
+            'red-beans': {
+                title: '红豆',
+                section: 'Poem & Essay',
+                format: 'md',
+                source: 'content/poem-essay/红豆.md',
+                original: 'content/poem-essay/红豆.md'
+            },
+            'spring-essay': {
+                title: '浅谈“春”',
+                section: 'Poem & Essay',
+                format: 'docx',
+                source: 'content/readable/poem-essay/spring-essay.txt',
+                original: 'content/poem-essay/浅谈“春”.docx'
+            }
+        };
+
+        const params = new URLSearchParams(window.location.search);
+        const work = works[params.get('work')];
+        const title = document.getElementById('reader-title');
+        const meta = document.getElementById('reader-meta');
+        const body = document.getElementById('article-body');
+        const sourceLink = document.getElementById('source-link');
+
+        function cleanText(text) {
+            return text
+                .replace(/[\u200e\u200f]/g, '')
+                .replace(/\u2028/g, '\n')
+                .replace(/^\*\*(.+?)\*\*/m, '$1')
+                .trim();
+        }
+
+        async function loadWork() {
+            if (!work) {
+                title.textContent = 'Work Not Found';
+                meta.innerHTML = '<span class="chip">404</span>';
+                body.className = 'error';
+                body.textContent = 'The requested work does not exist. Please return home and choose another title.';
+                sourceLink.style.display = 'none';
+                return;
+            }
+
+            document.title = `${work.title} - Xiaoxiao's Homepage`;
+            title.textContent = work.title;
+            meta.innerHTML = `<span class="chip">${work.section}</span><span class="chip">${work.format}</span>`;
+            sourceLink.href = work.original;
+            sourceLink.setAttribute('target', '_blank');
+            sourceLink.setAttribute('rel', 'noopener');
+
+            try {
+                const response = await fetch(work.source);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                body.textContent = cleanText(await response.text());
+            } catch (error) {
+                body.className = 'error';
+                body.textContent = 'Content failed to load. You can still open the original file from the link above.';
+            }
+        }
+
+        loadWork();
+    </script>
+</body>
+
+</html>
