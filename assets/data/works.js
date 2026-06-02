@@ -1,5 +1,29 @@
 export const works = [
     {
+        id: 'operating-system-notes',
+        section: 'blog',
+        title: '操作系统',
+        href: 'content/blog/operating-system.html'
+    },
+    {
+        id: 'database-notes',
+        section: 'blog',
+        title: '数据库',
+        href: 'content/blog/database.html'
+    },
+    {
+        id: 'internet-computing-notes',
+        section: 'blog',
+        title: '互联网计算',
+        href: 'content/blog/internet-computing.html'
+    },
+    {
+        id: 'compiler-principles-notes',
+        section: 'blog',
+        title: '编译原理',
+        href: 'content/blog/compiler-principles.html'
+    },
+    {
         id: 'software-major',
         section: 'articles',
         title: '关于填报软件工程专业的一些看法',
@@ -61,35 +85,11 @@ export const works = [
         title: '浅谈“春”',
         kind: 'html',
         source: 'content/print/spring-essay.html'
-    },
-    {
-        id: 'operating-system-notes',
-        section: 'blog',
-        title: '操作系统与并发编程综合笔记',
-        href: 'content/blog/operating-system.html'
-    },
-    {
-        id: 'database-notes',
-        section: 'blog',
-        title: '数据库的三级模式结构',
-        href: 'content/blog/database.html'
-    },
-    {
-        id: 'internet-computing-notes',
-        section: 'blog',
-        title: '互联网计算',
-        href: 'content/blog/internet-computing.html'
-    },
-    {
-        id: 'compiler-principles-notes',
-        section: 'blog',
-        title: '编译原理核心知识点总结',
-        href: 'content/blog/compiler-principles.html'
     }
 ];
 
 export const workSections = [
-    { id: 'articles', title: 'Articles' },
+    { id: 'blog', title: 'Blog' },
     { id: 'poemEssay', title: 'Poem & Essay' },
-    { id: 'blog', title: 'Blog' }
+    { id: 'articles', title: 'Articles' }
 ];
