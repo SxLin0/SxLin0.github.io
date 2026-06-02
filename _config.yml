@@ -1,0 +1,34 @@
+title: "Xiaoxiao's Homepage"
+name: "Xiaoxiao"
+description: "Personal homepage, writing library, poems, essays, and future blog notes."
+url: "https://sxlin0.github.io"
+baseurl: ""
+repository: "SxLin0/SxLin0.github.io"
+locale: "zh-CN"
+
+theme: "minimal-mistakes-jekyll"
+minimal_mistakes_skin: "air"
+
+plugins:
+  - jekyll-include-cache
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+author:
+  name: "Xiaoxiao"
+  avatar: "/src/photo.jpg"
+  bio: "Software engineering student, literary lover, music enthusiast."
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: "ocean"
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - .bundle
+  - README.md
+  - node_modules
+  - vendor/bundle

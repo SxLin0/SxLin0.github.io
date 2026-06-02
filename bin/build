@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+set -eu
+
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+bundle exec jekyll build

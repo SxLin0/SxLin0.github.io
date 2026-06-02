@@ -1,0 +1,17 @@
+---
+layout: ocean
+---
+
+<div class="reader-body">
+    {% include library-panel.html %}
+
+    <main class="reader-shell">
+        <header class="reader-header">
+            <a class="nav-link" href="{{ '/' | relative_url }}">Back Home</a>
+        </header>
+
+        <article class="article-document markdown-document">
+            {{ content }}
+        </article>
+    </main>
+</div>

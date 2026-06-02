@@ -1,191 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
+---
+layout: ocean
+title: Writing Reader
+permalink: /reader.html
+---
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="src/photo.jpg" type="image/png">
-    <title>Writing Reader - Xiaoxiao's Homepage</title>
-    <style>
-        :root {
-            --primary-color: #64d8ff;
-            --secondary-color: #e6f7ff;
-            --accent-color: #7dd3fc;
-            --gradient: linear-gradient(135deg, #020914 0%, #06243a 52%, #071827 100%);
-        }
+<div class="reader-body">
+    {% include library-panel.html %}
 
-        body {
-            min-height: 100vh;
-            margin: 0;
-            padding: 34px 18px;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            color: var(--secondary-color);
-            background:
-                linear-gradient(rgba(2, 9, 20, 0.62), rgba(2, 9, 20, 0.88)),
-                url('src/decor/ocean-bg.jpg') center / cover fixed,
-                var(--gradient);
-            line-height: 1.8;
-        }
-
-        .reader-shell {
-            max-width: 1080px;
-            margin: 0 auto;
-            background: rgba(3, 15, 28, 0.84);
-            border: 1px solid rgba(125, 211, 252, 0.22);
-            border-radius: 20px;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.42);
-            overflow: hidden;
-            backdrop-filter: blur(14px);
-        }
-
-        .reader-header {
-            padding: 22px 28px;
-            border-bottom: 1px solid rgba(125, 211, 252, 0.18);
-            background: rgba(2, 9, 20, 0.46);
-        }
-
-        .reader-nav {
-            display: flex;
-            justify-content: flex-start;
-        }
-
-        a {
-            color: var(--accent-color);
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        a:hover {
-            color: #e0f7ff;
-            text-decoration: underline;
-            text-underline-offset: 3px;
-        }
-
-        .nav-link {
-            display: inline-flex;
-            align-items: center;
-            min-height: 36px;
-            padding: 0 13px;
-            border: 1px solid rgba(125, 211, 252, 0.34);
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .reader-content {
-            padding: 24px;
-            background: rgba(255, 255, 255, 0.04);
-        }
-
-        .document-frame {
-            display: block;
-            width: 100%;
-            min-height: 78vh;
-            border: 0;
-            border-radius: 10px;
-            background: #fff;
-            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
-        }
-
-        .error {
-            padding: 18px;
-            border-radius: 8px;
-            background: #fff4f4;
-            color: #c0392b;
-            font-weight: 600;
-        }
-
-        @media (max-width: 640px) {
-            body {
-                padding: 18px 12px;
-            }
-
-            .reader-header {
-                padding: 22px;
-            }
-
-            .reader-content {
-                padding: 12px;
-            }
-
-            .document-frame {
-                min-height: 72vh;
-            }
-        }
-    </style>
-</head>
-
-<body>
     <main class="reader-shell">
         <header class="reader-header">
-            <nav class="reader-nav" aria-label="Reader navigation">
-                <a class="nav-link" href="index.html">Back Home</a>
-            </nav>
+            <a class="nav-link" href="{{ '/' | relative_url }}">Back Home</a>
         </header>
-        <section class="reader-content">
-            <iframe class="document-frame" id="document-frame" title="Writing preview"></iframe>
-        </section>
+
+        <section class="reader-stage" id="reader-stage" aria-live="polite"></section>
     </main>
+</div>
 
-    <script>
-        const works = {
-            'software-major': {
-                title: '关于填报软件工程专业的一些看法',
-                preview: 'content/articles/关于填报软件工程专业的一些看法.pdf'
-            },
-            'capital-scientific-thinking': {
-                title: '《资本论》中的科学思维',
-                preview: 'content/articles/《资本论》中的科学思维%20.pdf'
-            },
-            'digital-labor-alienation': {
-                title: '数字时代劳动异化的四重维度与解放路径',
-                preview: 'content/articles/数字时代劳动异化的四重维度与解放路径.pdf'
-            },
-            'summer-thoughts': {
-                title: '夏日咏怀',
-                preview: 'content/print/summer-thoughts.html'
-            },
-            'night-boat-home': {
-                title: '夜行舟归家',
-                preview: 'content/print/night-boat-home.html'
-            },
-            'untitled-mid-autumn': {
-                title: '无题',
-                preview: 'content/print/untitled-mid-autumn.html'
-            },
-            'yellow-river': {
-                title: '登黄河古迹怀古',
-                preview: 'content/print/yellow-river.html'
-            },
-            'red-beans': {
-                title: '红豆',
-                preview: 'content/print/red-beans.html'
-            },
-            'spring-essay': {
-                title: '浅谈“春”',
-                preview: 'content/print/spring-essay.html'
-            }
-        };
-
-        const params = new URLSearchParams(window.location.search);
-        const work = works[params.get('work')];
-        const frame = document.getElementById('document-frame');
-
-        function loadWork() {
-            if (!work) {
-                frame.replaceWith(Object.assign(document.createElement('div'), {
-                    className: 'error',
-                    textContent: 'The requested work does not exist. Please return home and choose another title.'
-                }));
-                return;
-            }
-
-            document.title = `${work.title} - Xiaoxiao's Homepage`;
-            frame.src = work.preview;
-        }
-
-        loadWork();
-    </script>
-</body>
-
-</html>
+<script type="module" src="{{ '/assets/js/home.js' | relative_url }}"></script>
+<script type="module" src="{{ '/assets/js/reader.js' | relative_url }}"></script>

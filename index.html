@@ -1,578 +1,109 @@
-<!DOCTYPE html>
-<html lang="en">
+---
+layout: ocean
+title: Home
+permalink: /
+---
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="src/photo.jpg" type="image/png">
-    <title>Xiaoxiao's Homepage</title>
-    <style>
-        :root {
-            --primary-color: #64d8ff;
-            --secondary-color: #e6f7ff;
-            --accent-color: #7dd3fc;
-            --deep-color: #03111f;
-            --panel-bg: rgba(5, 20, 34, 0.78);
-            --panel-line: rgba(125, 211, 252, 0.22);
-            --gradient: linear-gradient(135deg, #020914 0%, #06243a 52%, #071827 100%);
-        }
-
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background:
-                radial-gradient(circle at 18% 8%, rgba(100, 216, 255, 0.18), transparent 32%),
-                linear-gradient(rgba(2, 9, 20, 0.62), rgba(2, 9, 20, 0.86)),
-                url('src/decor/ocean-bg.jpg') center / cover fixed,
-                var(--gradient);
-            margin: 0;
-            padding: 40px 20px;
-            color: var(--secondary-color);
-            line-height: 1.6;
-        }
-
-        .page-shell {
-            display: grid;
-            grid-template-columns: minmax(260px, 320px) minmax(0, 800px);
-            gap: 28px;
-            max-width: 1180px;
-            margin: 0 auto;
-            align-items: start;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0;
-            padding: 40px;
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-line);
-            border-radius: 20px;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.42);
-            backdrop-filter: blur(14px);
-            transition: transform 0.3s ease;
-        }
-
-        .container:hover {
-            transform: translateY(-5px);
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .header img {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            border: 4px solid var(--primary-color);
-            box-shadow: 0 8px 26px rgba(100, 216, 255, 0.32);
-            transition: transform 0.3s ease;
-        }
-
-        .header img:hover {
-            transform: rotate(5deg) scale(1.05);
-        }
-
-        .header h2 {
-            font-size: 2rem;
-            color: var(--primary-color);
-            margin: 20px 0;
-            font-weight: 700;
-            text-shadow: 0 0 22px rgba(100, 216, 255, 0.26);
-        }
-
-        .header hr {
-            width: 60%;
-            height: 2px;
-            background: var(--accent-color);
-            border: none;
-            margin: 20px auto;
-            opacity: 0.8;
-        }
-
-        .introduction,
-        .contact-details,
-        .playlist {
-            margin-bottom: 30px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(125, 211, 252, 0.16);
-            border-radius: 12px;
-        }
-
-        .library-panel {
-            position: sticky;
-            top: 24px;
-            max-height: calc(100vh - 48px);
-            overflow-y: auto;
-            scrollbar-color: rgba(100, 216, 255, 0.65) rgba(255, 255, 255, 0.08);
-            scrollbar-width: thin;
-            padding: 24px;
-            background: rgba(3, 15, 28, 0.84);
-            border: 1px solid var(--panel-line);
-            border-radius: 20px;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.42);
-            backdrop-filter: blur(14px);
-        }
-
-        .library-panel::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .library-panel::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 99px;
-        }
-
-        .library-panel::-webkit-scrollbar-thumb {
-            background: rgba(100, 216, 255, 0.62);
-            border-radius: 99px;
-        }
-
-        .library-panel h2 {
-            color: var(--primary-color);
-            font-size: 1.45rem;
-            line-height: 1.25;
-            margin: 0 0 8px;
-        }
-
-        .library-intro {
-            color: #a8d8f0;
-            font-size: 0.95rem;
-            margin: 0 0 18px;
-        }
-
-        .library-section {
-            margin-top: 22px;
-        }
-
-        .library-section h3 {
-            font-size: 1.12rem;
-            margin: 0 0 12px;
-        }
-
-        .work-list {
-            display: grid;
-            gap: 12px;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .work-card {
-            display: block;
-            padding: 13px 14px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(125, 211, 252, 0.20);
-            border-radius: 8px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
-        }
-
-        .work-card:hover {
-            transform: translateY(-2px);
-            text-decoration: none;
-            box-shadow: 0 10px 24px rgba(100, 216, 255, 0.14);
-        }
-
-        .work-title {
-            display: block;
-            color: #f4fbff;
-            font-weight: 700;
-            line-height: 1.35;
-        }
-
-        .work-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 8px;
-            color: #9bc9df;
-            font-size: 0.83rem;
-        }
-
-        .work-chip {
-            padding: 2px 8px;
-            background: rgba(100, 216, 255, 0.14);
-            border-radius: 999px;
-            color: #9ee8ff;
-        }
-
-        h3 {
-            font-size: 1.5rem;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-            position: relative;
-            padding-left: 20px;
-        }
-
-        h3::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 8px;
-            height: 80%;
-            background: var(--accent-color);
-            border-radius: 4px;
-        }
-
-        .contact-details ul {
-            padding-left: 20px;
-        }
-
-        .contact-details li {
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .contact-details li::before {
-            content: "•";
-            color: var(--primary-color);
-            font-weight: bold;
-        }
-
-        a {
-            color: var(--accent-color);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-
-        a:hover {
-            color: #e0f7ff;
-            text-decoration: underline;
-            text-underline-offset: 3px;
-        }
-
-        .github-link {
-            text-align: center;
-            margin: 25px 0;
-        }
-
-        .github-link a {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 25px;
-            background: var(--gradient);
-            color: white !important;
-            border-radius: 30px;
-            transition: all 0.3s ease;
-        }
-
-        .github-link a:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(100, 216, 255, 0.28);
-            text-decoration: none;
-        }
-
-        .playlist ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .playlist li {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            margin: 10px 0;
-            background: rgba(255, 255, 255, 0.10);
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .playlist li:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .playlist li.active {
-            background: var(--accent-color);
-            color: white;
-        }
-
-        .playlist li .cover {
-            width: 50px;
-            height: 50px;
-            border-radius: 8px;
-            margin-right: 15px;
-            background-size: cover;
-            background-position: center;
-        }
-
-        .playlist li .info {
-            flex: 1;
-        }
-
-        .playlist li .info .title {
-            font-size: 1.1rem;
-            font-weight: 500;
-            margin-bottom: 5px;
-        }
-
-        .playlist li .info .artist {
-            font-size: 0.9rem;
-            color: #a8d8f0;
-        }
-
-        .playlist li .duration {
-            font-size: 0.9rem;
-            color: #a8d8f0;
-            margin-left: auto;
-            margin-right: 20px;
-        }
-
-        .playlist li .play-icon {
-            width: 24px;
-            height: 24px;
-            background: var(--primary-color);
-            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>') no-repeat center;
-            -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>') no-repeat center;
-            transition: background 0.3s ease;
-        }
-
-        .playlist li:hover .play-icon {
-            background: var(--accent-color);
-        }
-
-        audio {
-            width: 100%;
-            margin-top: 15px;
-            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.1));
-        }
-
-            audio::-webkit-media-controls-panel {
-            background: var(--gradient);
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 20px 14px;
-            }
-
-            .page-shell {
-                display: block;
-            }
-
-            .library-panel {
-                position: static;
-                max-height: 420px;
-                margin-bottom: 22px;
-                padding: 20px;
-            }
-
-            .container {
-                padding: 25px;
-            }
-
-            .header img {
-                width: 140px;
-                height: 140px;
-            }
-
-            h2 {
-                font-size: 1.8rem;
-            }
-        }
-    </style>
-</head>
-
-<body>
+<div class="home-body">
     <main class="page-shell">
-        <aside class="library-panel" aria-label="Works library">
-            <h2>Writing Library</h2>
-            <p class="library-intro">A small shelf for articles, poems and essays. Click any title to read it on its own page.</p>
+        {% include library-panel.html %}
 
-            <section class="library-section">
-                <h3>Articles</h3>
-                <ul class="work-list">
-                    <li>
-                        <a class="work-card" href="reader.html?work=software-major">
-                            <span class="work-title">关于填报软件工程专业的一些看法</span>
-                            <span class="work-meta"><span class="work-chip">pdf</span><span>Major advice</span></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="work-card" href="reader.html?work=capital-scientific-thinking">
-                            <span class="work-title">《资本论》中的科学思维</span>
-                            <span class="work-meta"><span class="work-chip">pdf</span><span>Reading report</span></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="work-card" href="reader.html?work=digital-labor-alienation">
-                            <span class="work-title">数字时代劳动异化的四重维度与解放路径</span>
-                            <span class="work-meta"><span class="work-chip">pdf</span><span>Marxism and software</span></span>
-                        </a>
-                    </li>
+        <div class="profile-card">
+            <header class="header">
+                <img src="{{ '/src/photo.jpg' | relative_url }}" alt="Xiaoxiao's Profile">
+                <h1><i>春风得意马蹄疾，一日看尽长安花</i> 😊</h1>
+                <hr>
+            </header>
+
+            <section class="content-panel">
+                <h3>About Me📜</h3>
+                <p>Hi! I'm <b>Xiaoxiao</b>(QAQ).</p>
+                <p>I'm <s>19</s> <s>20</s> 21 years old, a <s>sophomore</s> junior student at <a href="https://ise.nju.edu.cn/index.htm" target="_blank" rel="noreferrer">Nanjing University's School of Intelligent Software and Engineering</a>.</p>
+                <p>I am proficient in skills such as C++, Java, Python, JavaScript and Spring Boot.</p>
+                <p>Now I am studying Software Quality and Management, Software System Design, Software Engineering and Computation, Deep Learning, Pattern Recognition and Computer Vision, and Natural Language Processing, etc.</p>
+                <p>My tags are as follows:</p>
+                <p>🎮 Loyal gamer | 🎧 Music enthusiast | 📖 Literary lover | 🚴 Sports explorer | 🍜 Food connoisseur</p>
+                <p>💻 Coding is my passion! Let's collaborate and create something amazing!</p>
+            </section>
+
+            <section class="content-panel">
+                <h3>Contact Me📞</h3>
+                <ul class="contact-list">
+                    <li>📧 Email: <a href="mailto:2125808970@qq.com">2125808970@qq.com</a></li>
+                    <li>🐧 QQ: 2125808970</li>
                 </ul>
             </section>
 
-            <section class="library-section">
-                <h3>Poem &amp; Essay</h3>
-                <ul class="work-list">
-                    <li>
-                        <a class="work-card" href="reader.html?work=summer-thoughts">
-                            <span class="work-title">夏日咏怀</span>
-                            <span class="work-meta"><span class="work-chip">md</span><span>Poem</span></span>
-                        </a>
+            <section class="content-panel playlist">
+                <h3>My Playlist🎶</h3>
+                <p>Hope you'll enjoy this track as much as I do!</p>
+                <ul id="playlist">
+                    <li data-src="{{ '/src/music.mp3' | relative_url }}">
+                        <div class="cover" style="background-image: url('{{ '/src/cover.jpg' | relative_url }}');"></div>
+                        <div class="info">
+                            <div class="title">倔强</div>
+                            <div class="artist">五月天</div>
+                        </div>
+                        <div class="duration">4:23</div>
+                        <div class="play-icon"></div>
                     </li>
-                    <li>
-                        <a class="work-card" href="reader.html?work=night-boat-home">
-                            <span class="work-title">夜行舟归家</span>
-                            <span class="work-meta"><span class="work-chip">md</span><span>Poem</span></span>
-                        </a>
+                    <li data-src="{{ '/src/music1.mp3' | relative_url }}">
+                        <div class="cover" style="background-image: url('{{ '/src/cover1.jpg' | relative_url }}');"></div>
+                        <div class="info">
+                            <div class="title">如烟</div>
+                            <div class="artist">五月天</div>
+                        </div>
+                        <div class="duration">5:13</div>
+                        <div class="play-icon"></div>
                     </li>
-                    <li>
-                        <a class="work-card" href="reader.html?work=untitled-mid-autumn">
-                            <span class="work-title">无题</span>
-                            <span class="work-meta"><span class="work-chip">md</span><span>Poem</span></span>
-                        </a>
+                    <li data-src="{{ '/src/music2.mp3' | relative_url }}">
+                        <div class="cover" style="background-image: url('{{ '/src/cover2.jpg' | relative_url }}');"></div>
+                        <div class="info">
+                            <div class="title">逆光</div>
+                            <div class="artist">孙燕姿</div>
+                        </div>
+                        <div class="duration">4:54</div>
+                        <div class="play-icon"></div>
                     </li>
-                    <li>
-                        <a class="work-card" href="reader.html?work=yellow-river">
-                            <span class="work-title">登黄河古迹怀古</span>
-                            <span class="work-meta"><span class="work-chip">md</span><span>Poem</span></span>
-                        </a>
+                    <li data-src="{{ '/src/music3.mp3' | relative_url }}">
+                        <div class="cover" style="background-image: url('{{ '/src/cover3.jpg' | relative_url }}');"></div>
+                        <div class="info">
+                            <div class="title">搁浅</div>
+                            <div class="artist">周杰伦</div>
+                        </div>
+                        <div class="duration">3:58</div>
+                        <div class="play-icon"></div>
                     </li>
-                    <li>
-                        <a class="work-card" href="reader.html?work=red-beans">
-                            <span class="work-title">红豆</span>
-                            <span class="work-meta"><span class="work-chip">md</span><span>Poem</span></span>
-                        </a>
+                    <li data-src="{{ '/src/music4.mp3' | relative_url }}">
+                        <div class="cover" style="background-image: url('{{ '/src/cover4.jpg' | relative_url }}');"></div>
+                        <div class="info">
+                            <div class="title">Lemon Tree</div>
+                            <div class="artist">Fool's Garden</div>
+                        </div>
+                        <div class="duration">3:11</div>
+                        <div class="play-icon"></div>
                     </li>
-                    <li>
-                        <a class="work-card" href="reader.html?work=spring-essay">
-                            <span class="work-title">浅谈“春”</span>
-                            <span class="work-meta"><span class="work-chip">docx</span><span>Essay</span></span>
-                        </a>
+                    <li data-src="{{ '/src/music5.mp3' | relative_url }}">
+                        <div class="cover" style="background-image: url('{{ '/src/cover5.jpg' | relative_url }}');"></div>
+                        <div class="info">
+                            <div class="title">单车</div>
+                            <div class="artist">陈奕迅</div>
+                        </div>
+                        <div class="duration">3:31</div>
+                        <div class="play-icon"></div>
                     </li>
                 </ul>
+                <audio id="audio-player" controls>
+                    <source src="" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
             </section>
-        </aside>
 
-    <div class="container">
-        <div class="header">
-            <img src="src/photo.jpg" alt="Xiaoxiao's Profile">
-            <h2><i>春风得意马蹄疾，一日看尽长安花</i> 😊</h2>
-            <hr>
+            <footer class="license-note">
+                本博客网站所有文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议，转载请注明出处。
+            </footer>
         </div>
-
-        <div class="introduction">
-            <h3>About Me📜</h3>
-            <p>Hi! I'm <b>Xiaoxiao</b>(QAQ).</p>
-            <p>I'm <s>19</s> <s>20</s> 21 years old, a <s>sophomore</s> junior student at <a
-                    href="https://ise.nju.edu.cn/index.htm" target="_blank">Nanjing University's School of
-                    Intelligent Software and Engineering</a>.</p>
-            <p>I am proficient in skills such as C++, Java, Python, JavaScript and Spring Boot.</p>
-            <p>Now I am studying compiler principles, machine learning, requirements and business model innovation,
-                human-computer interaction systems, large model systems and engineering, DevOps, etc.
-            </p>
-            <p>My tags are as follows:</p>
-            <p>🎮 Loyal gamer | 🎧 Music enthusiast | 📖 Literary lover | 🚴 Sports explorer | 🍜 Food connoisseur
-            </p>
-            <p>💻 Coding is my passion! Let's collaborate and create something amazing!</p>
-        </div>
-
-        <div class="contact-details">
-            <h3>Contact Me📞</h3>
-            <ul>
-                <li>📧 Email: <a href="mailto:2125808970@qq.com">2125808970@qq.com</a></li>
-                <li>🐧 QQ: 2125808970</li>
-            </ul>
-        </div>
-        <div class="playlist">
-            <h3>My Playlist🎶</h3>
-            <p>Hope you'll enjoy this track as much as I do!</p>
-            <ul id="playlist">
-                <li data-src="src/music.mp3">
-                    <div class="cover" style="background-image: url('src/cover.jpg');"></div>
-                    <div class="info">
-                        <div class="title">倔强</div>
-                        <div class="artist">五月天</div>
-                    </div>
-                    <div class="duration">4:23</div>
-                    <div class="play-icon"></div>
-                </li>
-                <li data-src="src/music1.mp3">
-                    <div class="cover" style="background-image: url('src/cover1.jpg');"></div>
-                    <div class="info">
-                        <div class="title">如烟</div>
-                        <div class="artist">五月天</div>
-                    </div>
-                    <div class="duration">5:13</div>
-                    <div class="play-icon"></div>
-                </li>
-                <li data-src="src/music2.mp3">
-                    <div class="cover" style="background-image: url('src/cover2.jpg');"></div>
-                    <div class="info">
-                        <div class="title">逆光</div>
-                        <div class="artist">孙燕姿</div>
-                    </div>
-                    <div class="duration">4:54</div>
-                    <div class="play-icon"></div>
-                </li>
-                <li data-src="src/music3.mp3">
-                    <div class="cover" style="background-image: url('src/cover3.jpg');"></div>
-                    <div class="info">
-                        <div class="title">搁浅</div>
-                        <div class="artist">周杰伦</div>
-                    </div>
-                    <div class="duration">3:58</div>
-                    <div class="play-icon"></div>
-                </li>
-                <li data-src="src/music4.mp3">
-                    <div class="cover" style="background-image: url('src/cover4.jpg');"></div>
-                    <div class="info">
-                        <div class="title">Lemon Tree</div>
-                        <div class="artist">Fool's Garden</div>
-                    </div>
-                    <div class="duration">3:11</div>
-                    <div class="play-icon"></div>
-                </li>
-                <li data-src="src/music5.mp3">
-                    <div class="cover" style="background-image: url('src/cover5.jpg');"></div>
-                    <div class="info">
-                        <div class="title">单车</div>
-                        <div class="artist">陈奕迅</div>
-                    </div>
-                    <div class="duration">3:31</div>
-                    <div class="play-icon"></div>
-                </li>
-            </ul>
-            <audio id="audio-player" controls>
-                <source src="" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
-        </div>
-    </div>
     </main>
-    <script>
-        const playlist = document.getElementById('playlist');
-        const audioPlayer = document.getElementById('audio-player');
-        const items = playlist.getElementsByTagName('li');
+</div>
 
-        for (let i = 0; i < items.length; i++) {
-            items[i].addEventListener('click', function () {
-                const songSrc = this.getAttribute('data-src');
-                audioPlayer.src = songSrc;
-                audioPlayer.play();
-
-                for (let j = 0; j < items.length; j++) {
-                    items[j].classList.remove('active');
-                }
-
-                this.classList.add('active');
-
-                audioPlayer.scrollIntoView({ behavior: 'smooth' });
-            });
-        }
-    </script>
-</body>
-
-</html>
-
+<script type="module" src="{{ '/assets/js/home.js' | relative_url }}"></script>
