@@ -40,6 +40,10 @@ function createParagraph(className, text) {
     return paragraph;
 }
 
+function isPoemDate(line) {
+    return /^\d{4}([年./-]|$)/.test(line) || /^\d{4}.*(春|夏|秋|冬|中秋|新春|暮秋|春末|夏天)$/.test(line);
+}
+
 function renderMarkdownPoem(markdown) {
     const article = document.createElement('article');
     const lines = markdown.split(/\r?\n/).map((line) => line.trim());
@@ -64,7 +68,7 @@ function renderMarkdownPoem(markdown) {
             return;
         }
 
-        if (/^\d{4}/.test(line) || /年/.test(line)) {
+        if (isPoemDate(line)) {
             article.append(createParagraph('poem-date', line));
             return;
         }
