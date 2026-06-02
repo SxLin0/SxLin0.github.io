@@ -8,15 +8,22 @@
     <title>Xiaoxiao's Homepage</title>
     <style>
         :root {
-            --primary-color: #ff4757;
-            --secondary-color: #2d3436;
-            --accent-color: #70a1ff;
-            --gradient: linear-gradient(135deg, #ff6b6b 0%, #ff4757 100%);
+            --primary-color: #64d8ff;
+            --secondary-color: #e6f7ff;
+            --accent-color: #7dd3fc;
+            --deep-color: #03111f;
+            --panel-bg: rgba(5, 20, 34, 0.78);
+            --panel-line: rgba(125, 211, 252, 0.22);
+            --gradient: linear-gradient(135deg, #020914 0%, #06243a 52%, #071827 100%);
         }
 
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: var(--gradient);
+            background:
+                radial-gradient(circle at 18% 8%, rgba(100, 216, 255, 0.18), transparent 32%),
+                linear-gradient(rgba(2, 9, 20, 0.62), rgba(2, 9, 20, 0.86)),
+                url('src/decor/ocean-bg.jpg') center / cover fixed,
+                var(--gradient);
             margin: 0;
             padding: 40px 20px;
             color: var(--secondary-color);
@@ -36,10 +43,11 @@
             max-width: 800px;
             margin: 0;
             padding: 40px;
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-line);
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            backdrop-filter: blur(10px);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.42);
+            backdrop-filter: blur(14px);
             transition: transform 0.3s ease;
         }
 
@@ -57,7 +65,7 @@
             height: 180px;
             border-radius: 50%;
             border: 4px solid var(--primary-color);
-            box-shadow: 0 8px 20px rgba(255, 71, 87, 0.3);
+            box-shadow: 0 8px 26px rgba(100, 216, 255, 0.32);
             transition: transform 0.3s ease;
         }
 
@@ -70,7 +78,7 @@
             color: var(--primary-color);
             margin: 20px 0;
             font-weight: 700;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            text-shadow: 0 0 22px rgba(100, 216, 255, 0.26);
         }
 
         .header hr {
@@ -87,18 +95,38 @@
         .playlist {
             margin-bottom: 30px;
             padding: 20px;
-            background: #f8f9fa;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(125, 211, 252, 0.16);
             border-radius: 12px;
         }
 
         .library-panel {
             position: sticky;
             top: 24px;
+            max-height: calc(100vh - 48px);
+            overflow-y: auto;
+            scrollbar-color: rgba(100, 216, 255, 0.65) rgba(255, 255, 255, 0.08);
+            scrollbar-width: thin;
             padding: 24px;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(3, 15, 28, 0.84);
+            border: 1px solid var(--panel-line);
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            backdrop-filter: blur(10px);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.42);
+            backdrop-filter: blur(14px);
+        }
+
+        .library-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .library-panel::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 99px;
+        }
+
+        .library-panel::-webkit-scrollbar-thumb {
+            background: rgba(100, 216, 255, 0.62);
+            border-radius: 99px;
         }
 
         .library-panel h2 {
@@ -109,7 +137,7 @@
         }
 
         .library-intro {
-            color: #57606f;
+            color: #a8d8f0;
             font-size: 0.95rem;
             margin: 0 0 18px;
         }
@@ -134,21 +162,21 @@
         .work-card {
             display: block;
             padding: 13px 14px;
-            background: #fff;
-            border: 1px solid rgba(112, 161, 255, 0.24);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(125, 211, 252, 0.20);
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(45, 52, 54, 0.08);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
         }
 
         .work-card:hover {
             transform: translateY(-2px);
             text-decoration: none;
-            box-shadow: 0 7px 16px rgba(45, 52, 54, 0.13);
+            box-shadow: 0 10px 24px rgba(100, 216, 255, 0.14);
         }
 
         .work-title {
             display: block;
-            color: var(--secondary-color);
+            color: #f4fbff;
             font-weight: 700;
             line-height: 1.35;
         }
@@ -158,15 +186,15 @@
             flex-wrap: wrap;
             gap: 8px;
             margin-top: 8px;
-            color: #747d8c;
+            color: #9bc9df;
             font-size: 0.83rem;
         }
 
         .work-chip {
             padding: 2px 8px;
-            background: rgba(112, 161, 255, 0.14);
+            background: rgba(100, 216, 255, 0.14);
             border-radius: 999px;
-            color: #3867d6;
+            color: #9ee8ff;
         }
 
         h3 {
@@ -214,7 +242,7 @@
         }
 
         a:hover {
-            color: var(--primary-color);
+            color: #e0f7ff;
             text-decoration: underline;
             text-underline-offset: 3px;
         }
@@ -237,7 +265,7 @@
 
         .github-link a:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+            box-shadow: 0 5px 15px rgba(100, 216, 255, 0.28);
             text-decoration: none;
         }
 
@@ -251,9 +279,9 @@
             align-items: center;
             padding: 10px;
             margin: 10px 0;
-            background: #fff;
+            background: rgba(255, 255, 255, 0.10);
             border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
             transition: all 0.3s ease;
             cursor: pointer;
         }
@@ -289,12 +317,12 @@
 
         .playlist li .info .artist {
             font-size: 0.9rem;
-            color: #666;
+            color: #a8d8f0;
         }
 
         .playlist li .duration {
             font-size: 0.9rem;
-            color: #666;
+            color: #a8d8f0;
             margin-left: auto;
             margin-right: 20px;
         }
@@ -318,7 +346,7 @@
             filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.1));
         }
 
-        audio::-webkit-media-controls-panel {
+            audio::-webkit-media-controls-panel {
             background: var(--gradient);
         }
 
@@ -333,6 +361,7 @@
 
             .library-panel {
                 position: static;
+                max-height: 420px;
                 margin-bottom: 22px;
                 padding: 20px;
             }
@@ -365,19 +394,19 @@
                     <li>
                         <a class="work-card" href="reader.html?work=software-major">
                             <span class="work-title">关于填报软件工程专业的一些看法</span>
-                            <span class="work-meta"><span class="work-chip">docx</span><span>Major advice</span></span>
+                            <span class="work-meta"><span class="work-chip">pdf</span><span>Major advice</span></span>
                         </a>
                     </li>
                     <li>
                         <a class="work-card" href="reader.html?work=capital-scientific-thinking">
                             <span class="work-title">《资本论》中的科学思维</span>
-                            <span class="work-meta"><span class="work-chip">docx</span><span>Reading report</span></span>
+                            <span class="work-meta"><span class="work-chip">pdf</span><span>Reading report</span></span>
                         </a>
                     </li>
                     <li>
                         <a class="work-card" href="reader.html?work=digital-labor-alienation">
                             <span class="work-title">数字时代劳动异化的四重维度与解放路径</span>
-                            <span class="work-meta"><span class="work-chip">docx</span><span>Marxism and software</span></span>
+                            <span class="work-meta"><span class="work-chip">pdf</span><span>Marxism and software</span></span>
                         </a>
                     </li>
                 </ul>
