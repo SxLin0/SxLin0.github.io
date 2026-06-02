@@ -4,6 +4,21 @@ const library = document.getElementById('library-sections');
 const librarySearch = document.getElementById('library-search');
 const playlist = document.getElementById('playlist');
 const audioPlayer = document.getElementById('audio-player');
+const libraryStateKey = 'sxlin-library-open-sections';
+
+function getLibraryState() {
+    try {
+        return JSON.parse(sessionStorage.getItem(libraryStateKey)) || {};
+    } catch {
+        return {};
+    }
+}
+
+function saveLibraryState(sectionId, isOpen) {
+    const state = getLibraryState();
+    state[sectionId] = isOpen;
+    sessionStorage.setItem(libraryStateKey, JSON.stringify(state));
+}
 
 function createWorkCard(work) {
     const item = document.createElement('li');
@@ -39,9 +54,11 @@ function renderLibrary() {
         const headingText = document.createElement('span');
         const count = document.createElement('span');
         const list = document.createElement('ul');
+        const savedState = getLibraryState();
 
         sectionEl.className = 'library-section';
-        sectionEl.open = section.open !== false;
+        sectionEl.dataset.sectionId = section.id;
+        sectionEl.open = savedState[section.id] ?? (section.open !== false);
         headingText.textContent = section.title;
         count.className = 'section-count';
         count.textContent = sectionWorks.length;
@@ -51,6 +68,31 @@ function renderLibrary() {
 
         sectionEl.append(heading, list);
         library.append(sectionEl);
+    });
+}
+
+function bindLibrarySections() {
+    if (!library) {
+        return;
+    }
+
+    library.querySelectorAll('.library-section').forEach((section) => {
+        section.addEventListener('toggle', () => {
+            if (librarySearch?.value.trim()) {
+                return;
+            }
+
+            saveLibraryState(section.dataset.sectionId, section.open);
+        });
+    });
+
+    library.querySelectorAll('.work-card').forEach((card) => {
+        card.addEventListener('click', () => {
+            const section = card.closest('.library-section');
+            if (section) {
+                saveLibraryState(section.dataset.sectionId, true);
+            }
+        });
     });
 }
 
@@ -75,7 +117,11 @@ function bindLibrarySearch() {
             });
 
             section.hidden = visibleCount === 0;
-            section.open = Boolean(query && visibleCount);
+            if (query) {
+                section.open = Boolean(visibleCount);
+            } else {
+                section.open = Boolean(getLibraryState()[section.dataset.sectionId]);
+            }
         });
     });
 }
@@ -99,5 +145,6 @@ function bindPlaylist() {
 }
 
 renderLibrary();
+bindLibrarySections();
 bindLibrarySearch();
 bindPlaylist();
