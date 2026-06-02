@@ -60,7 +60,7 @@ async function loadWork() {
         return;
     }
 
-    document.title = `${work.title} - Xiaoxiao's Homepage`;
+    document.title = `${work.title} - 宵宵`;
 
     try {
         if (work.kind === 'html') {

@@ -1,6 +1,6 @@
-title: "Xiaoxiao's Homepage"
-name: "Xiaoxiao"
-description: "Personal homepage, writing library, poems, essays, and future blog notes."
+title: "宵宵"
+name: "宵宵"
+description: "宵宵的个人主页、文章、诗歌、散文和博客笔记。"
 url: "https://sxlin0.github.io"
 baseurl: ""
 repository: "SxLin0/SxLin0.github.io"
@@ -16,7 +16,7 @@ plugins:
   - jekyll-sitemap
 
 author:
-  name: "Xiaoxiao"
+  name: "宵宵"
   avatar: "/src/photo.jpg"
   bio: "Software engineering student, literary lover, music enthusiast."
 

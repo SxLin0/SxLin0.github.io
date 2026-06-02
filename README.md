@@ -1,4 +1,4 @@
-# Xiaoxiao's Homepage
+# 宵宵
 
 Personal homepage and writing library built with Jekyll and the Minimal Mistakes theme.
 

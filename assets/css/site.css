@@ -38,7 +38,7 @@ body::before {
     position: fixed;
     inset: 0;
     z-index: -1;
-    background: url("../../src/decor/ocean-bg.jpg") center / cover no-repeat;
+    background: url("../../src/decor/ocean-wave-gradient-1.jpg") center / cover no-repeat;
     transform: translateZ(0);
     will-change: transform;
 }
@@ -379,7 +379,7 @@ audio::-webkit-media-controls-panel {
     font-family: "Songti SC", "Noto Serif CJK SC", "SimSun", serif;
     font-size: 1.08rem;
     line-height: 2.05;
-    text-align: center;
+    text-align: left;
 }
 
 .article-document h1 {
@@ -399,7 +399,13 @@ audio::-webkit-media-controls-panel {
 
 .article-document p {
     margin: 0 auto 12px;
-    text-align: center;
+    text-align: left;
+}
+
+.article-document .doc-paragraph,
+.article-document .essay-paragraph {
+    text-align: justify;
+    text-indent: 2em;
 }
 
 .article-document .doc-subtitle {
@@ -485,6 +491,12 @@ audio::-webkit-media-controls-panel {
     margin-top: 28px;
     font-size: clamp(1.2rem, 2.8vw, 1.48rem);
     line-height: 2.18;
+    text-align: center;
+}
+
+.article-document .poem-lines p {
+    text-align: center;
+    text-indent: 0;
 }
 
 .article-document .signature {
@@ -494,6 +506,7 @@ audio::-webkit-media-controls-panel {
 
 .article-document .signature p {
     text-align: right;
+    text-indent: 0;
 }
 
 .pdf-document {

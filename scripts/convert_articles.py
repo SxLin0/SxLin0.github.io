@@ -10,8 +10,14 @@ ARTICLE_SOURCES = {
     "digital-labor-alienation": "数字时代劳动异化的四重维度与解放路径.docx",
 }
 
+POEM_ESSAY_SOURCES = {
+    "spring-essay": "浅谈“春”.docx",
+}
+
 SOURCE_DIR = Path("content/articles")
 OUTPUT_DIR = Path("content/articles-html")
+POEM_ESSAY_SOURCE_DIR = Path("content/poem-essay")
+PRINT_OUTPUT_DIR = Path("content/print")
 
 
 def paragraph_class(text, index):
@@ -59,10 +65,45 @@ def render_docx(source, output):
     output.write_text(html, encoding="utf-8")
 
 
+def render_essay_docx(source, output):
+    doc = Document(source)
+    paragraphs = [p.text.strip() for p in doc.paragraphs if p.text.strip()]
+    if not paragraphs:
+        raise ValueError(f"{source} has no readable paragraphs")
+
+    title = paragraphs[0]
+    signature = paragraphs[-2:] if len(paragraphs) > 2 else []
+    body_paragraphs = paragraphs[1:-2] if signature else paragraphs[1:]
+    body = [f"    <h1>{escape(title)}</h1>"]
+    body.extend(f'    <p class="essay-paragraph">{escape(text)}</p>' for text in body_paragraphs)
+    if signature:
+        body.append('    <div class="signature">')
+        body.extend(f"        <p>{escape(text)}</p>" for text in signature)
+        body.append("    </div>")
+
+    html = "\n".join([
+        "<!DOCTYPE html>",
+        '<html lang="zh-CN">',
+        "<head>",
+        '    <meta charset="UTF-8">',
+        f"    <title>{escape(title)}</title>",
+        "</head>",
+        "<body>",
+        *body,
+        "</body>",
+        "</html>",
+        "",
+    ])
+    output.write_text(html, encoding="utf-8")
+
+
 def main():
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     for slug, filename in ARTICLE_SOURCES.items():
         render_docx(SOURCE_DIR / filename, OUTPUT_DIR / f"{slug}.html")
+    PRINT_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    for slug, filename in POEM_ESSAY_SOURCES.items():
+        render_essay_docx(POEM_ESSAY_SOURCE_DIR / filename, PRINT_OUTPUT_DIR / f"{slug}.html")
 
 
 if __name__ == "__main__":
