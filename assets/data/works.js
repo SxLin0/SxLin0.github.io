@@ -67,6 +67,24 @@ export const works = [
         section: 'blog',
         title: '操作系统与并发编程综合笔记',
         href: 'content/blog/operating-system.html'
+    },
+    {
+        id: 'database-notes',
+        section: 'blog',
+        title: '数据库的三级模式结构',
+        href: 'content/blog/database.html'
+    },
+    {
+        id: 'internet-computing-notes',
+        section: 'blog',
+        title: '互联网计算',
+        href: 'content/blog/internet-computing.html'
+    },
+    {
+        id: 'compiler-principles-notes',
+        section: 'blog',
+        title: '编译原理核心知识点总结',
+        href: 'content/blog/compiler-principles.html'
     }
 ];
 
