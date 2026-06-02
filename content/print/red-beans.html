@@ -16,29 +16,11 @@
             font-family: "Songti SC", "Noto Serif CJK SC", "SimSun", serif;
             font-size: 12.2pt;
             line-height: 1.82;
-        }
-
-        .cover-rule {
-            width: 56px;
-            height: 5px;
-            margin-bottom: 18px;
-            border-radius: 99px;
-            background: #ff4757;
-        }
-
-        .section {
-            display: inline-block;
-            margin-bottom: 12px;
-            padding: 3px 10px;
-            color: #3867d6;
-            border-radius: 99px;
-            background: #edf4ff;
-            font: 700 9.5pt "Segoe UI", sans-serif;
-            letter-spacing: 0;
+            text-align: center;
         }
 
         h1 {
-            margin: 0 0 20px;
+            margin: 0 auto 24px;
             color: #171717;
             font-size: 26pt;
             line-height: 1.25;
@@ -62,31 +44,36 @@
         }
 
         p {
-            margin: 0 0 9px;
-            text-align: justify;
+            margin: 0 auto 10px;
+            text-align: center;
         }
 
         .lead {
-            padding: 11px 14px;
-            border-left: 4px solid #70a1ff;
+            display: inline-block;
+            max-width: 86%;
+            padding: 11px 18px;
+            border-left: 0;
             border-radius: 6px;
             background: #f7faff;
         }
 
         .bullet {
             position: relative;
-            margin-left: 18px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .bullet::before {
-            content: "";
-            position: absolute;
-            left: -16px;
-            top: 0.76em;
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: #70a1ff;
+            content: none;
+        }
+        .signature {
+            width: min(220px, 48%);
+            margin: 30px 0 0 auto;
+        }
+
+        .signature p {
+            text-align: right;
+            margin-bottom: 4px;
         }
 
         .poem-lines {
@@ -103,8 +90,6 @@
     </style>
 </head>
 <body>
-    <div class="cover-rule"></div>
-    <div class="section">Poem &amp; Essay</div>
     <h1>红豆</h1>
     <div class="poem-lines"><p>红豆应枝生，</p>
 <p>采撷解思愁。</p>

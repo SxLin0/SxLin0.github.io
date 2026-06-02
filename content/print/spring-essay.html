@@ -16,29 +16,11 @@
             font-family: "Songti SC", "Noto Serif CJK SC", "SimSun", serif;
             font-size: 12.2pt;
             line-height: 1.82;
-        }
-
-        .cover-rule {
-            width: 56px;
-            height: 5px;
-            margin-bottom: 18px;
-            border-radius: 99px;
-            background: #ff4757;
-        }
-
-        .section {
-            display: inline-block;
-            margin-bottom: 12px;
-            padding: 3px 10px;
-            color: #3867d6;
-            border-radius: 99px;
-            background: #edf4ff;
-            font: 700 9.5pt "Segoe UI", sans-serif;
-            letter-spacing: 0;
+            text-align: center;
         }
 
         h1 {
-            margin: 0 0 20px;
+            margin: 0 auto 24px;
             color: #171717;
             font-size: 23pt;
             line-height: 1.25;
@@ -62,31 +44,36 @@
         }
 
         p {
-            margin: 0 0 9px;
-            text-align: justify;
+            margin: 0 auto 10px;
+            text-align: center;
         }
 
         .lead {
-            padding: 11px 14px;
-            border-left: 4px solid #70a1ff;
+            display: inline-block;
+            max-width: 86%;
+            padding: 11px 18px;
+            border-left: 0;
             border-radius: 6px;
             background: #f7faff;
         }
 
         .bullet {
             position: relative;
-            margin-left: 18px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .bullet::before {
-            content: "";
-            position: absolute;
-            left: -16px;
-            top: 0.76em;
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: #70a1ff;
+            content: none;
+        }
+        .signature {
+            width: min(220px, 48%);
+            margin: 30px 0 0 auto;
+        }
+
+        .signature p {
+            text-align: right;
+            margin-bottom: 4px;
         }
 
         .poem-lines {
@@ -103,8 +90,6 @@
     </style>
 </head>
 <body>
-    <div class="cover-rule"></div>
-    <div class="section">Poem &amp; Essay</div>
     <h1>浅谈“春”</h1>
     
 <p>儒家中庸之道教我不偏不倚，因而我本不愿在四季中独爱其一。可春天，终究让人忍不住偏心。春，是一种苏醒，是自然的，也是人心的。</p>
@@ -113,7 +98,6 @@
 <p>幼儿园学过一首歌，“春天在哪里呀春天在哪里，春天在那青翠的山林里，这里有红花呀这里有绿草，还有那会唱歌的小黄鹂”。从此便对“嘀哩哩”的小黄鹂有了很深的印象。稍稍长大了些，就有了疑惑，这么多动物，为什么提起春天就立马想到鸟呢？我常常认为这与它们“张扬”的性格有关。在春天的时候，特别是你身边如果有许多树，那恭喜你就要被叽叽喳喳的鸟叫声包围了。仔细辨认，能认出来麻雀、布谷鸟或者黄莺，但更多的是不知名的鸟，也自顾自地欢腾地叫着。提起春天，也容易想到候鸟飞回北方，我小时候也对此产生过疑惑——如果南方更好，为什么不一直待在南方，来回折腾不累吗？也是后来才得到解答，在北方的夏天，一天当中明亮的时刻比南方长，候鸟有更多的时间觅食和繁育雏鸟，并且南方的动物种类和数量较多，对资源的竞争激烈。总之，由于种种原因，候鸟开始了南北迁徙。我们不得不佩服这些候鸟的勇气与智慧。</p>
 <p>春天与花同样密不可分。百花的生日——花朝节就在每年农历的二月份。我的生活也可以说是鲜花簇拥了，但这多亏于我的母亲，她的一大爱好就是养花。虽说家中养了许多花，但我对花的了解甚少，叫不出来几个花的名字。平日里与花的接触也只是帮母亲浇浇水，难度再高一点的修剪叶片母亲都不会让我插手。但赏花又确实是另外一码事了。爱美之心人皆有之，花的美让我私自认为花可以作为美的代名词。上了大学，校园中盛开的花所呈现的美，让我不得不为之倾倒。海棠垂枝，梅花溢香，此时再哼上一首应景的小曲，我真担心一生的快活都要被这花给耗尽了。</p>
 <p>“我是江南第一燕，为衔春色上云梢。”挑一个阳光明媚的午后，骑行于南京的大街小巷，此时的我轻快得就像那只上云梢的燕子，满眼春意，畅快至极了。</p>
-<p>宵宵</p>
-<p>2024年春</p>
+<div class="signature"><p>宵宵</p><p>2024年春</p></div>
 </body>
 </html>

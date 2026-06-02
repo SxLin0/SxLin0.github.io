@@ -34,16 +34,14 @@
         }
 
         .reader-header {
-            padding: 28px 34px;
+            padding: 22px 28px;
             border-bottom: 1px solid rgba(112, 161, 255, 0.22);
             background: #fff;
         }
 
         .reader-nav {
             display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 18px;
+            justify-content: center;
         }
 
         a {
@@ -69,29 +67,6 @@
             background: #f8f9fa;
         }
 
-        .reader-title {
-            margin: 0;
-            color: var(--primary-color);
-            font-size: clamp(1.7rem, 4vw, 2.45rem);
-            line-height: 1.25;
-        }
-
-        .reader-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 12px;
-            color: #747d8c;
-            font-size: 0.95rem;
-        }
-
-        .chip {
-            padding: 2px 10px;
-            border-radius: 999px;
-            color: #3867d6;
-            background: rgba(112, 161, 255, 0.14);
-        }
-
         .reader-content {
             padding: 24px;
             background: #f1f4f8;
@@ -105,36 +80,6 @@
             border-radius: 10px;
             background: #fff;
             box-shadow: inset 0 0 0 1px rgba(45, 52, 54, 0.08);
-        }
-
-        .reader-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 18px;
-        }
-
-        .action-link {
-            display: inline-flex;
-            align-items: center;
-            min-height: 38px;
-            padding: 0 14px;
-            border-radius: 8px;
-            color: #fff;
-            background: var(--primary-color);
-        }
-
-        .action-link.secondary {
-            color: var(--accent-color);
-            background: #f8f9fa;
-            border: 1px solid rgba(112, 161, 255, 0.34);
-        }
-
-        .action-link:hover {
-            color: #fff;
-            text-decoration: none;
-            transform: translateY(-1px);
-            box-shadow: 0 5px 14px rgba(255, 71, 87, 0.24);
         }
 
         .error {
@@ -170,10 +115,7 @@
         <header class="reader-header">
             <nav class="reader-nav" aria-label="Reader navigation">
                 <a class="nav-link" href="index.html">Back Home</a>
-                <a class="nav-link" id="source-link" href="#">Original File</a>
             </nav>
-            <h1 class="reader-title" id="reader-title">Loading...</h1>
-            <div class="reader-meta" id="reader-meta"></div>
         </header>
         <section class="reader-content">
             <iframe class="document-frame" id="document-frame" title="Writing preview"></iframe>
@@ -184,125 +126,57 @@
         const works = {
             'software-major': {
                 title: '关于填报软件工程专业的一些看法',
-                section: 'Articles',
-                format: 'docx',
-                source: 'content/readable/articles/software-major.txt',
-                preview: 'content/print/software-major.html',
-                pdf: 'content/pdf/software-major.pdf',
-                original: 'content/articles/关于填报软件工程专业的一些看法.docx'
+                preview: 'content/print/software-major.html'
             },
             'capital-scientific-thinking': {
                 title: '《资本论》中的科学思维',
-                section: 'Articles',
-                format: 'docx',
-                source: 'content/readable/articles/capital-scientific-thinking.txt',
-                preview: 'content/print/capital-scientific-thinking.html',
-                pdf: 'content/pdf/capital-scientific-thinking.pdf',
-                original: 'content/articles/《资本论》中的科学思维%20.docx'
+                preview: 'content/print/capital-scientific-thinking.html'
             },
             'digital-labor-alienation': {
                 title: '数字时代劳动异化的四重维度与解放路径',
-                section: 'Articles',
-                format: 'docx',
-                source: 'content/readable/articles/digital-labor-alienation.txt',
-                preview: 'content/print/digital-labor-alienation.html',
-                pdf: 'content/pdf/digital-labor-alienation.pdf',
-                original: 'content/articles/数字时代劳动异化的四重维度与解放路径.docx'
+                preview: 'content/print/digital-labor-alienation.html'
             },
             'summer-thoughts': {
                 title: '夏日咏怀',
-                section: 'Poem & Essay',
-                format: 'md',
-                source: 'content/poem-essay/夏日咏怀.md',
-                preview: 'content/print/summer-thoughts.html',
-                pdf: 'content/pdf/summer-thoughts.pdf',
-                original: 'content/poem-essay/夏日咏怀.md'
+                preview: 'content/print/summer-thoughts.html'
             },
             'night-boat-home': {
                 title: '夜行舟归家',
-                section: 'Poem & Essay',
-                format: 'md',
-                source: 'content/poem-essay/夜行舟归家.md',
-                preview: 'content/print/night-boat-home.html',
-                pdf: 'content/pdf/night-boat-home.pdf',
-                original: 'content/poem-essay/夜行舟归家.md'
+                preview: 'content/print/night-boat-home.html'
             },
             'untitled-mid-autumn': {
                 title: '无题',
-                section: 'Poem & Essay',
-                format: 'md',
-                source: 'content/poem-essay/无题.md',
-                preview: 'content/print/untitled-mid-autumn.html',
-                pdf: 'content/pdf/untitled-mid-autumn.pdf',
-                original: 'content/poem-essay/无题.md'
+                preview: 'content/print/untitled-mid-autumn.html'
             },
             'yellow-river': {
                 title: '登黄河古迹怀古',
-                section: 'Poem & Essay',
-                format: 'md',
-                source: 'content/poem-essay/登黄河古迹怀古.md',
-                preview: 'content/print/yellow-river.html',
-                pdf: 'content/pdf/yellow-river.pdf',
-                original: 'content/poem-essay/登黄河古迹怀古.md'
+                preview: 'content/print/yellow-river.html'
             },
             'red-beans': {
                 title: '红豆',
-                section: 'Poem & Essay',
-                format: 'md',
-                source: 'content/poem-essay/红豆.md',
-                preview: 'content/print/red-beans.html',
-                pdf: 'content/pdf/red-beans.pdf',
-                original: 'content/poem-essay/红豆.md'
+                preview: 'content/print/red-beans.html'
             },
             'spring-essay': {
                 title: '浅谈“春”',
-                section: 'Poem & Essay',
-                format: 'docx',
-                source: 'content/readable/poem-essay/spring-essay.txt',
-                preview: 'content/print/spring-essay.html',
-                pdf: 'content/pdf/spring-essay.pdf',
-                original: 'content/poem-essay/浅谈“春”.docx'
+                preview: 'content/print/spring-essay.html'
             }
         };
 
         const params = new URLSearchParams(window.location.search);
         const work = works[params.get('work')];
-        const title = document.getElementById('reader-title');
-        const meta = document.getElementById('reader-meta');
         const frame = document.getElementById('document-frame');
-        const sourceLink = document.getElementById('source-link');
-
-        function setActions() {
-            const actions = document.createElement('div');
-            actions.className = 'reader-actions';
-            actions.innerHTML = `
-                <a class="action-link" href="${work.pdf}" target="_blank" rel="noopener">Open PDF</a>
-                <a class="action-link secondary" href="${work.pdf}" download>Download PDF</a>
-                <a class="action-link secondary" href="${work.source}" target="_blank" rel="noopener">Text Source</a>
-            `;
-            document.querySelector('.reader-header').appendChild(actions);
-        }
 
         function loadWork() {
             if (!work) {
-                title.textContent = 'Work Not Found';
-                meta.innerHTML = '<span class="chip">404</span>';
                 frame.replaceWith(Object.assign(document.createElement('div'), {
                     className: 'error',
                     textContent: 'The requested work does not exist. Please return home and choose another title.'
                 }));
-                sourceLink.style.display = 'none';
                 return;
             }
 
             document.title = `${work.title} - Xiaoxiao's Homepage`;
-            title.textContent = work.title;
-            meta.innerHTML = `<span class="chip">${work.section}</span><span class="chip">${work.format}</span>`;
-            sourceLink.href = work.original;
-            sourceLink.setAttribute('target', '_blank');
-            sourceLink.setAttribute('rel', 'noopener');
             frame.src = work.preview;
-            setActions();
         }
 
         loadWork();
