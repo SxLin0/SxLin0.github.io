@@ -9,34 +9,55 @@ permalink: /
         {% include library-panel.html %}
 
         <div class="profile-card">
-            <header class="header">
+            <header class="hero-panel">
+                <div class="hero-copy">
+                    <p class="eyebrow">Personal Homepage</p>
+                    <h1>宵宵</h1>
+                    <p class="hero-quote"><i>春风得意马蹄疾，一日看尽长安花</i></p>
+                    <p class="hero-summary">Software engineering student, literary lover, music enthusiast.</p>
+                    <div class="hero-actions" aria-label="Quick actions">
+                        <a href="mailto:2125808970@qq.com">Email</a>
+                        <a href="#playlist-panel">Playlist</a>
+                    </div>
+                </div>
                 <img src="{{ '/src/photo.jpg' | relative_url }}" alt="宵宵的头像">
-                <h1><i>春风得意马蹄疾，一日看尽长安花</i> 😊</h1>
-                <hr>
             </header>
 
-            <section class="content-panel">
-                <h3>About Me📜</h3>
-                <p>Hi! I'm <b>宵宵</b>.</p>
-                <p>I'm <s>19</s> <s>20</s> 21 years old, a <s>sophomore</s> junior student at <a href="https://ise.nju.edu.cn/index.htm" target="_blank" rel="noreferrer">Nanjing University's School of Intelligent Software and Engineering</a>.</p>
-                <p>I am proficient in skills such as C++, Java, Python, JavaScript and Spring Boot.</p>
-                <p>Now I am studying Software Quality and Management, Software System Design, Software Engineering and Computation, Deep Learning, Pattern Recognition and Computer Vision, and Natural Language Processing, etc.</p>
-                <p>My tags are as follows:</p>
-                <p>🎮 Loyal gamer | 🎧 Music enthusiast | 📖 Literary lover | 🚴 Sports explorer | 🍜 Food connoisseur</p>
-                <p>💻 Coding is my passion! Let's collaborate and create something amazing!</p>
-            </section>
+            <div class="home-grid">
+                <section class="content-panel about-panel">
+                    <h3>About Me</h3>
+                    <p>Hi! I'm <b>宵宵</b>.</p>
+                    <p>I'm <s>19</s> <s>20</s> 21 years old, a <s>sophomore</s> junior student at <a href="https://ise.nju.edu.cn/index.htm" target="_blank" rel="noreferrer">Nanjing University's School of Intelligent Software and Engineering</a>.</p>
+                    <p>I am proficient in C++, Java, Python, JavaScript and Spring Boot. I am also studying Software Quality and Management, Software System Design, Software Engineering and Computation, Deep Learning, Pattern Recognition and Computer Vision, and Natural Language Processing.</p>
+                    <p>Coding is my passion. Writing, music, games, cycling and food keep the rest of life bright.</p>
+                </section>
 
-            <section class="content-panel">
-                <h3>Contact Me📞</h3>
-                <ul class="contact-list">
-                    <li>📧 Email: <a href="mailto:2125808970@qq.com">2125808970@qq.com</a></li>
-                    <li>🐧 QQ: 2125808970</li>
-                </ul>
-            </section>
+                <section class="content-panel compact-panel">
+                    <h3>Tags</h3>
+                    <div class="tag-cloud" aria-label="Personal tags">
+                        <span>Gamer</span>
+                        <span>Music</span>
+                        <span>Literature</span>
+                        <span>Cycling</span>
+                        <span>Food</span>
+                        <span>Code</span>
+                    </div>
+                </section>
 
-            <section class="content-panel playlist">
-                <h3>My Playlist🎶</h3>
-                <p>Hope you'll enjoy this track as much as I do!</p>
+                <section class="content-panel compact-panel">
+                    <h3>Contact</h3>
+                    <ul class="contact-list">
+                        <li>Email: <a href="mailto:2125808970@qq.com">2125808970@qq.com</a></li>
+                        <li>QQ: 2125808970</li>
+                    </ul>
+                </section>
+            </div>
+
+            <section class="content-panel playlist" id="playlist-panel">
+                <div class="section-title-row">
+                    <h3>Playlist</h3>
+                    <span>6 tracks</span>
+                </div>
                 <ul id="playlist">
                     <li data-src="{{ '/src/music.mp3' | relative_url }}">
                         <div class="cover" style="background-image: url('{{ '/src/cover.jpg' | relative_url }}');"></div>

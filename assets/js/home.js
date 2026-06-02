@@ -1,6 +1,7 @@
 import { works, workSections } from '../data/works.js';
 
 const library = document.getElementById('library-sections');
+const librarySearch = document.getElementById('library-search');
 const playlist = document.getElementById('playlist');
 const audioPlayer = document.getElementById('audio-player');
 
@@ -11,6 +12,7 @@ function createWorkCard(work) {
 
     link.className = 'work-card';
     link.href = work.href || `reader.html?work=${encodeURIComponent(work.id)}`;
+    link.dataset.title = work.title.toLowerCase();
     title.className = 'work-title';
     title.textContent = work.title;
 
@@ -52,6 +54,32 @@ function renderLibrary() {
     });
 }
 
+function bindLibrarySearch() {
+    if (!library || !librarySearch) {
+        return;
+    }
+
+    librarySearch.addEventListener('input', () => {
+        const query = librarySearch.value.trim().toLowerCase();
+
+        Array.from(library.querySelectorAll('.library-section')).forEach((section) => {
+            const cards = Array.from(section.querySelectorAll('.work-card'));
+            let visibleCount = 0;
+
+            cards.forEach((card) => {
+                const isMatch = !query || card.dataset.title.includes(query);
+                card.parentElement.hidden = !isMatch;
+                if (isMatch) {
+                    visibleCount += 1;
+                }
+            });
+
+            section.hidden = visibleCount === 0;
+            section.open = Boolean(query && visibleCount);
+        });
+    });
+}
+
 function bindPlaylist() {
     if (!playlist || !audioPlayer) {
         return;
@@ -71,4 +99,5 @@ function bindPlaylist() {
 }
 
 renderLibrary();
+bindLibrarySearch();
 bindPlaylist();
