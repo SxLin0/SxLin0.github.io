@@ -24,6 +24,58 @@ function cleanImportedHtml(doc) {
     return article;
 }
 
+function plainMarkdownText(text) {
+    return text
+        .replace(/^#{1,6}\s+/, '')
+        .replace(/^\*\*(.*)\*\*$/, '$1')
+        .replace(/^__(.*)__$/, '$1')
+        .replace(/<br\s*\/?><\/br>/gi, '')
+        .trim();
+}
+
+function createParagraph(className, text) {
+    const paragraph = document.createElement('p');
+    paragraph.className = className;
+    paragraph.textContent = text;
+    return paragraph;
+}
+
+function renderMarkdownPoem(markdown) {
+    const article = document.createElement('article');
+    const lines = markdown.split(/\r?\n/).map((line) => line.trim());
+    const nonEmptyLines = lines.filter(Boolean);
+    const titleText = plainMarkdownText(nonEmptyLines[0] || work.title);
+    const heading = document.createElement('h1');
+    const poemLines = document.createElement('div');
+
+    article.className = 'article-document poem-document';
+    heading.textContent = titleText || work.title;
+    poemLines.className = 'poem-lines';
+    article.append(heading);
+
+    nonEmptyLines.slice(1).forEach((rawLine) => {
+        const line = plainMarkdownText(rawLine);
+        if (!line) {
+            return;
+        }
+
+        if (line.startsWith('注：')) {
+            article.append(createParagraph('poem-note', line));
+            return;
+        }
+
+        if (/^\d{4}/.test(line) || /年/.test(line)) {
+            article.append(createParagraph('poem-date', line));
+            return;
+        }
+
+        poemLines.append(createParagraph('', line));
+    });
+
+    article.insertBefore(poemLines, article.querySelector('.poem-note') || null);
+    return article;
+}
+
 async function loadHtmlWork() {
     const response = await fetch(work.source);
     if (!response.ok) {
@@ -33,6 +85,16 @@ async function loadHtmlWork() {
     const html = await response.text();
     const doc = new DOMParser().parseFromString(html, 'text/html');
     stage.replaceChildren(cleanImportedHtml(doc));
+}
+
+async function loadMarkdownPoemWork() {
+    const response = await fetch(work.source);
+    if (!response.ok) {
+        throw new Error(`Cannot load ${work.source}`);
+    }
+
+    const markdown = await response.text();
+    stage.replaceChildren(renderMarkdownPoem(markdown));
 }
 
 function loadPdfWork() {
@@ -65,6 +127,8 @@ async function loadWork() {
     try {
         if (work.kind === 'html') {
             await loadHtmlWork();
+        } else if (work.kind === 'markdown-poem') {
+            await loadMarkdownPoemWork();
         } else {
             loadPdfWork();
         }

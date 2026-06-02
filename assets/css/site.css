@@ -118,7 +118,7 @@ a:hover {
     margin-top: 15px;
 }
 
-.library-section h3,
+.library-section summary,
 .content-panel h3 {
     position: relative;
     margin: 0 0 12px;
@@ -128,7 +128,7 @@ a:hover {
     line-height: 1.25;
 }
 
-.library-section h3::before,
+.library-section summary::before,
 .content-panel h3::before {
     content: "";
     position: absolute;
@@ -139,6 +139,52 @@ a:hover {
     border-radius: 999px;
     background: linear-gradient(180deg, var(--accent), var(--primary));
     transform: translateY(-50%);
+}
+
+.library-section summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 0;
+    padding: 8px 10px 8px 18px;
+    border: 1px solid rgba(8, 118, 184, 0.12);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.62);
+    cursor: pointer;
+    list-style: none;
+    font-weight: 750;
+}
+
+.library-section summary::-webkit-details-marker {
+    display: none;
+}
+
+.library-section summary::after {
+    content: "⌄";
+    color: var(--muted);
+    font-size: 0.95rem;
+    transform: rotate(-90deg);
+    transition: transform 0.18s ease;
+}
+
+.library-section[open] summary {
+    margin-bottom: 9px;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.library-section[open] summary::after {
+    transform: rotate(0deg);
+}
+
+.section-count {
+    margin-left: auto;
+    padding: 1px 7px;
+    border-radius: 999px;
+    background: rgba(8, 118, 184, 0.1);
+    color: var(--primary-dark);
+    font-size: 0.74rem;
+    font-weight: 800;
 }
 
 .work-list {
@@ -497,6 +543,22 @@ audio::-webkit-media-controls-panel {
 .article-document .poem-lines p {
     text-align: center;
     text-indent: 0;
+}
+
+.article-document .poem-date {
+    margin-top: -16px;
+    color: var(--muted);
+    font-size: 0.92rem;
+    text-align: center;
+}
+
+.article-document .poem-note {
+    max-width: 620px;
+    margin-top: 24px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.8;
+    text-align: center;
 }
 
 .article-document .signature {

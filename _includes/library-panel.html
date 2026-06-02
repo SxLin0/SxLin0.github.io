@@ -2,35 +2,51 @@
     <h2>Writing Library</h2>
     <p class="library-intro">A small shelf for articles, poems and essays. Click any title to read it on its own page.</p>
     <div id="library-sections">
-        <section class="library-section">
-            <h3>Blog</h3>
+        <details class="library-section">
+            <summary><span>Blog</span><span class="section-count">4</span></summary>
             <ul class="work-list">
                 <li><a class="work-card" href="{{ '/content/blog/operating-system.html' | relative_url }}"><span class="work-title">操作系统</span></a></li>
                 <li><a class="work-card" href="{{ '/content/blog/database.html' | relative_url }}"><span class="work-title">数据库</span></a></li>
                 <li><a class="work-card" href="{{ '/content/blog/internet-computing.html' | relative_url }}"><span class="work-title">互联网计算</span></a></li>
                 <li><a class="work-card" href="{{ '/content/blog/compiler-principles.html' | relative_url }}"><span class="work-title">编译原理</span></a></li>
             </ul>
-        </section>
+        </details>
 
-        <section class="library-section">
-            <h3>Poem &amp; Essay</h3>
+        <details class="library-section">
+            <summary><span>Poem &amp; Essay</span><span class="section-count">22</span></summary>
             <ul class="work-list">
+                <li><a class="work-card" href="{{ '/reader.html?work=shang-yuan' | relative_url }}"><span class="work-title">上元</span></a></li>
+                <li><a class="work-card" href="{{ '/reader.html?work=first-arrival-jiangning' | relative_url }}"><span class="work-title">初到江宁</span></a></li>
+                <li><a class="work-card" href="{{ '/reader.html?work=three-kingdoms' | relative_url }}"><span class="work-title">叹三国</span></a></li>
                 <li><a class="work-card" href="{{ '/reader.html?work=summer-thoughts' | relative_url }}"><span class="work-title">夏日咏怀</span></a></li>
                 <li><a class="work-card" href="{{ '/reader.html?work=night-boat-home' | relative_url }}"><span class="work-title">夜行舟归家</span></a></li>
+                <li><a class="work-card" href="{{ '/reader.html?work=rumengling-mid-autumn' | relative_url }}"><span class="work-title">如梦令·中秋</span></a></li>
+                <li><a class="work-card" href="{{ '/reader.html?work=cold-night-family' | relative_url }}"><span class="work-title">寒夜怀亲</span></a></li>
                 <li><a class="work-card" href="{{ '/reader.html?work=untitled-mid-autumn' | relative_url }}"><span class="work-title">无题</span></a></li>
-                <li><a class="work-card" href="{{ '/reader.html?work=yellow-river' | relative_url }}"><span class="work-title">登黄河古迹怀古</span></a></li>
-                <li><a class="work-card" href="{{ '/reader.html?work=red-beans' | relative_url }}"><span class="work-title">红豆</span></a></li>
+                <li><a class="work-card" href="{{ '/reader.html?work=spring-tea' | relative_url }}"><span class="work-title">春茶</span></a></li>
+                <li><a class="work-card" href="{{ '/reader.html?work=moonlit-hometown' | relative_url }}"><span class="work-title">月夜怀乡</span></a></li>
+                <li><a class="work-card" href="{{ '/reader.html?work=wutong-shadow' | relative_url }}"><span class="work-title">梧桐影</span></a></li>
                 <li><a class="work-card" href="{{ '/reader.html?work=spring-essay' | relative_url }}"><span class="work-title">浅谈“春”</span></a></li>
+                <li><a class="work-card" href="{{ '/reader.html?work=taihang-north' | relative_url }}"><span class="work-title">登临太行北望</span></a></li>
+                <li><a class="work-card" href="{{ '/reader.html?work=yellow-river' | relative_url }}"><span class="work-title">登黄河古迹怀古</span></a></li>
+                <li><a class="work-card" href="{{ '/reader.html?work=kitchen-god-snow' | relative_url }}"><span class="work-title">祭灶遇风雪</span></a></li>
+                <li><a class="work-card" href="{{ '/reader.html?work=red-beans' | relative_url }}"><span class="work-title">红豆</span></a></li>
+                <li><a class="work-card" href="{{ '/reader.html?work=tiger-year' | relative_url }}"><span class="work-title">虎年</span></a></li>
+                <li><a class="work-card" href="{{ '/reader.html?work=after-exam' | relative_url }}"><span class="work-title">试后述志</span></a></li>
+                <li><a class="work-card" href="{{ '/reader.html?work=caisangzi-snow' | relative_url }}"><span class="work-title">采桑子·咏雪</span></a></li>
+                <li><a class="work-card" href="{{ '/reader.html?work=qingyuan-birthday' | relative_url }}"><span class="work-title">青玉案·添岁有感</span></a></li>
+                <li><a class="work-card" href="{{ '/reader.html?work=zhegutian-dongge-dream' | relative_url }}"><span class="work-title">鹧鸪天·东阁记梦</span></a></li>
+                <li><a class="work-card" href="{{ '/reader.html?work=zhegutian-gray-hair' | relative_url }}"><span class="work-title">鹧鸪天·华发叹</span></a></li>
             </ul>
-        </section>
+        </details>
 
-        <section class="library-section">
-            <h3>Articles</h3>
+        <details class="library-section">
+            <summary><span>Articles</span><span class="section-count">3</span></summary>
             <ul class="work-list">
                 <li><a class="work-card" href="{{ '/reader.html?work=software-major' | relative_url }}"><span class="work-title">关于填报软件工程专业的一些看法</span></a></li>
                 <li><a class="work-card" href="{{ '/reader.html?work=capital-scientific-thinking' | relative_url }}"><span class="work-title">《资本论》中的科学思维</span></a></li>
                 <li><a class="work-card" href="{{ '/reader.html?work=digital-labor-alienation' | relative_url }}"><span class="work-title">数字时代劳动异化的四重维度与解放路径</span></a></li>
             </ul>
-        </section>
+        </details>
     </div>
 </aside>

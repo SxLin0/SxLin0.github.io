@@ -32,12 +32,18 @@ function renderLibrary() {
             return;
         }
 
-        const sectionEl = document.createElement('section');
-        const heading = document.createElement('h3');
+        const sectionEl = document.createElement('details');
+        const heading = document.createElement('summary');
+        const headingText = document.createElement('span');
+        const count = document.createElement('span');
         const list = document.createElement('ul');
 
         sectionEl.className = 'library-section';
-        heading.textContent = section.title;
+        sectionEl.open = section.open !== false;
+        headingText.textContent = section.title;
+        count.className = 'section-count';
+        count.textContent = sectionWorks.length;
+        heading.append(headingText, count);
         list.className = 'work-list';
         sectionWorks.forEach((work) => list.append(createWorkCard(work)));
 
