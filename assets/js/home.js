@@ -5,6 +5,7 @@ const librarySearch = document.getElementById('library-search');
 const playlist = document.getElementById('playlist');
 const audioPlayer = document.getElementById('audio-player');
 const libraryStateKey = 'sxlin-library-open-sections';
+const libraryScrollKey = 'sxlin-library-scroll-top';
 
 function getLibraryStorage() {
     try {
@@ -36,6 +37,38 @@ function saveLibraryState(sectionId, isOpen) {
     const state = getLibraryState();
     state[sectionId] = isOpen;
     storage.setItem(libraryStateKey, JSON.stringify(state));
+}
+
+export function normalizeLibraryScrollTop(scrollTop) {
+    const parsedScrollTop = Number(scrollTop);
+
+    if (!Number.isFinite(parsedScrollTop) || parsedScrollTop < 0) {
+        return 0;
+    }
+
+    return Math.round(parsedScrollTop);
+}
+
+function getSavedLibraryScrollTop() {
+    const storage = getLibraryStorage();
+    if (!storage) {
+        return 0;
+    }
+
+    return normalizeLibraryScrollTop(storage.getItem(libraryScrollKey));
+}
+
+function saveLibraryScrollTop(scrollTop) {
+    const storage = getLibraryStorage();
+    if (!storage) {
+        return;
+    }
+
+    storage.setItem(libraryScrollKey, String(normalizeLibraryScrollTop(scrollTop)));
+}
+
+function getLibraryPanel() {
+    return library?.closest('.library-panel') || document.querySelector?.('.library-panel') || null;
 }
 
 export function resolveLibrarySectionOpen(section, savedState) {
@@ -114,6 +147,8 @@ function bindLibrarySections() {
         return;
     }
 
+    const libraryPanel = getLibraryPanel();
+
     library.querySelectorAll('.library-section').forEach((section) => {
         section.addEventListener('toggle', () => {
             if (librarySearch?.value.trim()) {
@@ -130,7 +165,35 @@ function bindLibrarySections() {
             if (section) {
                 saveLibraryState(section.dataset.sectionId, true);
             }
+
+            if (libraryPanel) {
+                saveLibraryScrollTop(libraryPanel.scrollTop);
+            }
         });
+    });
+}
+
+function bindLibraryScroll() {
+    const libraryPanel = getLibraryPanel();
+    if (!libraryPanel) {
+        return;
+    }
+
+    libraryPanel.addEventListener('scroll', () => {
+        saveLibraryScrollTop(libraryPanel.scrollTop);
+    }, { passive: true });
+}
+
+function restoreLibraryScroll() {
+    const libraryPanel = getLibraryPanel();
+    const scrollTop = getSavedLibraryScrollTop();
+    if (!libraryPanel || !scrollTop) {
+        return;
+    }
+
+    const schedule = window.requestAnimationFrame || ((callback) => window.setTimeout(callback, 0));
+    schedule(() => {
+        libraryPanel.scrollTop = scrollTop;
     });
 }
 
@@ -187,6 +250,8 @@ function bindPlaylist() {
 }
 
 renderLibrary();
+restoreLibraryScroll();
 bindLibrarySections();
+bindLibraryScroll();
 bindLibrarySearch();
 bindPlaylist();

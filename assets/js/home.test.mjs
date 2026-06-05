@@ -8,7 +8,7 @@ globalThis.document = {
     }
 };
 
-const { resolveLibrarySectionOpen, resolveWorkHref } = await import('./home.js');
+const { normalizeLibraryScrollTop, resolveLibrarySectionOpen, resolveWorkHref } = await import('./home.js');
 
 test('uses the section default when no saved state exists', () => {
     assert.equal(resolveLibrarySectionOpen({ id: 'blog', open: true }, {}), true);
@@ -29,4 +29,10 @@ test('blog article pages load the library sidebar script', async () => {
 test('library links are rooted so they work from nested pages', () => {
     assert.equal(resolveWorkHref({ href: 'content/blog/operating-system.html' }), '/content/blog/operating-system.html');
     assert.equal(resolveWorkHref({ id: 'spring-essay' }), '/reader.html?work=spring-essay');
+});
+
+test('library scroll position is normalized before saving', () => {
+    assert.equal(normalizeLibraryScrollTop(42.7), 43);
+    assert.equal(normalizeLibraryScrollTop(-10), 0);
+    assert.equal(normalizeLibraryScrollTop('not-a-number'), 0);
 });
