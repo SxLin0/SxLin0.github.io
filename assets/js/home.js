@@ -6,18 +6,48 @@ const playlist = document.getElementById('playlist');
 const audioPlayer = document.getElementById('audio-player');
 const libraryStateKey = 'sxlin-library-open-sections';
 
-function getLibraryState() {
+function getLibraryStorage() {
     try {
-        return JSON.parse(sessionStorage.getItem(libraryStateKey)) || {};
+        return window.localStorage;
+    } catch {
+        return null;
+    }
+}
+
+function getLibraryState() {
+    const storage = getLibraryStorage();
+    if (!storage) {
+        return {};
+    }
+
+    try {
+        return JSON.parse(storage.getItem(libraryStateKey)) || {};
     } catch {
         return {};
     }
 }
 
 function saveLibraryState(sectionId, isOpen) {
+    const storage = getLibraryStorage();
+    if (!storage) {
+        return;
+    }
+
     const state = getLibraryState();
     state[sectionId] = isOpen;
-    sessionStorage.setItem(libraryStateKey, JSON.stringify(state));
+    storage.setItem(libraryStateKey, JSON.stringify(state));
+}
+
+export function resolveLibrarySectionOpen(section, savedState) {
+    if (!section) {
+        return false;
+    }
+
+    if (Object.prototype.hasOwnProperty.call(savedState, section.id)) {
+        return Boolean(savedState[section.id]);
+    }
+
+    return section.open !== false;
 }
 
 function createWorkCard(work) {
@@ -58,7 +88,7 @@ function renderLibrary() {
 
         sectionEl.className = 'library-section';
         sectionEl.dataset.sectionId = section.id;
-        sectionEl.open = savedState[section.id] ?? (section.open !== false);
+        sectionEl.open = resolveLibrarySectionOpen(section, savedState);
         headingText.textContent = section.title;
         count.className = 'section-count';
         count.textContent = sectionWorks.length;
@@ -101,7 +131,7 @@ function bindLibrarySearch() {
         return;
     }
 
-    librarySearch.addEventListener('input', () => {
+    const applySearchFilter = () => {
         const query = librarySearch.value.trim().toLowerCase();
 
         Array.from(library.querySelectorAll('.library-section')).forEach((section) => {
@@ -120,10 +150,14 @@ function bindLibrarySearch() {
             if (query) {
                 section.open = Boolean(visibleCount);
             } else {
-                section.open = Boolean(getLibraryState()[section.dataset.sectionId]);
+                const sectionConfig = workSections.find((item) => item.id === section.dataset.sectionId);
+                section.open = resolveLibrarySectionOpen(sectionConfig, getLibraryState());
             }
         });
-    });
+    };
+
+    librarySearch.addEventListener('input', applySearchFilter);
+    librarySearch.addEventListener('search', applySearchFilter);
 }
 
 function bindPlaylist() {
