@@ -50,13 +50,21 @@ export function resolveLibrarySectionOpen(section, savedState) {
     return section.open !== false;
 }
 
+export function resolveWorkHref(work) {
+    if (work.href) {
+        return `/${work.href.replace(/^\/+/, '')}`;
+    }
+
+    return `/reader.html?work=${encodeURIComponent(work.id)}`;
+}
+
 function createWorkCard(work) {
     const item = document.createElement('li');
     const link = document.createElement('a');
     const title = document.createElement('span');
 
     link.className = 'work-card';
-    link.href = work.href || `reader.html?work=${encodeURIComponent(work.id)}`;
+    link.href = resolveWorkHref(work);
     link.dataset.title = work.title.toLowerCase();
     title.className = 'work-title';
     title.textContent = work.title;
