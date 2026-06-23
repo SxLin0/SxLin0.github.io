@@ -17,6 +17,14 @@ permalink: /
                 <img src="{{ '/src/photo.jpg' | relative_url }}" alt="宵宵的头像">
             </header>
 
+            <section class="content-panel featured-panel" aria-labelledby="featured-title">
+                <div class="section-title-row">
+                    <h3 id="featured-title">Featured Works</h3>
+                    <span>Start reading</span>
+                </div>
+                <div class="featured-works" id="featured-works"></div>
+            </section>
+
             <div class="home-grid">
                 <section class="content-panel about-panel">
                     <h3>About Me</h3>
@@ -109,7 +117,24 @@ permalink: /
                         <div class="play-icon"></div>
                     </li>
                 </ul>
-                <audio id="audio-player" controls>
+                <div class="mini-player" id="mini-player" aria-label="Music player">
+                    <button class="player-toggle" id="player-toggle" type="button" aria-label="Play selected track" disabled>
+                        <span class="player-toggle-icon" aria-hidden="true"></span>
+                    </button>
+                    <div class="player-now">
+                        <span class="player-label">Now Playing</span>
+                        <strong id="player-title">Select a track</strong>
+                        <span id="player-artist">Playlist ready</span>
+                    </div>
+                    <div class="player-progress-wrap">
+                        <input class="player-progress" id="player-progress" type="range" min="0" max="100" value="0" aria-label="Playback progress" disabled>
+                        <div class="player-time">
+                            <span id="player-current-time">0:00</span>
+                            <span id="player-duration">0:00</span>
+                        </div>
+                    </div>
+                </div>
+                <audio id="audio-player" preload="metadata">
                     <source src="" type="audio/mpeg">
                     Your browser does not support the audio element.
                 </audio>
