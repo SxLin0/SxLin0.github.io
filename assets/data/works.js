@@ -65,7 +65,9 @@ export const works = [
         title: '浅谈“春”',
         kind: 'html',
         source: 'content/print/spring-essay.html',
-        summary: '一篇关于春天意象与个人感受的短文。'
+        summary: '一篇关于春天意象与个人感受的短文。',
+        featured: true,
+        featuredOrder: 3
     }
 ];
 

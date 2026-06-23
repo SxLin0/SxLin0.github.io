@@ -63,6 +63,23 @@ test('articles keep software advice and moved essays only', () => {
     assert.equal(works.some((work) => work.id === 'digital-labor-alienation'), false);
 });
 
+test('homepage keeps four balanced featured works after article cleanup', () => {
+    assert.deepEqual(getFeaturedWorks(works).map((work) => work.id), [
+        'software-major',
+        'spring-tea',
+        'spring-essay',
+        'yellow-river'
+    ]);
+});
+
+test('homepage introduction avoids stale strikethrough age and grade text', async () => {
+    const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
+
+    assert.doesNotMatch(home, /<s>/);
+    assert.doesNotMatch(home, /sophomore|junior/);
+    assert.match(home, /undergraduate student/);
+});
+
 test('library scroll position is normalized before saving', () => {
     assert.equal(normalizeLibraryScrollTop(42.7), 43);
     assert.equal(normalizeLibraryScrollTop(-10), 0);
