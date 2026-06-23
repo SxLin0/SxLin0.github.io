@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
+import { works, workSections } from '../data/works.js';
 
 globalThis.document = {
     getElementById() {
@@ -37,9 +38,29 @@ test('blog article pages load the library sidebar script', async () => {
     assert.match(layout, /assets\/js\/home\.js/);
 });
 
+test('blog article pages rely on the library home link instead of a duplicate back button', async () => {
+    const layout = await readFile(new URL('../../_layouts/blog_article.html', import.meta.url), 'utf8');
+
+    assert.doesNotMatch(layout, /Back Home/);
+    assert.doesNotMatch(layout, /class="nav-link"/);
+});
+
 test('library links are rooted so they work from nested pages', () => {
     assert.equal(resolveWorkHref({ href: 'content/blog/operating-system.html' }), '/content/blog/operating-system.html');
     assert.equal(resolveWorkHref({ id: 'spring-essay' }), '/reader.html?work=spring-essay');
+});
+
+test('library sections are reduced to blog poem and articles', () => {
+    assert.deepEqual(workSections.map((section) => section.title), ['Blog', 'Poem', 'Articles']);
+    assert.deepEqual(workSections.map((section) => section.id), ['blog', 'poem', 'articles']);
+});
+
+test('articles keep software advice and moved essays only', () => {
+    const articleIds = works.filter((work) => work.section === 'articles').map((work) => work.id);
+
+    assert.deepEqual(articleIds, ['software-major', 'spring-essay']);
+    assert.equal(works.some((work) => work.id === 'capital-scientific-thinking'), false);
+    assert.equal(works.some((work) => work.id === 'digital-labor-alienation'), false);
 });
 
 test('library scroll position is normalized before saving', () => {
@@ -62,7 +83,7 @@ test('library search text is normalized before filtering', () => {
 });
 
 test('library search status summarizes total and filtered results', () => {
-    assert.equal(getLibrarySearchStatus('', 0, 29), '共 29 篇作品');
+    assert.equal(getLibrarySearchStatus('', 0, 27), '共 27 篇作品');
     assert.equal(getLibrarySearchStatus('春', 2, 29), '找到 2 篇作品');
     assert.equal(getLibrarySearchStatus('missing', 0, 29), '没有匹配的作品');
 });
@@ -86,10 +107,10 @@ test('reader navigation finds previous and next works in the same section', asyn
 
     const { getAdjacentSectionWorks } = await import('./reader.js');
     const works = [
-        { id: 'one', section: 'poemEssay', title: '一' },
-        { id: 'two', section: 'poemEssay', title: '二' },
+        { id: 'one', section: 'poem', title: '一' },
+        { id: 'two', section: 'poem', title: '二' },
         { id: 'blog', section: 'blog', title: '博客' },
-        { id: 'three', section: 'poemEssay', title: '三' }
+        { id: 'three', section: 'poem', title: '三' }
     ];
 
     assert.deepEqual(getAdjacentSectionWorks(works, works[1]), {
@@ -138,7 +159,7 @@ test('featured works are selected in display order and capped', () => {
 
 test('active work id is resolved from reader query or rooted href', () => {
     const sampleWorks = [
-        { id: 'poem', href: '', section: 'poemEssay' },
+        { id: 'poem', href: '', section: 'poem' },
         { id: 'blog', href: 'content/blog/database.html', section: 'blog' }
     ];
 
