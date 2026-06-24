@@ -806,6 +806,18 @@ a:hover {
     min-height: calc(100vh - 112px);
 }
 
+.blog-document-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 860px) minmax(190px, 230px);
+    gap: 18px;
+    align-items: start;
+    justify-content: center;
+}
+
+.blog-document-layout .article-document {
+    margin: 0;
+}
+
 .reader-progress {
     position: fixed;
     top: 0;
@@ -864,6 +876,7 @@ a:hover {
     line-height: 1.6;
 }
 
+.article-toc,
 .reader-toc {
     width: min(860px, 100%);
     margin: 0 auto 18px;
@@ -875,6 +888,21 @@ a:hover {
     backdrop-filter: blur(16px);
 }
 
+.article-toc {
+    position: sticky;
+    top: 24px;
+    width: 100%;
+    max-height: calc(100vh - 48px);
+    margin: 0;
+    overflow: auto;
+    scrollbar-width: thin;
+}
+
+.article-toc[hidden] {
+    display: none;
+}
+
+.article-toc h3,
 .reader-toc h3 {
     margin: 0 0 10px;
     color: var(--primary-dark);
@@ -882,12 +910,19 @@ a:hover {
     line-height: 1.2;
 }
 
+.article-toc-links,
 .reader-toc-links {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
 }
 
+.article-toc-links {
+    display: grid;
+    gap: 7px;
+}
+
+.article-toc-link,
 .reader-toc-link {
     display: inline-flex;
     align-items: center;
@@ -902,6 +937,14 @@ a:hover {
     line-height: 1.35;
 }
 
+.article-toc-link {
+    min-height: 0;
+    justify-content: flex-start;
+    padding: 6px 9px;
+    border-radius: 8px;
+}
+
+.article-toc-link:hover,
 .reader-toc-link:hover {
     transform: translateY(-1px);
     text-decoration: none;
@@ -909,9 +952,14 @@ a:hover {
     color: #763526;
 }
 
+.article-toc-link.is-h3,
 .reader-toc-link.is-h3 {
     color: var(--muted);
     font-size: 0.78rem;
+}
+
+.article-toc-link.is-h3 {
+    padding-left: 18px;
 }
 
 .article-document {
@@ -1268,6 +1316,22 @@ a:hover {
         font-size: 1rem;
     }
 
+    .blog-document-layout {
+        display: block;
+    }
+
+    .blog-document-layout .article-document {
+        margin: 0 auto;
+    }
+
+    .article-toc {
+        position: static;
+        width: 100%;
+        max-height: none;
+        margin: 0 auto 14px;
+        padding: 14px;
+    }
+
     .reader-toc {
         padding: 14px;
     }
@@ -1288,6 +1352,16 @@ a:hover {
         scrollbar-width: thin;
     }
 
+    .article-toc-links {
+        display: flex;
+        flex-wrap: nowrap;
+        margin: 0 -2px;
+        overflow-x: auto;
+        padding-bottom: 3px;
+        scrollbar-width: thin;
+    }
+
+    .article-toc-link,
     .reader-toc-link {
         flex: 0 0 auto;
         max-width: 78vw;

@@ -255,6 +255,62 @@ function renderFeaturedWorks() {
     featuredWorks.replaceChildren(...getFeaturedWorks(works).map(createFeaturedWorkCard));
 }
 
+export function getArticleTocHeadings(article) {
+    if (!article?.querySelectorAll) {
+        return [];
+    }
+
+    let sectionIndex = 0;
+    return Array.from(article.querySelectorAll('h2, h3'))
+        .filter((heading) => {
+            const level = heading.tagName?.toLowerCase();
+            return (level === 'h2' || level === 'h3') && heading.textContent.trim();
+        })
+        .map((heading) => {
+            sectionIndex += 1;
+            if (!heading.id) {
+                heading.id = `blog-section-${sectionIndex}`;
+            }
+
+            return {
+                id: heading.id,
+                level: heading.tagName.toLowerCase(),
+                title: heading.textContent.trim()
+            };
+        });
+}
+
+function bindBlogArticleToc() {
+    const article = document.querySelector?.('.markdown-document');
+    const toc = document.getElementById('blog-toc');
+    if (!article || !toc) {
+        return;
+    }
+
+    const headings = getArticleTocHeadings(article);
+    if (headings.length < 2) {
+        toc.hidden = true;
+        return;
+    }
+
+    const title = document.createElement('h3');
+    const links = document.createElement('div');
+
+    title.textContent = '目录';
+    links.className = 'article-toc-links';
+
+    headings.forEach((heading) => {
+        const link = document.createElement('a');
+        link.href = `#${heading.id}`;
+        link.className = `article-toc-link is-${heading.level}`;
+        link.textContent = heading.title;
+        links.append(link);
+    });
+
+    toc.replaceChildren(title, links);
+    toc.hidden = false;
+}
+
 function bindLibrarySections() {
     if (!library) {
         return;
@@ -510,6 +566,7 @@ function bindPlaylist() {
 
 renderLibrary();
 renderFeaturedWorks();
+bindBlogArticleToc();
 bindLibraryPanelToggle();
 restoreLibraryScroll();
 bindLibrarySections();

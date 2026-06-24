@@ -12,6 +12,7 @@ globalThis.document = {
 const {
     getLibrarySearchStatus,
     getActiveWorkIdFromLocation,
+    getArticleTocHeadings,
     getFeaturedWorks,
     getPlaybackProgress,
     normalizeLibrarySearchQuery,
@@ -43,6 +44,40 @@ test('blog article pages rely on the library home link instead of a duplicate ba
 
     assert.doesNotMatch(layout, /Back Home/);
     assert.doesNotMatch(layout, /class="nav-link"/);
+});
+
+test('blog article pages reserve a side table of contents instead of placing it before the article', async () => {
+    const layout = await readFile(new URL('../../_layouts/blog_article.html', import.meta.url), 'utf8');
+
+    assert.match(layout, /blog-document-layout/);
+    assert.match(layout, /id="blog-toc"/);
+    assert.ok(layout.indexOf('markdown-document') < layout.indexOf('blog-toc'));
+});
+
+test('internet computing note does not render source semester and author as body text', async () => {
+    const note = await readFile(new URL('../../content/blog/互联网计算.md', import.meta.url), 'utf8');
+
+    assert.doesNotMatch(note, /^2025年春$/m);
+    assert.doesNotMatch(note, /^林圣旋$/m);
+});
+
+test('article toc headings are built from h2 and h3 elements only', () => {
+    const article = {
+        querySelectorAll(selector) {
+            assert.equal(selector, 'h2, h3');
+            return [
+                { id: '', tagName: 'H1', textContent: '跳过' },
+                { id: '', tagName: 'H2', textContent: ' 第一章 ' },
+                { id: 'custom', tagName: 'H3', textContent: '小节' },
+                { id: '', tagName: 'H2', textContent: '   ' }
+            ];
+        }
+    };
+
+    assert.deepEqual(getArticleTocHeadings(article), [
+        { id: 'blog-section-1', level: 'h2', title: '第一章' },
+        { id: 'custom', level: 'h3', title: '小节' }
+    ]);
 });
 
 test('library links are rooted so they work from nested pages', () => {
