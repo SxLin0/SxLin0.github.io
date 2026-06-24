@@ -15,6 +15,7 @@ const {
     getArticleTocHeadings,
     getFeaturedWorks,
     getPlaybackProgress,
+    getLibraryToggleLabel,
     normalizeLibrarySearchQuery,
     normalizeLibraryPanelOpen,
     normalizeLibraryScrollTop,
@@ -145,7 +146,32 @@ test('homepage introduction avoids stale strikethrough age and grade text', asyn
 
     assert.doesNotMatch(home, /<s>/);
     assert.doesNotMatch(home, /sophomore|junior/);
-    assert.match(home, /undergraduate student/);
+    assert.match(home, /本科/);
+});
+
+test('homepage interface labels are localized for a Chinese personal blog', async () => {
+    const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
+    const libraryPanel = await readFile(new URL('../../_includes/library-panel.html', import.meta.url), 'utf8');
+    const homeScript = await readFile(new URL('../../assets/js/home.js', import.meta.url), 'utf8');
+    const combined = `${home}\n${libraryPanel}\n${homeScript}`;
+
+    assert.match(home, /精选作品/);
+    assert.match(home, /关于我/);
+    assert.match(home, /播放列表/);
+    assert.match(libraryPanel, />首页</);
+    assert.match(homeScript, /播放选中的歌曲/);
+    assert.doesNotMatch(combined, /Featured Works|Start reading|About Me|Now Playing|Select a track|Playlist ready|6 tracks|>Home</);
+});
+
+test('mobile library panel behaves like a floating drawer instead of pushing content down', async () => {
+    const css = await readFile(new URL('../../assets/css/site.css', import.meta.url), 'utf8');
+    const mobileCss = css.slice(css.indexOf('@media (max-width: 860px)'));
+
+    assert.match(mobileCss, /\.library-panel\s*\{[\s\S]*position:\s*fixed/);
+    assert.match(mobileCss, /\.library-panel\s*\{[\s\S]*bottom:\s*14px/);
+    assert.match(mobileCss, /\.library-panel\.is-open\s*\{[\s\S]*top:\s*14px/);
+    assert.match(mobileCss, /\.library-panel\.is-open\s*\{[\s\S]*max-height:\s*calc\(100dvh - 28px\)/);
+    assert.match(mobileCss, /\.home-body,[\s\S]*\.reader-body\s*\{[\s\S]*padding:\s*20px 14px 96px/);
 });
 
 test('library scroll position is normalized before saving', () => {
@@ -159,6 +185,29 @@ test('mobile library panel state is normalized for the drawer button', () => {
     assert.equal(normalizeLibraryPanelOpen('true'), true);
     assert.equal(normalizeLibraryPanelOpen(false), false);
     assert.equal(normalizeLibraryPanelOpen(null), false);
+});
+
+test('mobile library drawer toggle label reflects its open state', () => {
+    assert.equal(getLibraryToggleLabel(true), '收起');
+    assert.equal(getLibraryToggleLabel(false), '书架');
+    assert.equal(getLibraryToggleLabel('true'), '收起');
+});
+
+test('mobile library drawer can be dismissed with Escape', async () => {
+    const homeScript = await readFile(new URL('../../assets/js/home.js', import.meta.url), 'utf8');
+
+    assert.match(homeScript, /keydown/);
+    assert.match(homeScript, /event\.key === 'Escape'/);
+    assert.match(homeScript, /saveLibraryPanelOpen\(false\)/);
+});
+
+test('site supports keyboard focus visibility and reduced motion preferences', async () => {
+    const css = await readFile(new URL('../../assets/css/site.css', import.meta.url), 'utf8');
+
+    assert.match(css, /:focus-visible/);
+    assert.match(css, /outline:\s*3px solid/);
+    assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
+    assert.match(css, /scroll-behavior:\s*auto/);
 });
 
 test('library search text is normalized before filtering', () => {

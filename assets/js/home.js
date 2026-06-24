@@ -43,6 +43,10 @@ export function normalizeLibraryPanelOpen(value) {
     return value === true || value === 'true';
 }
 
+export function getLibraryToggleLabel(isOpen) {
+    return normalizeLibraryPanelOpen(isOpen) ? '收起' : '书架';
+}
+
 export function normalizeLibrarySearchQuery(value) {
     return String(value || '').trim().toLowerCase();
 }
@@ -141,9 +145,13 @@ export function getActiveWorkIdFromLocation(location, allWorks) {
 
 function setLibraryPanelOpen(panel, toggle, isOpen) {
     const normalizedOpen = normalizeLibraryPanelOpen(isOpen);
+    const toggleText = toggle.querySelector?.('.library-toggle-text');
 
     panel.classList.toggle('is-open', normalizedOpen);
     toggle.setAttribute('aria-expanded', String(normalizedOpen));
+    if (toggleText) {
+        toggleText.textContent = getLibraryToggleLabel(normalizedOpen);
+    }
 }
 
 export function resolveLibrarySectionOpen(section, savedState) {
@@ -228,7 +236,13 @@ function renderLibrary() {
 }
 
 function getSectionTitle(sectionId) {
-    return workSections.find((section) => section.id === sectionId)?.title || 'Writing';
+    const localizedTitles = {
+        articles: '文章',
+        blog: '博客',
+        poem: '诗词'
+    };
+
+    return localizedTitles[sectionId] || workSections.find((section) => section.id === sectionId)?.title || '作品';
 }
 
 function createFeaturedWorkCard(work) {
@@ -367,6 +381,14 @@ function bindLibraryPanelToggle() {
         setLibraryPanelOpen(libraryPanel, toggle, nextOpen);
         saveLibraryPanelOpen(nextOpen);
     });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && libraryPanel.classList.contains('is-open')) {
+            setLibraryPanelOpen(libraryPanel, toggle, false);
+            saveLibraryPanelOpen(false);
+            toggle.focus();
+        }
+    });
 }
 
 function restoreLibraryScroll() {
@@ -466,7 +488,7 @@ function getTrackInfo(item) {
 
 function setPlayerPlaying(isPlaying) {
     playerToggle?.classList.toggle('is-playing', isPlaying);
-    playerToggle?.setAttribute('aria-label', isPlaying ? 'Pause selected track' : 'Play selected track');
+    playerToggle?.setAttribute('aria-label', isPlaying ? '暂停当前歌曲' : '播放选中的歌曲');
 }
 
 function playSelectedAudio() {
