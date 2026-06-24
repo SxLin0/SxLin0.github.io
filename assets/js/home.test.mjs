@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { access, readFile } from 'node:fs/promises';
 import test from 'node:test';
 import { works, workSections } from '../data/works.js';
 
@@ -96,6 +96,39 @@ test('articles keep software advice and moved essays only', () => {
     assert.deepEqual(articleIds, ['software-major', 'spring-essay']);
     assert.equal(works.some((work) => work.id === 'capital-scientific-thinking'), false);
     assert.equal(works.some((work) => work.id === 'digital-labor-alienation'), false);
+});
+
+test('removed article sources are not left behind in the published content tree', async () => {
+    const removedArticlePaths = [
+        '../../content/articles/数字时代劳动异化的四重维度与解放路径.docx',
+        '../../content/articles/数字时代劳动异化的四重维度与解放路径.pdf',
+        '../../content/articles/《资本论》中的科学思维 .docx',
+        '../../content/articles/《资本论》中的科学思维 .pdf',
+        '../../content/articles-html/digital-labor-alienation.html',
+        '../../content/articles-html/capital-scientific-thinking.html'
+    ];
+
+    for (const articlePath of removedArticlePaths) {
+        await assert.rejects(
+            access(new URL(articlePath, import.meta.url)),
+            { code: 'ENOENT' }
+        );
+    }
+});
+
+test('article conversion script only keeps the visible software-major article', async () => {
+    const script = await readFile(new URL('../../scripts/convert_articles.py', import.meta.url), 'utf8');
+
+    assert.match(script, /software-major/);
+    assert.doesNotMatch(script, /capital-scientific-thinking/);
+    assert.doesNotMatch(script, /digital-labor-alienation/);
+});
+
+test('reader pages place the article before the table of contents inside a document layout', async () => {
+    const reader = await readFile(new URL('../../assets/js/reader.js', import.meta.url), 'utf8');
+
+    assert.match(reader, /reader-document-layout/);
+    assert.ok(reader.indexOf('layout.append(article') < reader.indexOf('layout.append(toc'));
 });
 
 test('homepage keeps four balanced featured works after article cleanup', () => {

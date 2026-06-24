@@ -193,6 +193,9 @@ function createReaderMeta(currentWork) {
 function renderWorkDocument(article, options = {}) {
     const children = [];
     const meta = createReaderMeta(work);
+    const layout = document.createElement('div');
+
+    layout.className = 'reader-document-layout';
 
     if (options.showReaderTools) {
         const progress = createReadingProgress(article);
@@ -202,14 +205,18 @@ function renderWorkDocument(article, options = {}) {
         if (meta) {
             children.push(meta);
         }
+        layout.append(article);
         if (toc) {
-            children.push(toc);
+            layout.append(toc);
         }
     } else if (meta) {
         children.push(meta);
+        layout.append(article);
+    } else {
+        layout.append(article);
     }
 
-    children.push(article, createReaderNavigation(work));
+    children.push(layout, createReaderNavigation(work));
     stage.replaceChildren(...children);
 }
 

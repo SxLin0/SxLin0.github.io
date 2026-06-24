@@ -806,7 +806,8 @@ a:hover {
     min-height: calc(100vh - 112px);
 }
 
-.blog-document-layout {
+.blog-document-layout,
+.reader-document-layout {
     display: grid;
     grid-template-columns: minmax(0, 860px) minmax(190px, 230px);
     gap: 18px;
@@ -814,7 +815,8 @@ a:hover {
     justify-content: center;
 }
 
-.blog-document-layout .article-document {
+.blog-document-layout .article-document,
+.reader-document-layout .article-document {
     margin: 0;
 }
 
@@ -888,7 +890,8 @@ a:hover {
     backdrop-filter: blur(16px);
 }
 
-.article-toc {
+.article-toc,
+.reader-document-layout .reader-toc {
     position: sticky;
     top: 24px;
     width: 100%;
@@ -917,7 +920,8 @@ a:hover {
     gap: 8px;
 }
 
-.article-toc-links {
+.article-toc-links,
+.reader-document-layout .reader-toc-links {
     display: grid;
     gap: 7px;
 }
@@ -937,7 +941,8 @@ a:hover {
     line-height: 1.35;
 }
 
-.article-toc-link {
+.article-toc-link,
+.reader-document-layout .reader-toc-link {
     min-height: 0;
     justify-content: flex-start;
     padding: 6px 9px;
@@ -958,7 +963,8 @@ a:hover {
     font-size: 0.78rem;
 }
 
-.article-toc-link.is-h3 {
+.article-toc-link.is-h3,
+.reader-document-layout .reader-toc-link.is-h3 {
     padding-left: 18px;
 }
 
@@ -1316,20 +1322,27 @@ a:hover {
         font-size: 1rem;
     }
 
-    .blog-document-layout {
+    .blog-document-layout,
+    .reader-document-layout {
         display: block;
     }
 
-    .blog-document-layout .article-document {
+    .blog-document-layout .article-document,
+    .reader-document-layout .article-document {
         margin: 0 auto;
     }
 
-    .article-toc {
+    .article-toc,
+    .reader-document-layout .reader-toc {
         position: static;
         width: 100%;
         max-height: none;
-        margin: 0 auto 14px;
+        margin: 14px auto 0;
         padding: 14px;
+    }
+
+    .article-toc {
+        margin: 0 auto 14px;
     }
 
     .reader-toc {
@@ -1352,7 +1365,8 @@ a:hover {
         scrollbar-width: thin;
     }
 
-    .article-toc-links {
+    .article-toc-links,
+    .reader-document-layout .reader-toc-links {
         display: flex;
         flex-wrap: nowrap;
         margin: 0 -2px;

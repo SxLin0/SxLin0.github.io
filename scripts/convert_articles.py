@@ -6,8 +6,6 @@ from docx import Document
 
 ARTICLE_SOURCES = {
     "software-major": "关于填报软件工程专业的一些看法.docx",
-    "capital-scientific-thinking": "《资本论》中的科学思维 .docx",
-    "digital-labor-alienation": "数字时代劳动异化的四重维度与解放路径.docx",
 }
 
 POEM_ESSAY_SOURCES = {
