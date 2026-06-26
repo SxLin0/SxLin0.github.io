@@ -244,6 +244,23 @@ test('homepage interface labels are localized for a Chinese personal blog', asyn
     assert.doesNotMatch(combined, /Featured Works|Start reading|About Me|Now Playing|Select a track|Playlist ready|6 tracks|>Home</);
 });
 
+test('homepage copy and tags stay personal instead of resume-like', async () => {
+    const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
+    const overdoneCopy = /面试官|老师|同学|开源朋友|作品集展示|快速了解|专业展示|简历|求职/;
+    const inflatedTags = /全栈开发|AI|产品经理|创业|效率达人|未来主义|数字游民/;
+
+    assert.match(home, /学习、写作和生活中的一些痕迹/);
+    assert.match(home, /慢慢生长的个人空间/);
+    assert.match(home, /代码之外，也常把时间留给音乐、读书、游戏、骑行和一顿好吃的饭/);
+    assert.match(home, /写代码/);
+    assert.match(home, /写东西/);
+    assert.match(home, /过生活/);
+    assert.match(home, /⚙️ C\+\+/);
+    assert.match(home, /🍜 美食/);
+    assert.doesNotMatch(home, overdoneCopy);
+    assert.doesNotMatch(home, inflatedTags);
+});
+
 test('mobile library panel behaves like a floating drawer instead of pushing content down', async () => {
     const css = await readFile(new URL('../../assets/css/site.css', import.meta.url), 'utf8');
     const mobileCss = css.slice(css.indexOf('@media (max-width: 860px)'));

@@ -731,6 +731,24 @@ a:hover {
     font-weight: 750;
 }
 
+.tag-groups {
+    display: grid;
+    gap: 15px;
+}
+
+.tag-group {
+    display: grid;
+    gap: 8px;
+}
+
+.tag-group h4 {
+    margin: 0;
+    color: #315e74;
+    font-size: 0.82rem;
+    font-weight: 850;
+    letter-spacing: 0.02em;
+}
+
 .tag-cloud {
     display: flex;
     flex-wrap: wrap;
@@ -738,6 +756,9 @@ a:hover {
 }
 
 .tag-cloud span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
     padding: 5px 10px;
     border: 1px solid rgba(8, 118, 184, 0.13);
     border-radius: 999px;
