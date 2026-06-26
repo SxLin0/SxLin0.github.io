@@ -17,9 +17,7 @@ export const works = [
         href: 'content/blog/database.html',
         date: '课程笔记',
         summary: '数据库课程中的模型、查询、事务与系统实现要点。',
-        tags: ['数据库', 'SQL', '课程笔记'],
-        featured: true,
-        featuredOrder: 2
+        tags: ['数据库', 'SQL', '课程笔记']
     },
     {
         id: 'internet-computing-notes',
@@ -52,18 +50,18 @@ export const works = [
         featuredOrder: 3
     },
     { id: 'shang-yuan', section: 'poem', title: '上元', kind: 'markdown-poem', source: 'content/poem-essay/上元.md' },
-    { id: 'first-arrival-jiangning', section: 'poem', title: '初到江宁', kind: 'markdown-poem', source: 'content/poem-essay/初到江宁.md' },
+    { id: 'first-arrival-jiangning', section: 'poem', title: '初到江宁', kind: 'markdown-poem', source: 'content/poem-essay/初到江宁.md', summary: '初到江宁时写下的一首短诗，记一点新地与新心绪。', tags: ['诗词', '江宁'], featured: true, featuredOrder: 2 },
     { id: 'three-kingdoms', section: 'poem', title: '叹三国', kind: 'markdown-poem', source: 'content/poem-essay/叹三国.md' },
     { id: 'summer-thoughts', section: 'poem', title: '夏日咏怀', kind: 'markdown-poem', source: 'content/poem-essay/夏日咏怀.md' },
     { id: 'night-boat-home', section: 'poem', title: '夜行舟归家', kind: 'markdown-poem', source: 'content/poem-essay/夜行舟归家.md' },
     { id: 'rumengling-mid-autumn', section: 'poem', title: '如梦令·中秋', kind: 'markdown-poem', source: 'content/poem-essay/如梦令·中秋.md' },
     { id: 'cold-night-family', section: 'poem', title: '寒夜怀亲', kind: 'markdown-poem', source: 'content/poem-essay/寒夜怀亲.md' },
     { id: 'untitled-mid-autumn', section: 'poem', title: '无题', kind: 'markdown-poem', source: 'content/poem-essay/无题.md' },
-    { id: 'spring-tea', section: 'poem', title: '春茶', kind: 'markdown-poem', source: 'content/poem-essay/春茶.md', date: '2022春末', summary: '以春茶、风雨与旧枝新花写一段清寒里的生意。', tags: ['诗词', '春', '校园'], featured: true, featuredOrder: 4 },
+    { id: 'spring-tea', section: 'poem', title: '春茶', kind: 'markdown-poem', source: 'content/poem-essay/春茶.md', date: '2022春末', summary: '以春茶、风雨与旧枝新花写一段清寒里的生意。', tags: ['诗词', '春', '校园'] },
     { id: 'moonlit-hometown', section: 'poem', title: '月夜怀乡', kind: 'markdown-poem', source: 'content/poem-essay/月夜怀乡.md' },
     { id: 'wutong-shadow', section: 'poem', title: '梧桐影', kind: 'markdown-poem', source: 'content/poem-essay/梧桐影.md' },
     { id: 'taihang-north', section: 'poem', title: '登临太行北望', kind: 'markdown-poem', source: 'content/poem-essay/登临太行北望.md' },
-    { id: 'yellow-river', section: 'poem', title: '登黄河古迹怀古', kind: 'markdown-poem', source: 'content/poem-essay/登黄河古迹怀古.md', summary: '登临古迹时的历史感、山河感与怀古心绪。', tags: ['诗词', '怀古', '山河'], featured: true, featuredOrder: 6 },
+    { id: 'yellow-river', section: 'poem', title: '登黄河古迹怀古', kind: 'markdown-poem', source: 'content/poem-essay/登黄河古迹怀古.md', summary: '登临古迹时的历史感、山河感与怀古心绪。', tags: ['诗词', '怀古', '山河'] },
     { id: 'kitchen-god-snow', section: 'poem', title: '祭灶遇风雪', kind: 'markdown-poem', source: 'content/poem-essay/祭灶遇风雪.md' },
     { id: 'red-beans', section: 'poem', title: '红豆', kind: 'markdown-poem', source: 'content/poem-essay/红豆.md' },
     { id: 'tiger-year', section: 'poem', title: '虎年', kind: 'markdown-poem', source: 'content/poem-essay/虎年.md' },
@@ -79,9 +77,7 @@ export const works = [
         kind: 'html',
         source: 'content/print/spring-essay.html',
         summary: '一篇关于春天意象与个人感受的短文。',
-        tags: ['散文', '春', '文学'],
-        featured: true,
-        featuredOrder: 5
+        tags: ['散文', '春', '文学']
     }
 ];
 

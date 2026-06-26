@@ -153,19 +153,16 @@ test('static blog detail pages receive shared meta and adjacent navigation chrom
     assert.match(homeScript, /blog-document-layout/);
 });
 
-test('homepage keeps four balanced featured works after article cleanup', () => {
-    assert.deepEqual(getFeaturedWorks(works, 6).map((work) => work.id), [
+test('homepage keeps three quiet featured entries from real content', () => {
+    assert.deepEqual(getFeaturedWorks(works, 3).map((work) => work.id), [
         'operating-system-notes',
-        'database-notes',
-        'software-major',
-        'spring-tea',
-        'spring-essay',
-        'yellow-river'
+        'first-arrival-jiangning',
+        'software-major'
     ]);
 });
 
-test('featured works include card metadata for homepage display', () => {
-    getFeaturedWorks(works, 6).forEach((work) => {
+test('featured works include quiet card metadata for homepage display', () => {
+    getFeaturedWorks(works, 3).forEach((work) => {
         assert.ok(work.summary);
         assert.ok(Array.isArray(work.tags));
         assert.ok(work.tags.length >= 2);
@@ -251,12 +248,12 @@ test('homepage copy and tags stay personal instead of resume-like', async () => 
 
     assert.match(home, /学习、写作和生活中的一些痕迹/);
     assert.match(home, /慢慢生长的个人空间/);
-    assert.match(home, /代码之外，也常把时间留给音乐、读书、游戏、骑行和一顿好吃的饭/);
-    assert.match(home, /写代码/);
+    assert.match(home, /不写代码的时候，我多半在听歌、读书、打游戏、骑车，或者琢磨下一顿吃什么/);
     assert.match(home, /写东西/);
-    assert.match(home, /过生活/);
-    assert.match(home, /⚙️ C\+\+/);
+    assert.match(home, /生活/);
+    assert.match(home, /📚 课程笔记/);
     assert.match(home, /🍜 美食/);
+    assert.doesNotMatch(home, /开源项目|个人作品集/);
     assert.doesNotMatch(home, overdoneCopy);
     assert.doesNotMatch(home, inflatedTags);
 });

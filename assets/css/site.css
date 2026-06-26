@@ -595,14 +595,14 @@ a:hover {
 
 .featured-works {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 12px;
 }
 
 .featured-work-card {
     display: grid;
     gap: 7px;
-    min-height: 188px;
+    min-height: 158px;
     padding: 15px 16px;
     border: 1px solid rgba(185, 74, 54, 0.13);
     border-radius: 8px;

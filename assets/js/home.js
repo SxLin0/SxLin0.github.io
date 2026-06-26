@@ -250,7 +250,6 @@ function createFeaturedWorkCard(work) {
     const meta = document.createElement('span');
     const title = document.createElement('strong');
     const summary = document.createElement('p');
-    const tags = document.createElement('span');
     const action = document.createElement('span');
 
     link.className = 'featured-work-card';
@@ -260,15 +259,9 @@ function createFeaturedWorkCard(work) {
     meta.textContent = [getSectionTitle(work.section), work.date].filter(Boolean).join(' · ');
     title.textContent = work.title;
     summary.textContent = work.summary || '打开作品继续阅读。';
-    tags.className = 'featured-work-tags';
-    (work.tags || []).slice(0, 3).forEach((tag) => {
-        const tagEl = document.createElement('span');
-        tagEl.textContent = tag;
-        tags.append(tagEl);
-    });
     action.className = 'featured-work-action';
     action.textContent = '打开阅读';
-    link.append(meta, title, summary, tags, action);
+    link.append(meta, title, summary, action);
     return link;
 }
 
@@ -277,7 +270,7 @@ function renderFeaturedWorks() {
         return;
     }
 
-    featuredWorks.replaceChildren(...getFeaturedWorks(works, 6).map(createFeaturedWorkCard));
+    featuredWorks.replaceChildren(...getFeaturedWorks(works, 3).map(createFeaturedWorkCard));
 }
 
 export function getArticleTocHeadings(article) {
