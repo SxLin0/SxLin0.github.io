@@ -176,7 +176,7 @@ test('featured works include quiet card metadata for homepage display', () => {
 test('homepage hero clearly introduces identity content and contact paths', async () => {
     const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
 
-    assert.match(home, /南京大学智能软件与工程学院本科生/);
+    assert.doesNotMatch(home, /hero-kicker|南京大学智能软件与工程学院本科生/);
     assert.match(home, /Software Engineering \/ Personal Knowledge Base \/ Poems & Notes/);
     assert.match(home, /href="#featured-title"/);
     assert.match(home, /mailto:2125808970@qq.com/);
@@ -228,7 +228,7 @@ test('homepage introduction avoids stale strikethrough age and grade text', asyn
 
     assert.doesNotMatch(home, /<s>/);
     assert.doesNotMatch(home, /sophomore|junior/);
-    assert.match(home, /本科/);
+    assert.match(home, /大三在读/);
 });
 
 test('homepage interface labels are localized for a Chinese personal blog', async () => {
