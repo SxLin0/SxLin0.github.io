@@ -180,6 +180,19 @@ test('site metadata supports SEO and social sharing', async () => {
     assert.match(layout, /name="keywords"/);
 });
 
+test('site assets use a build version query to avoid stale browser cache', async () => {
+    const layout = await readFile(new URL('../../_layouts/ocean.html', import.meta.url), 'utf8');
+    const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
+    const reader = await readFile(new URL('../../reader.html', import.meta.url), 'utf8');
+    const blogLayout = await readFile(new URL('../../_layouts/blog_article.html', import.meta.url), 'utf8');
+
+    assert.match(layout, /assets\/css\/main\.css' \| relative_url }}\?v=/);
+    assert.match(layout, /assets\/css\/site\.css' \| relative_url }}\?v=/);
+    assert.match(home, /assets\/js\/home\.js' \| relative_url }}\?v=/);
+    assert.match(reader, /assets\/js\/reader\.js' \| relative_url }}\?v=/);
+    assert.match(blogLayout, /assets\/js\/home\.js' \| relative_url }}\?v=/);
+});
+
 test('homepage introduction avoids stale strikethrough age and grade text', async () => {
     const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
 

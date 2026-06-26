@@ -8,6 +8,7 @@
     {% assign meta_title = page_title | append: ' - ' | append: site.title %}
     {% assign meta_description = page.description | default: site.description %}
     {% assign meta_image = page.image | default: site.logo | default: site.author.avatar %}
+    {% assign asset_version = site.time | date: '%s' %}
     <meta name="description" content="{{ meta_description | escape }}">
     <meta name="keywords" content="宵宵, 个人主页, 南京大学, 软件工程, 技术博客, 课程笔记, 诗词, 个人作品集, 开源">
     <meta name="author" content="{{ site.name | default: site.title | escape }}">
@@ -22,8 +23,8 @@
     <meta name="twitter:description" content="{{ meta_description | escape }}">
     <meta name="twitter:image" content="{{ meta_image | absolute_url }}">
     <link rel="icon" href="{{ '/src/photo.jpg' | relative_url }}" type="image/png">
-    <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
-    <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}?v={{ asset_version }}">
+    <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}?v={{ asset_version }}">
     <title>{% if page.title %}{{ meta_title }}{% else %}{{ site.title }}{% endif %}</title>
 </head>
 
