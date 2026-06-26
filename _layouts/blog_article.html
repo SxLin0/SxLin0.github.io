@@ -6,11 +6,13 @@ layout: ocean
     {% include library-panel.html %}
 
     <main class="reader-shell">
-        <div class="blog-document-layout">
-            <article class="article-document markdown-document">
-                {{ content }}
-            </article>
-            <nav class="article-toc blog-toc" id="blog-toc" aria-label="文章目录" hidden></nav>
+        <div class="reading-container">
+            <div class="blog-document-layout has-toc">
+                <article class="article-document markdown-document">
+                    {{ content }}
+                </article>
+                <nav class="article-toc blog-toc" id="blog-toc" aria-label="文章目录" hidden></nav>
+            </div>
         </div>
     </main>
 </div>

@@ -12,6 +12,7 @@
     --shadow: 0 18px 46px rgba(5, 57, 92, 0.1);
     --soft-shadow: 0 10px 26px rgba(5, 57, 92, 0.07);
     --radius: 16px;
+    --reading-width: 1060px;
 }
 
 * {
@@ -980,7 +981,7 @@ a:hover {
 }
 
 .reader-shell {
-    max-width: 1220px;
+    max-width: var(--reading-width);
     margin: 0 auto;
 }
 
@@ -988,18 +989,28 @@ a:hover {
     min-height: calc(100vh - 112px);
 }
 
+.reading-container {
+    width: 100%;
+    max-width: var(--reading-width);
+    margin: 0 auto;
+}
+
 .blog-document-layout,
 .reader-document-layout {
+    width: 100%;
+}
+
+.blog-document-layout.has-toc,
+.reader-document-layout.has-toc {
     display: grid;
-    grid-template-columns: minmax(0, 860px) minmax(190px, 230px);
+    grid-template-columns: minmax(0, 820px) minmax(190px, 220px);
     gap: 18px;
     align-items: start;
-    justify-content: center;
 }
 
 .blog-document-layout .article-document,
 .reader-document-layout .article-document {
-    margin: 0;
+    margin: 0 auto;
 }
 
 .reader-progress {
@@ -1022,7 +1033,7 @@ a:hover {
 }
 
 .reader-meta {
-    width: min(860px, 100%);
+    width: 100%;
     margin: 0 auto 14px;
     padding: 13px 16px;
     border: 1px solid rgba(185, 74, 54, 0.12);
@@ -1062,7 +1073,7 @@ a:hover {
 
 .article-toc,
 .reader-toc {
-    width: min(860px, 100%);
+    width: 100%;
     margin: 0 auto 18px;
     padding: 15px 18px;
     border: 1px solid rgba(8, 118, 184, 0.13);
@@ -1151,7 +1162,7 @@ a:hover {
 }
 
 .article-document {
-    width: min(860px, 100%);
+    width: 100%;
     margin: 0 auto;
     padding: clamp(34px, 6vw, 70px) clamp(20px, 6vw, 78px);
     border-radius: 6px;
@@ -1165,8 +1176,8 @@ a:hover {
 }
 
 .poem-document {
-    width: min(760px, 100%);
-    padding-top: clamp(46px, 7vw, 82px);
+    width: 100%;
+    padding: clamp(46px, 7vw, 82px) clamp(28px, 10vw, 118px) clamp(42px, 7vw, 72px);
 }
 
 .article-document h1 {
@@ -1330,7 +1341,7 @@ a:hover {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
-    width: min(860px, 100%);
+    width: 100%;
     margin: 18px auto 0;
 }
 
@@ -1553,8 +1564,8 @@ a:hover {
         font-size: 1rem;
     }
 
-    .blog-document-layout,
-    .reader-document-layout {
+    .blog-document-layout.has-toc,
+    .reader-document-layout.has-toc {
         display: block;
     }
 
@@ -1582,6 +1593,10 @@ a:hover {
 
     .reader-meta {
         padding: 12px 13px;
+    }
+
+    .poem-document {
+        padding: 34px 20px 42px;
     }
 
     .reader-meta-items {

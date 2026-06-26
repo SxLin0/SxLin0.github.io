@@ -336,6 +336,98 @@ function bindBlogArticleToc() {
     toc.hidden = false;
 }
 
+function getAdjacentSectionWorks(currentWork) {
+    if (!currentWork) {
+        return {
+            previous: null,
+            next: null
+        };
+    }
+
+    const sectionWorks = works.filter((item) => item.section === currentWork.section);
+    const currentIndex = sectionWorks.findIndex((item) => item.id === currentWork.id);
+
+    return {
+        previous: currentIndex > 0 ? sectionWorks[currentIndex - 1] : null,
+        next: currentIndex >= 0 && currentIndex < sectionWorks.length - 1 ? sectionWorks[currentIndex + 1] : null
+    };
+}
+
+function createDetailMeta(currentWork) {
+    const metaItems = [
+        workSections.find((section) => section.id === currentWork.section)?.title || getSectionTitle(currentWork.section),
+        currentWork.date,
+        currentWork.summary
+    ].filter(Boolean);
+    const aside = document.createElement('aside');
+    const details = document.createElement('div');
+
+    aside.className = 'reader-meta';
+    aside.setAttribute('aria-label', '作品信息');
+    details.className = 'reader-meta-items';
+    metaItems.forEach((item, index) => {
+        const element = document.createElement(index === metaItems.length - 1 && item === currentWork.summary ? 'p' : 'span');
+        element.textContent = item;
+        details.append(element);
+    });
+
+    aside.append(details);
+    return aside;
+}
+
+function createDetailNavLink(label, candidate) {
+    if (!candidate) {
+        const placeholder = document.createElement('span');
+        placeholder.className = 'reader-nav-placeholder';
+        return placeholder;
+    }
+
+    const link = document.createElement('a');
+    const labelText = document.createElement('span');
+    const title = document.createElement('strong');
+
+    link.href = resolveWorkHref(candidate);
+    labelText.textContent = label;
+    title.textContent = candidate.title;
+    link.append(labelText, title);
+    return link;
+}
+
+function createDetailNavigation(currentWork) {
+    const nav = document.createElement('nav');
+    const adjacent = getAdjacentSectionWorks(currentWork);
+
+    nav.className = 'reader-nav';
+    nav.setAttribute('aria-label', '作品导航');
+    nav.append(
+        createDetailNavLink('上一篇', adjacent.previous),
+        createDetailNavLink('下一篇', adjacent.next)
+    );
+    return nav;
+}
+
+function bindStaticBlogDetailChrome() {
+    const layout = document.querySelector?.('.blog-document-layout');
+    const container = layout?.closest('.reading-container');
+    if (!layout || !container) {
+        return;
+    }
+
+    const activeWorkId = getActiveWorkIdFromLocation(window.location, works);
+    const currentWork = works.find((item) => item.id === activeWorkId);
+    if (!currentWork) {
+        return;
+    }
+
+    if (!container.querySelector('.reader-meta')) {
+        container.insertBefore(createDetailMeta(currentWork), layout);
+    }
+
+    if (!container.querySelector('.reader-nav')) {
+        container.append(createDetailNavigation(currentWork));
+    }
+}
+
 function bindLibrarySections() {
     if (!library) {
         return;
@@ -600,6 +692,7 @@ function bindPlaylist() {
 renderLibrary();
 renderFeaturedWorks();
 bindBlogArticleToc();
+bindStaticBlogDetailChrome();
 bindLibraryPanelToggle();
 restoreLibraryScroll();
 bindLibrarySections();

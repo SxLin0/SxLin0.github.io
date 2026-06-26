@@ -132,6 +132,27 @@ test('reader pages place the article before the table of contents inside a docum
     assert.ok(reader.indexOf('layout.append(article') < reader.indexOf('layout.append(toc'));
 });
 
+test('reader detail pages wrap meta document and navigation in one reading container', async () => {
+    const reader = await readFile(new URL('../../assets/js/reader.js', import.meta.url), 'utf8');
+    const css = await readFile(new URL('../../assets/css/site.css', import.meta.url), 'utf8');
+
+    assert.match(reader, /reading-container/);
+    assert.match(reader, /has-toc/);
+    assert.match(css, /\.reading-container\s*\{[\s\S]*max-width:\s*var\(--reading-width\)/);
+    assert.match(css, /\.reader-document-layout\.has-toc\s*\{/);
+    assert.match(css, /\.poem-document\s*\{[\s\S]*width:\s*100%/);
+    assert.match(css, /\.reader-nav\s*\{[\s\S]*width:\s*100%/);
+});
+
+test('static blog detail pages receive shared meta and adjacent navigation chrome', async () => {
+    const homeScript = await readFile(new URL('../../assets/js/home.js', import.meta.url), 'utf8');
+
+    assert.match(homeScript, /bindStaticBlogDetailChrome/);
+    assert.match(homeScript, /createDetailMeta/);
+    assert.match(homeScript, /createDetailNavigation/);
+    assert.match(homeScript, /blog-document-layout/);
+});
+
 test('homepage keeps four balanced featured works after article cleanup', () => {
     assert.deepEqual(getFeaturedWorks(works, 6).map((work) => work.id), [
         'operating-system-notes',

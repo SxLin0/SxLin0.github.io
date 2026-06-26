@@ -193,8 +193,10 @@ function createReaderMeta(currentWork) {
 function renderWorkDocument(article, options = {}) {
     const children = [];
     const meta = createReaderMeta(work);
+    const container = document.createElement('div');
     const layout = document.createElement('div');
 
+    container.className = 'reading-container';
     layout.className = 'reader-document-layout';
 
     if (options.showReaderTools) {
@@ -203,20 +205,22 @@ function renderWorkDocument(article, options = {}) {
 
         children.push(progress);
         if (meta) {
-            children.push(meta);
+            container.append(meta);
         }
         layout.append(article);
         if (toc) {
+            layout.classList.add('has-toc');
             layout.append(toc);
         }
     } else if (meta) {
-        children.push(meta);
+        container.append(meta);
         layout.append(article);
     } else {
         layout.append(article);
     }
 
-    children.push(layout, createReaderNavigation(work));
+    container.append(layout, createReaderNavigation(work));
+    children.push(container);
     stage.replaceChildren(...children);
 }
 
