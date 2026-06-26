@@ -6,10 +6,14 @@ import { works, workSections } from '../data/works.js';
 globalThis.document = {
     getElementById() {
         return null;
+    },
+    querySelectorAll() {
+        return [];
     }
 };
 
 const {
+    getContactCopyLabel,
     getLibrarySearchStatus,
     getActiveWorkIdFromLocation,
     getArticleTocHeadings,
@@ -249,6 +253,8 @@ test('homepage copy and tags stay personal instead of resume-like', async () => 
     assert.match(home, /学习、写作和生活中的一些痕迹/);
     assert.match(home, /慢慢生长的个人空间/);
     assert.match(home, /不写代码的时候，我多半在听歌、读书、打游戏、骑车，或者琢磨下一顿吃什么/);
+    assert.match(home, /大三在读/);
+    assert.match(home, /技术内容尽量清楚可靠/);
     assert.match(home, /写东西/);
     assert.match(home, /生活/);
     assert.match(home, /📚 课程笔记/);
@@ -256,6 +262,21 @@ test('homepage copy and tags stay personal instead of resume-like', async () => 
     assert.doesNotMatch(home, /开源项目|个人作品集/);
     assert.doesNotMatch(home, overdoneCopy);
     assert.doesNotMatch(home, inflatedTags);
+});
+
+test('contact card keeps calm copy values and a lightweight QQ copy affordance', async () => {
+    const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
+    const css = await readFile(new URL('../../assets/css/site.css', import.meta.url), 'utf8');
+    const homeScript = await readFile(new URL('../../assets/js/home.js', import.meta.url), 'utf8');
+
+    assert.match(home, /class="contact-value"/);
+    assert.match(home, /class="copy-contact"/);
+    assert.match(home, /data-copy-value="2125808970"/);
+    assert.match(css, /\.contact-copy-row/);
+    assert.match(css, /overflow-wrap:\s*anywhere/);
+    assert.match(homeScript, /bindContactCopy/);
+    assert.equal(getContactCopyLabel('copied'), '已复制');
+    assert.equal(getContactCopyLabel('idle'), '复制');
 });
 
 test('mobile library panel behaves like a floating drawer instead of pushing content down', async () => {

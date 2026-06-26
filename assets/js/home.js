@@ -14,6 +14,7 @@ const playerArtist = document.getElementById('player-artist');
 const playerProgress = document.getElementById('player-progress');
 const playerCurrentTime = document.getElementById('player-current-time');
 const playerDuration = document.getElementById('player-duration');
+const contactCopyButtons = document.querySelectorAll('.copy-contact');
 const libraryStateKey = 'sxlin-library-open-sections';
 const libraryScrollKey = 'sxlin-library-scroll-top';
 const libraryPanelOpenKey = 'sxlin-library-panel-open';
@@ -61,6 +62,10 @@ export function getLibrarySearchStatus(query, visibleCount, totalCount) {
     }
 
     return '没有匹配的作品';
+}
+
+export function getContactCopyLabel(state) {
+    return state === 'copied' ? '已复制' : '复制';
 }
 
 function saveLibraryState(sectionId, isOpen) {
@@ -682,6 +687,45 @@ function bindPlaylist() {
     audioPlayer.addEventListener('timeupdate', updatePlayerTimes);
 }
 
+async function copyTextToClipboard(text) {
+    if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+        return true;
+    }
+
+    const input = document.createElement('textarea');
+    input.value = text;
+    input.setAttribute('readonly', '');
+    input.style.position = 'fixed';
+    input.style.opacity = '0';
+    document.body.append(input);
+    input.select();
+    const copied = document.execCommand('copy');
+    input.remove();
+    return copied;
+}
+
+function bindContactCopy() {
+    contactCopyButtons.forEach((button) => {
+        button.addEventListener('click', async () => {
+            const value = button.dataset.copyValue || '';
+            if (!value) {
+                return;
+            }
+
+            try {
+                await copyTextToClipboard(value);
+                button.textContent = getContactCopyLabel('copied');
+                window.setTimeout(() => {
+                    button.textContent = getContactCopyLabel('idle');
+                }, 1600);
+            } catch {
+                button.textContent = getContactCopyLabel('idle');
+            }
+        });
+    });
+}
+
 renderLibrary();
 renderFeaturedWorks();
 bindBlogArticleToc();
@@ -692,3 +736,4 @@ bindLibrarySections();
 bindLibraryScroll();
 bindLibrarySearch();
 bindPlaylist();
+bindContactCopy();

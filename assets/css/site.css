@@ -578,10 +578,12 @@ a:hover {
 
 .about-panel {
     grid-column: 1 / -1;
+    font-size: 0.94rem;
+    line-height: 1.68;
 }
 
 .content-panel p {
-    margin: 0 0 10px;
+    margin: 0 0 8px;
 }
 
 .content-panel p:last-child {
@@ -733,7 +735,7 @@ a:hover {
 
 .tag-groups {
     display: grid;
-    gap: 15px;
+    gap: 12px;
 }
 
 .tag-group {
@@ -798,20 +800,50 @@ a:hover {
     background: rgba(255, 255, 255, 0.56);
 }
 
-.contact-list li span {
+.contact-list li > span:first-child {
     color: var(--muted);
     font-size: 0.82rem;
     font-weight: 800;
 }
 
 .contact-list li a,
-.contact-list li b {
+.contact-list li b,
+.contact-value {
     min-width: 0;
     color: var(--primary-dark);
-    font-size: clamp(0.78rem, 1.05vw, 0.9rem);
-    font-weight: 750;
+    font-size: clamp(0.76rem, 0.95vw, 0.86rem);
+    font-weight: 650;
     text-align: right;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
+}
+
+.contact-copy-row {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.copy-contact {
+    flex: 0 0 auto;
+    min-height: 26px;
+    padding: 3px 8px;
+    border: 1px solid rgba(8, 118, 184, 0.16);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.72);
+    color: #315e74;
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 750;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.copy-contact:hover {
+    border-color: rgba(185, 74, 54, 0.24);
+    background: rgba(255, 253, 247, 0.96);
+    color: var(--seal);
 }
 
 .playlist ul {
