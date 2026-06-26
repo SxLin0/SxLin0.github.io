@@ -182,6 +182,14 @@ test('homepage hero clearly introduces identity content and contact paths', asyn
     assert.match(home, /https:\/\/github.com\/SxLin0/);
 });
 
+test('homepage copy reads as a personal space instead of a resume showcase', async () => {
+    const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
+
+    assert.match(home, /学习、写作和生活中的一些痕迹/);
+    assert.match(home, /慢慢生长的个人空间/);
+    assert.doesNotMatch(home, /面试官|求职|审阅|展示给老师|开源朋友认真阅读/);
+});
+
 test('homepage exposes semantic content sections for blog poem and articles', async () => {
     const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
 
