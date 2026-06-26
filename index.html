@@ -2,6 +2,7 @@
 layout: ocean
 title: 首页
 permalink: /
+description: 宵宵的个人主页，记录软件工程课程笔记、技术文章、诗词创作与个人作品。
 ---
 
 <div class="home-body">
@@ -11,8 +12,31 @@ permalink: /
         <div class="profile-card">
             <header class="hero-panel">
                 <div class="hero-copy">
+                    <p class="hero-kicker">南京大学智能软件与工程学院本科生</p>
                     <h1>宵宵</h1>
+                    <p class="hero-subtitle">Software Engineering / Personal Knowledge Base / Poems & Notes</p>
+                    <p class="hero-lead">这里是我的个人书架与作品集：整理课程笔记、技术文章、长文思考，也保存一些诗词与日常审美。愿它既能被老师、同学和面试官快速了解，也能被偶然路过的开源朋友认真阅读。</p>
                     <p class="hero-quote"><i>春风得意马蹄疾，一日看尽长安花</i></p>
+                    <nav class="hero-actions" aria-label="首页快捷入口">
+                        <a class="hero-action primary" href="#featured-title">精选作品</a>
+                        <a class="hero-action" href="https://github.com/SxLin0" target="_blank" rel="noreferrer" aria-label="访问宵宵的 GitHub 主页">GitHub</a>
+                        <a class="hero-action" href="mailto:2125808970@qq.com" aria-label="发送邮件给宵宵">Email</a>
+                        <a class="hero-action" href="#contact-title">联系我</a>
+                    </nav>
+                    <dl class="hero-facts" aria-label="网站内容概览">
+                        <div>
+                            <dt>Blog</dt>
+                            <dd>课程笔记 / 技术文章</dd>
+                        </div>
+                        <div>
+                            <dt>Poem</dt>
+                            <dd>诗词创作 / 文学练习</dd>
+                        </div>
+                        <div>
+                            <dt>Articles</dt>
+                            <dd>长文 / 观点文章</dd>
+                        </div>
+                    </dl>
                 </div>
                 <img src="{{ '/src/photo.jpg' | relative_url }}" alt="宵宵的头像">
             </header>
@@ -25,12 +49,37 @@ permalink: /
                 <div class="featured-works" id="featured-works"></div>
             </section>
 
+            <section class="content-panel section-map-panel" aria-labelledby="section-map-title">
+                <div class="section-title-row">
+                    <h3 id="section-map-title">网站内容</h3>
+                    <span>书架导航</span>
+                </div>
+                <div class="section-map">
+                    <a class="section-map-card" href="{{ '/content/blog/operating-system.html' | relative_url }}">
+                        <span>Blog</span>
+                        <strong>课程笔记与技术文章</strong>
+                        <p>操作系统、数据库、互联网计算、编译原理等课程整理，偏向可回看、可复习的个人知识库。</p>
+                    </a>
+                    <a class="section-map-card" href="{{ '/reader.html?work=spring-tea' | relative_url }}">
+                        <span>Poem</span>
+                        <strong>诗词创作</strong>
+                        <p>把校园、归家、节气、山河与心绪写进短章，保留一点中文个人主页应有的文学气。</p>
+                    </a>
+                    <a class="section-map-card" href="{{ '/reader.html?work=software-major' | relative_url }}">
+                        <span>Articles</span>
+                        <strong>长文与观点</strong>
+                        <p>面向专业选择、阅读感受和生活观察的长文，语气尽量诚实，观点尽量清楚。</p>
+                    </a>
+                </div>
+            </section>
+
             <div class="home-grid">
                 <section class="content-panel about-panel">
                     <h3>关于我</h3>
                     <p>你好，我是 <b>宵宵</b>。</p>
                     <p>目前就读于<a href="https://ise.nju.edu.cn/index.htm" target="_blank" rel="noreferrer">南京大学智能软件与工程学院</a>，是一名本科生。</p>
-                    <p>常用 C++、Java、Python、JavaScript 和 Spring Boot，也喜欢把课程笔记、想法和小实验整理成可以直接打开阅读或使用的东西。</p>
+                    <p>常用 C++、Java、Python、JavaScript 和 Spring Boot。正在学习软件工程、系统、数据库、互联网计算和编译原理，也喜欢把个人知识管理和开源项目当作长期练习。</p>
+                    <p>这个网站既是作品集，也是书架：技术内容希望清楚、可靠，诗词和长文则保留一点自己的语气。</p>
                     <p>离开代码时，我通常会去听歌、读书、打游戏、骑车，或者认真寻找一顿好吃的饭。</p>
                 </section>
 
@@ -43,14 +92,16 @@ permalink: /
                         <span>骑行</span>
                         <span>美食</span>
                         <span>代码</span>
+                        <span>开源</span>
+                        <span>知识库</span>
                     </div>
                 </section>
 
                 <section class="content-panel compact-panel">
-                    <h3>联系</h3>
+                    <h3 id="contact-title">联系</h3>
                     <ul class="contact-list">
-                        <li><span>邮箱</span><a href="mailto:2125808970@qq.com">2125808970@qq.com</a></li>
-                        <li><span>GitHub</span><a href="https://github.com/SxLin0" target="_blank" rel="noreferrer">SxLin0</a></li>
+                        <li><span>邮箱</span><a href="mailto:2125808970@qq.com" aria-label="发送邮件到 2125808970@qq.com">2125808970@qq.com</a></li>
+                        <li><span>GitHub</span><a href="https://github.com/SxLin0" target="_blank" rel="noreferrer" aria-label="访问 GitHub 主页 SxLin0">SxLin0</a></li>
                         <li><span>QQ</span><b>2125808970</b></li>
                     </ul>
                 </section>

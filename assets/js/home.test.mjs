@@ -133,12 +133,51 @@ test('reader pages place the article before the table of contents inside a docum
 });
 
 test('homepage keeps four balanced featured works after article cleanup', () => {
-    assert.deepEqual(getFeaturedWorks(works).map((work) => work.id), [
+    assert.deepEqual(getFeaturedWorks(works, 6).map((work) => work.id), [
+        'operating-system-notes',
+        'database-notes',
         'software-major',
         'spring-tea',
         'spring-essay',
         'yellow-river'
     ]);
+});
+
+test('featured works include card metadata for homepage display', () => {
+    getFeaturedWorks(works, 6).forEach((work) => {
+        assert.ok(work.summary);
+        assert.ok(Array.isArray(work.tags));
+        assert.ok(work.tags.length >= 2);
+    });
+});
+
+test('homepage hero clearly introduces identity content and contact paths', async () => {
+    const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
+
+    assert.match(home, /南京大学智能软件与工程学院本科生/);
+    assert.match(home, /Software Engineering \/ Personal Knowledge Base \/ Poems & Notes/);
+    assert.match(home, /href="#featured-title"/);
+    assert.match(home, /mailto:2125808970@qq.com/);
+    assert.match(home, /https:\/\/github.com\/SxLin0/);
+});
+
+test('homepage exposes semantic content sections for blog poem and articles', async () => {
+    const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
+
+    assert.match(home, /课程笔记与技术文章/);
+    assert.match(home, /诗词创作/);
+    assert.match(home, /长文与观点/);
+});
+
+test('site metadata supports SEO and social sharing', async () => {
+    const config = await readFile(new URL('../../_config.yml', import.meta.url), 'utf8');
+    const layout = await readFile(new URL('../../_layouts/ocean.html', import.meta.url), 'utf8');
+
+    assert.match(config, /宵宵的个人主页，记录软件工程课程笔记、技术文章、诗词创作与个人作品。/);
+    assert.match(layout, /property="og:title"/);
+    assert.match(layout, /property="og:description"/);
+    assert.match(layout, /property="og:image"/);
+    assert.match(layout, /name="keywords"/);
 });
 
 test('homepage introduction avoids stale strikethrough age and grade text', async () => {
