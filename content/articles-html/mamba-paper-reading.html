@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Mamba 论文阅读：选择性状态空间模型如何挑战 Transformer</title>
+</head>
+<body>
+    <h1>Mamba 论文阅读：选择性状态空间模型如何挑战 Transformer</h1>
+    <p class="doc-subtitle">从 SSM 的长期记忆问题，到 Mamba 的选择性机制与硬件感知扫描</p>
+
+    <p class="doc-paragraph">Mamba 这篇论文真正吸引人的地方，不只是它提出了一个新的大模型结构，而是它重新打开了一个问题：序列建模一定要依赖 Transformer 和注意力机制吗？过去几年里，Transformer 几乎成了大模型的默认答案。它的优势很明显：自注意力可以在上下文窗口内直接建立任意位置之间的联系，因此很擅长做内容相关的推理。</p>
+    <p class="doc-paragraph">但这个优势也带来了代价。训练时，注意力复杂度会随序列长度近似二次增长；推理时，模型还需要保存 KV cache，长上下文会显著增加显存和带宽压力。于是很多研究开始寻找更高效的替代架构，例如线性注意力、门控卷积、循环模型和结构化状态空间模型。Mamba 就是在这个背景下出现的：它试图保留状态空间模型的线性复杂度，同时补上它过去最弱的一环，也就是根据输入内容进行选择性记忆和遗忘的能力。</p>
+
+    <h2 class="doc-heading">从 SSM 说起</h2>
+    <p class="doc-paragraph">状态空间模型（State Space Model, SSM）最初来自控制理论，可以理解为用一个隐藏状态来描述系统随时间演化的过程。在深度学习里，它被改造成一种序列建模模块：输入序列不断更新隐藏状态，模型再根据隐藏状态产生输出。</p>
+    <p class="doc-paragraph">一个简化的离散形式可以写成：</p>
+    <p class="doc-list-line">h<sub>t</sub> = A h<sub>t-1</sub> + B x<sub>t</sub></p>
+    <p class="doc-list-line">y<sub>t</sub> = C h<sub>t</sub></p>
+    <p class="doc-paragraph">这里的 h 是隐藏状态，x 是输入，y 是输出，A、B、C 控制状态如何更新、输入如何进入状态、状态如何映射为输出。S4 一类结构化 SSM 的重要特点是可以在训练时利用卷积形式高效并行计算，在推理时又可以回到循环形式逐步更新，因此天然适合长序列。</p>
+    <p class="doc-paragraph">如果只看效率，SSM 很诱人。它不像注意力那样显式保存所有历史 token，而是把历史压缩进一个有限维度的状态里。这意味着推理时每一步只需要更新当前状态，不必维护越来越长的 KV cache。问题在于：压缩是有损的，模型必须知道哪些信息该留下，哪些信息可以忘掉。</p>
+
+    <h2 class="doc-heading">传统 SSM 的问题：不够会“选择”</h2>
+    <p class="doc-paragraph">传统 SSM 的一个核心限制是线性时不变性（Linear Time Invariance, LTI）。简单说，A、B、C、Δ 这些参数在整段序列中是固定的，模型对每个位置使用同一套动态规则。这样做有利于高效计算，因为固定动态可以转换成卷积；但它也让模型缺少内容感知能力。</p>
+    <p class="doc-paragraph">论文用两个合成任务说明这个问题。第一个是 Selective Copying：模型需要从一串带噪声的输入中记住特定 token，而这些 token 的位置并不固定。传统卷积或 LTI SSM 可以记住固定间隔，却很难根据输入内容判断“这个该记住，那个该忽略”。第二个是 Induction Heads，它对应语言模型中常见的关联召回能力，也需要根据上下文选择合适的信息。</p>
+    <p class="doc-paragraph">这其实揭示了序列模型的一个基本矛盾：高效模型必须把上下文压缩到较小状态里，但强模型又必须保留真正有用的信息。Mamba 的思路是，不再让压缩规则一成不变，而是让模型根据当前输入决定状态应该如何更新。</p>
+
+    <h2 class="doc-heading">Mamba 的核心：选择性状态空间模型</h2>
+    <p class="doc-paragraph">Mamba 提出的关键机制是选择性状态空间模型，也就是论文中的 Selective SSM 或 S6。它没有完全抛弃 SSM 的框架，而是让部分 SSM 参数由输入动态生成。具体来说，传统 SSM 中 B、C、Δ 通常是固定的；Mamba 让它们变成输入 x 的函数：</p>
+    <p class="doc-list-line">B = s<sub>B</sub>(x)</p>
+    <p class="doc-list-line">C = s<sub>C</sub>(x)</p>
+    <p class="doc-list-line">Δ = τ<sub>Δ</sub>(parameter + s<sub>Δ</sub>(x))</p>
+    <p class="doc-paragraph">这样一来，模型就不再是一个固定的 LTI 系统，而是一个随输入变化的时变系统。它可以根据 token 内容决定：当前输入是否重要，是否应该写入状态，过去状态是否应该保留，输出时又应该读出状态中的哪些部分。</p>
+    <p class="doc-paragraph">其中 Δ 很关键。论文把它和 RNN 的门控机制联系起来：当 Δ 较大时，模型更倾向于关注当前输入并重置部分历史；当 Δ 较小时，模型更倾向于保持原有状态、忽略当前输入。这就像给 SSM 加上了一种连续时间视角下的“门”。</p>
+
+    <h2 class="doc-heading">为什么不能直接这样算</h2>
+    <p class="doc-paragraph">选择性机制解决了表达能力问题，却带来了新的计算问题。传统 SSM 之所以快，很大程度上是因为参数固定，可以使用卷积形式并行训练。但一旦参数随输入变化，每个时间步的系统动态都不同，原来的卷积技巧就不再适用，模型必须回到类似循环的计算方式。</p>
+    <p class="doc-paragraph">直觉上，这似乎会让 Mamba 退回 RNN 的老问题：前一步没算完，后一步就不能算。更麻烦的是，如果直接保存每个时间步、每个通道、每个状态维度的隐藏状态，内存开销会非常大。Mamba 的第二个重要贡献，就是为选择性 SSM 设计了一套硬件感知的 selective scan 算法。</p>
+
+    <h2 class="doc-heading">硬件感知扫描：让选择性机制真正可用</h2>
+    <p class="doc-paragraph">Mamba 的 selective scan 可以理解为一种把循环计算改造成可并行扫描的算法。它利用状态更新中的结合性质，把原本逐步推进的 recurrence 转换成 scan 操作，从而让 GPU 能并行处理。</p>
+    <p class="doc-paragraph">但论文真正强调的是“硬件感知”。GPU 的性能瓶颈很多时候不在计算本身，而在显存和片上存储之间的数据搬运。Mamba 不把巨大的中间状态完整写入 HBM，而是在更快的 SRAM 中完成离散化和状态更新，只把最终输出写回显存。同时，它使用 kernel fusion 减少中间读写，并在反向传播时通过 recomputation 重新计算必要状态，换取更低的显存占用。</p>
+    <p class="doc-paragraph">这部分设计很像 FlashAttention 的思想：算法不只是数学公式，还要和硬件层级配合。论文报告说，在序列长度超过 2K 后，高效 SSM scan 的速度超过了当时最好的注意力实现之一 FlashAttention-2，并且比 PyTorch 中的标准 scan 实现快 20 到 40 倍。</p>
+
+    <h2 class="doc-heading">Mamba Block：没有 attention 的同质架构</h2>
+    <p class="doc-paragraph">除了 S6 层本身，Mamba 还提出了一个更简化的网络块。过去很多 SSM 架构会把 SSM 层和 MLP 层交替堆叠，类似 Transformer 中 attention 和 MLP 的组合。Mamba 则把 SSM 和门控/MLP 风格的投影融合到一个同质块里，反复堆叠这个 Mamba block。</p>
+    <p class="doc-paragraph">从结构上看，Mamba block 会先做线性投影和局部卷积，再进入 selective SSM，然后通过门控和输出投影得到结果。它保留了 SSM 的线性序列处理优势，又吸收了现代神经网络中常见的激活、门控和通道扩展设计。论文里说得很克制，但这个设计其实体现了一种“少即是多”的思路：如果一个块已经能同时完成序列混合和非线性变换，就不一定需要严格复刻 Transformer 的 attention + MLP 交替结构。</p>
+
+    <h2 class="doc-heading">实验结果怎么看</h2>
+    <p class="doc-paragraph">Mamba 的实验覆盖了合成任务、语言建模、DNA 序列、音频生成和效率测试。对我来说，最值得看的不是某一个表格的数字，而是几个趋势。</p>
+    <p class="doc-list-line">1. 在 Selective Copying 和 Induction Heads 这类任务上，选择性机制明显补足了传统 SSM 的短板。也就是说，提升不是单纯来自更大的参数量，而是来自“能根据输入选择”的结构变化。</p>
+    <p class="doc-list-line">2. 在语言建模上，Mamba-3B 可以超过同规模 Transformer，并接近两倍规模 Transformer 的表现。这说明线性时间模型并不只能在连续信号或小任务上有效，也有机会进入语言大模型的核心战场。</p>
+    <p class="doc-list-line">3. 在音频和 DNA 等长序列任务上，Mamba 的优势更自然。因为这些任务本身序列很长，注意力的成本更突出，而 SSM 的长程建模和线性复杂度更容易发挥作用。</p>
+    <p class="doc-list-line">4. 在推理吞吐量上，论文报告 Mamba 相比类似大小的 Transformer 可达到 4 到 5 倍吞吐量提升。一个重要原因是它不需要 KV cache，因此可以在相同显存下使用更大的 batch。</p>
+
+    <h2 class="doc-heading">它真的取代 Transformer 了吗</h2>
+    <p class="doc-paragraph">我不太倾向于把 Mamba 理解成“Transformer 终结者”。更稳妥的说法是：Mamba 证明了注意力不是强序列建模的唯一道路。Transformer 的优势在于显式访问上下文，Mamba 的优势在于把上下文压缩到状态里，并通过选择性机制让这种压缩更聪明。</p>
+    <p class="doc-paragraph">这两条路线的取舍很不一样。注意力不压缩历史，因此表达直接但代价高；SSM 压缩历史，因此高效但必须处理信息丢失。Mamba 的价值就在于，它让“有限状态压缩”这条路重新有了竞争力。</p>
+    <p class="doc-paragraph">当然，论文也留下了一些问题。例如，Mamba 在更大规模、更复杂对齐流程、多轮对话和工具调用生态中的表现，还需要后续工作验证。Transformer 不只是一个结构，也已经发展出非常成熟的训练、微调、部署和生态经验。Mamba 要真正成为通用基础模型骨干，还需要证明自己在这些环节同样可靠。</p>
+
+    <h2 class="doc-heading">我的理解</h2>
+    <p class="doc-paragraph">这篇论文给我的最大启发是：模型结构的进步不一定来自更复杂的堆叠，有时来自重新理解一个旧问题。SSM 并不是新东西，RNN 也不是新东西，门控机制同样不是新东西。但 Mamba 把这些线索重新组织起来，用“选择性”解释序列压缩问题，再用硬件感知算法让它真正跑得起来。</p>
+    <p class="doc-paragraph">如果用一句话概括，Mamba 想做的是：用线性时间维护一个有限状态，但让这个状态知道什么时候记、什么时候忘、什么时候读出来。这个思想很朴素，也很有力量。</p>
+    <p class="doc-paragraph">对学习者来说，读 Mamba 不只是了解一个新模型，更重要的是看到论文如何把建模能力、复杂度和硬件实现放在一起考虑。一个模型能不能成为大模型骨干，不只取决于公式漂不漂亮，也取决于它能不能在真实硬件上高效训练和推理。Mamba 的意义，正在于把这几件事放到同一张桌子上讨论。</p>
+</body>
+</html>

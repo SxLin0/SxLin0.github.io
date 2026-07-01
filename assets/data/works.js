@@ -6,9 +6,7 @@ export const works = [
         href: 'content/blog/operating-system.html',
         date: '课程笔记',
         summary: '课程笔记与核心概念整理，适合按知识点快速回看。',
-        tags: ['系统', '课程笔记'],
-        featured: true,
-        featuredOrder: 1
+        tags: ['系统', '课程笔记']
     },
     {
         id: 'database-notes',
@@ -47,10 +45,22 @@ export const works = [
         summary: '从专业定位、就业去向和报考建议聊软件工程是否适合你。',
         tags: ['专业选择', '长文'],
         featured: true,
-        featuredOrder: 3
+        featuredOrder: 2
+    },
+    {
+        id: 'mamba-paper-reading',
+        section: 'articles',
+        title: 'Mamba 论文阅读：选择性状态空间模型如何挑战 Transformer',
+        kind: 'html',
+        source: 'content/articles-html/mamba-paper-reading.html',
+        date: '2026',
+        summary: '从 SSM 的长期记忆问题，到 Mamba 的选择性机制与硬件感知扫描。',
+        tags: ['论文阅读', '大模型', 'SSM'],
+        featured: true,
+        featuredOrder: 1
     },
     { id: 'shang-yuan', section: 'poem', title: '上元', kind: 'markdown-poem', source: 'content/poem-essay/上元.md' },
-    { id: 'first-arrival-jiangning', section: 'poem', title: '初到江宁', kind: 'markdown-poem', source: 'content/poem-essay/初到江宁.md', summary: '初到江宁时写下的一首短诗，记一点新地与新心绪。', tags: ['诗词', '江宁'], featured: true, featuredOrder: 2 },
+    { id: 'first-arrival-jiangning', section: 'poem', title: '初到江宁', kind: 'markdown-poem', source: 'content/poem-essay/初到江宁.md', summary: '初到江宁时写下的一首短诗，记一点新地与新心绪。', tags: ['诗词', '江宁'], featured: true, featuredOrder: 3 },
     { id: 'three-kingdoms', section: 'poem', title: '叹三国', kind: 'markdown-poem', source: 'content/poem-essay/叹三国.md' },
     { id: 'summer-thoughts', section: 'poem', title: '夏日咏怀', kind: 'markdown-poem', source: 'content/poem-essay/夏日咏怀.md' },
     { id: 'night-boat-home', section: 'poem', title: '夜行舟归家', kind: 'markdown-poem', source: 'content/poem-essay/夜行舟归家.md' },

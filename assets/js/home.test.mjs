@@ -99,7 +99,7 @@ test('library sections are reduced to blog poem and articles', () => {
 test('articles keep software advice and moved essays only', () => {
     const articleIds = works.filter((work) => work.section === 'articles').map((work) => work.id);
 
-    assert.deepEqual(articleIds, ['software-major', 'spring-essay']);
+    assert.deepEqual(articleIds, ['software-major', 'mamba-paper-reading', 'spring-essay']);
     assert.equal(works.some((work) => work.id === 'capital-scientific-thinking'), false);
     assert.equal(works.some((work) => work.id === 'digital-labor-alienation'), false);
 });
@@ -143,6 +143,19 @@ test('software major article follows the expanded volunteer-advice structure', a
     assert.match(article, /南京大学的软件学科/);
 });
 
+test('mamba article reads like a complete paper-reading blog', async () => {
+    const article = await readFile(new URL('../../content/articles-html/mamba-paper-reading.html', import.meta.url), 'utf8');
+
+    assert.match(article, /Mamba 论文阅读：选择性状态空间模型如何挑战 Transformer/);
+    assert.match(article, /状态空间模型/);
+    assert.match(article, /线性时不变性/);
+    assert.match(article, /选择性状态空间模型/);
+    assert.match(article, /硬件感知/);
+    assert.match(article, /selective scan/);
+    assert.match(article, /我的理解/);
+    assert.doesNotMatch(article, /author|CONTENTS|谢谢观看/);
+});
+
 test('reader pages place the article before the table of contents inside a document layout', async () => {
     const reader = await readFile(new URL('../../assets/js/reader.js', import.meta.url), 'utf8');
 
@@ -173,9 +186,9 @@ test('static blog detail pages receive shared meta and adjacent navigation chrom
 
 test('homepage keeps three quiet featured entries from real content', () => {
     assert.deepEqual(getFeaturedWorks(works, 3).map((work) => work.id), [
-        'operating-system-notes',
-        'first-arrival-jiangning',
-        'software-major'
+        'mamba-paper-reading',
+        'software-major',
+        'first-arrival-jiangning'
     ]);
 });
 
