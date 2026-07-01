@@ -44,7 +44,7 @@ export const works = [
         kind: 'html',
         source: 'content/articles-html/software-major.html',
         date: '2026',
-        summary: '写给考生的专业选择建议，兼顾现实就业与长期兴趣。',
+        summary: '从专业定位、就业去向和报考建议聊软件工程是否适合你。',
         tags: ['专业选择', '长文'],
         featured: true,
         featuredOrder: 3

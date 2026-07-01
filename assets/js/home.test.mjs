@@ -130,6 +130,18 @@ test('article conversion script only keeps the visible software-major article', 
     assert.doesNotMatch(script, /digital-labor-alienation/);
 });
 
+test('software major article follows the expanded volunteer-advice structure', async () => {
+    const article = await readFile(new URL('../../content/articles-html/software-major.html', import.meta.url), 'utf8');
+
+    assert.match(article, /专业定位/);
+    assert.match(article, /值不值得报/);
+    assert.match(article, /就业去向/);
+    assert.match(article, /行业前景/);
+    assert.match(article, /报考建议/);
+    assert.match(article, /不要只看专业名称/);
+    assert.match(article, /别把专业当彩票/);
+});
+
 test('reader pages place the article before the table of contents inside a document layout', async () => {
     const reader = await readFile(new URL('../../assets/js/reader.js', import.meta.url), 'utf8');
 
