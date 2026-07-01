@@ -250,11 +250,12 @@ function getSectionTitle(sectionId) {
     return localizedTitles[sectionId] || workSections.find((section) => section.id === sectionId)?.title || '作品';
 }
 
-function createFeaturedWorkCard(work) {
+export function createFeaturedWorkCard(work) {
     const link = document.createElement('a');
     const meta = document.createElement('span');
     const title = document.createElement('strong');
     const summary = document.createElement('p');
+    const tags = document.createElement('span');
     const action = document.createElement('span');
 
     link.className = 'featured-work-card';
@@ -264,9 +265,15 @@ function createFeaturedWorkCard(work) {
     meta.textContent = [getSectionTitle(work.section), work.date].filter(Boolean).join(' · ');
     title.textContent = work.title;
     summary.textContent = work.summary || '打开作品继续阅读。';
+    tags.className = 'featured-work-tags';
+    (work.tags || []).forEach((tag) => {
+        const tagElement = document.createElement('span');
+        tagElement.textContent = tag;
+        tags.append(tagElement);
+    });
     action.className = 'featured-work-action';
     action.textContent = '打开阅读';
-    link.append(meta, title, summary, action);
+    link.append(meta, title, summary, tags, action);
     return link;
 }
 
@@ -489,6 +496,21 @@ function bindLibraryPanelToggle() {
             saveLibraryPanelOpen(false);
             toggle.focus();
         }
+    });
+}
+
+function bindLibraryEntryLinks() {
+    const libraryPanel = getLibraryPanel();
+    const toggle = libraryPanel?.querySelector('.library-toggle');
+    if (!libraryPanel || !toggle) {
+        return;
+    }
+
+    document.querySelectorAll('a[href="#library-panel-content"]').forEach((link) => {
+        link.addEventListener('click', () => {
+            setLibraryPanelOpen(libraryPanel, toggle, true);
+            saveLibraryPanelOpen(true);
+        });
     });
 }
 
@@ -731,6 +753,7 @@ renderFeaturedWorks();
 bindBlogArticleToc();
 bindStaticBlogDetailChrome();
 bindLibraryPanelToggle();
+bindLibraryEntryLinks();
 restoreLibraryScroll();
 bindLibrarySections();
 bindLibraryScroll();
