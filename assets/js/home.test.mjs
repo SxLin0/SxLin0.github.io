@@ -238,14 +238,16 @@ test('homepage uses the mature integrated profile structure', async () => {
     const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
 
     assert.match(home, /class="site-nav"/);
-    assert.match(home, /class="hero-profile"/);
     assert.match(home, /id="works"/);
     assert.match(home, /id="about"/);
     assert.match(home, /id="music"/);
     assert.match(home, /id="contact"/);
     assert.match(home, /综合个人档案|个人主页|个人知识库/);
+    assert.ok(home.indexOf('class="site-nav"') < home.indexOf('id="works"'));
+    assert.ok(home.indexOf('id="works"') < home.indexOf('id="about"'));
     assert.doesNotMatch(home, /class="profile-card"/);
     assert.doesNotMatch(home, /class="hero-panel"/);
+    assert.doesNotMatch(home, /class="hero-profile"/);
 });
 
 test('homepage navigation points to primary sections and contact paths', async () => {
@@ -261,9 +263,11 @@ test('homepage navigation points to primary sections and contact paths', async (
 
 test('homepage copy reads as a personal space instead of a resume showcase', async () => {
     const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
+    const libraryPanel = await readFile(new URL('../../_includes/library-panel.html', import.meta.url), 'utf8');
 
-    assert.match(home, /<h1 id="hero-title">宵宵<\/h1>/);
-    assert.match(home, /一个慢慢生长的个人空间/);
+    assert.doesNotMatch(home, /<h1 id="hero-title">宵宵<\/h1>/);
+    assert.doesNotMatch(home, /hero-lead|hero-actions|阅读精选|打开书架/);
+    assert.match(libraryPanel, /一个慢慢生长的个人空间/);
     assert.doesNotMatch(home, /南京大学|在读|Personal Knowledge Base|Poems & Notes|这里是我的综合个人档案|学习、写作和生活中的一些痕迹/);
     assert.doesNotMatch(home, /面试官|求职|审阅|展示给老师|开源朋友认真阅读/);
 });
@@ -324,10 +328,11 @@ test('homepage interface labels are localized for a Chinese personal blog', asyn
 
 test('homepage copy and tags stay personal instead of resume-like', async () => {
     const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
+    const libraryPanel = await readFile(new URL('../../_includes/library-panel.html', import.meta.url), 'utf8');
     const overdoneCopy = /面试官|老师|同学|开源朋友|作品集展示|快速了解|专业展示|简历|求职/;
     const inflatedTags = /全栈开发|AI|产品经理|创业|效率达人|未来主义|数字游民/;
 
-    assert.match(home, /一个慢慢生长的个人空间/);
+    assert.match(libraryPanel, /一个慢慢生长的个人空间/);
     assert.match(home, /不写代码的时候，我多半在听歌、读书、打游戏、骑车，或者琢磨下一顿吃什么/);
     assert.match(home, /技术内容尽量清楚可靠/);
     assert.match(home, /写东西/);
