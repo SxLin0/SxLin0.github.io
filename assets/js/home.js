@@ -45,7 +45,7 @@ export function normalizeLibraryPanelOpen(value) {
 }
 
 export function getLibraryToggleLabel(isOpen) {
-    return normalizeLibraryPanelOpen(isOpen) ? '收起' : '书架';
+    return normalizeLibraryPanelOpen(isOpen) ? '收起' : '菜单';
 }
 
 export function normalizeLibrarySearchQuery(value) {

@@ -236,16 +236,20 @@ test('featured work cards render metadata summary tags and action text', () => {
 
 test('homepage uses the mature integrated profile structure', async () => {
     const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
+    const libraryPanel = await readFile(new URL('../../_includes/library-panel.html', import.meta.url), 'utf8');
 
     assert.match(home, /class="site-nav"/);
     assert.match(home, /class="home-layout"/);
     assert.match(home, /class="home-main"/);
     assert.match(home, /class="home-aside"/);
+    assert.match(libraryPanel, /class="library-panel site-sidebar"/);
+    assert.match(libraryPanel, /class="sidebar-nav"/);
     assert.match(home, /id="works"/);
     assert.match(home, /id="about"/);
     assert.match(home, /id="music"/);
     assert.match(home, /id="contact"/);
-    assert.match(home, /综合个人档案|个人主页|个人知识库/);
+    assert.match(libraryPanel, /<h2>宵宵<\/h2>/);
+    assert.match(libraryPanel, /一个慢慢生长的个人空间/);
     assert.ok(home.indexOf('class="site-nav"') < home.indexOf('id="works"'));
     assert.ok(home.indexOf('id="works"') < home.indexOf('id="about"'));
     assert.match(home, /最近更新/);
@@ -257,11 +261,15 @@ test('homepage uses the mature integrated profile structure', async () => {
 
 test('homepage navigation points to primary sections and contact paths', async () => {
     const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
+    const libraryPanel = await readFile(new URL('../../_includes/library-panel.html', import.meta.url), 'utf8');
 
     assert.match(home, /href="#works"/);
     assert.match(home, /href="#about"/);
     assert.match(home, /href="#music"/);
     assert.match(home, /href="#contact"/);
+    assert.match(libraryPanel, /href="{{ '\/' \| relative_url }}#works"/);
+    assert.match(libraryPanel, /href="#library-sections"/);
+    assert.match(libraryPanel, /播放列表/);
     assert.match(home, /mailto:2125808970@qq.com/);
     assert.match(home, /https:\/\/github.com\/SxLin0/);
 });
@@ -328,6 +336,7 @@ test('homepage interface labels are localized for a Chinese personal blog', asyn
     assert.match(home, /关于我/);
     assert.match(home, /播放列表/);
     assert.match(libraryPanel, />首页</);
+    assert.match(libraryPanel, />精选内容</);
     assert.match(homeScript, /播放选中的歌曲/);
     assert.doesNotMatch(combined, /Featured Works|Start reading|About Me|Now Playing|Select a track|Playlist ready|6 tracks|>Home</);
 });
@@ -392,7 +401,7 @@ test('mobile library panel state is normalized for the drawer button', () => {
 
 test('mobile library drawer toggle label reflects its open state', () => {
     assert.equal(getLibraryToggleLabel(true), '收起');
-    assert.equal(getLibraryToggleLabel(false), '书架');
+    assert.equal(getLibraryToggleLabel(false), '菜单');
     assert.equal(getLibraryToggleLabel('true'), '收起');
 });
 

@@ -1,20 +1,26 @@
-<aside class="library-panel" aria-label="作品书架">
+<aside class="library-panel site-sidebar" aria-label="站点侧栏">
     <div class="library-title-row">
         <div class="library-heading">
             <img class="library-avatar" src="{{ '/src/photo.jpg' | relative_url }}" alt="宵宵的头像">
             <div>
-                <p class="eyebrow">作品目录</p>
-                <h2>宵宵的书架</h2>
+                <p class="eyebrow">个人空间</p>
+                <h2>宵宵</h2>
                 <span>一个慢慢生长的个人空间</span>
             </div>
         </div>
         <button class="library-toggle" type="button" aria-controls="library-panel-content" aria-expanded="false">
-            <span class="library-toggle-text">书架</span>
+            <span class="library-toggle-text">菜单</span>
             <span class="library-toggle-icon" aria-hidden="true"></span>
         </button>
     </div>
     <div class="library-panel-content" id="library-panel-content">
-        <a class="library-home-link" href="{{ '/' | relative_url }}">首页</a>
+        <nav class="sidebar-nav" aria-label="主要导航">
+            <a class="is-active" href="{{ '/' | relative_url }}">首页</a>
+            <a href="{{ '/' | relative_url }}#works">精选内容</a>
+            <a href="#library-sections">书架</a>
+            <a href="{{ '/' | relative_url }}#music">播放列表</a>
+            <a href="{{ '/' | relative_url }}#contact">联系</a>
+        </nav>
         <label class="library-search" for="library-search">
             <span>搜索文章或诗词</span>
             <span class="library-search-control">
