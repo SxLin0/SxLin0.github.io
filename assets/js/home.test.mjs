@@ -238,6 +238,9 @@ test('homepage uses the mature integrated profile structure', async () => {
     const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
 
     assert.match(home, /class="site-nav"/);
+    assert.match(home, /class="home-layout"/);
+    assert.match(home, /class="home-main"/);
+    assert.match(home, /class="home-aside"/);
     assert.match(home, /id="works"/);
     assert.match(home, /id="about"/);
     assert.match(home, /id="music"/);
@@ -245,6 +248,8 @@ test('homepage uses the mature integrated profile structure', async () => {
     assert.match(home, /综合个人档案|个人主页|个人知识库/);
     assert.ok(home.indexOf('class="site-nav"') < home.indexOf('id="works"'));
     assert.ok(home.indexOf('id="works"') < home.indexOf('id="about"'));
+    assert.match(home, /最近更新/);
+    assert.match(home, /热门标签/);
     assert.doesNotMatch(home, /class="profile-card"/);
     assert.doesNotMatch(home, /class="hero-panel"/);
     assert.doesNotMatch(home, /class="hero-profile"/);
@@ -318,7 +323,8 @@ test('homepage interface labels are localized for a Chinese personal blog', asyn
     const homeScript = await readFile(new URL('../../assets/js/home.js', import.meta.url), 'utf8');
     const combined = `${home}\n${libraryPanel}\n${homeScript}`;
 
-    assert.match(home, /精选作品/);
+    assert.match(home, /精选内容/);
+    assert.match(home, /最近更新/);
     assert.match(home, /关于我/);
     assert.match(home, /播放列表/);
     assert.match(libraryPanel, />首页</);
