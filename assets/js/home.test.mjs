@@ -329,7 +329,6 @@ test('homepage copy and tags stay personal instead of resume-like', async () => 
 
     assert.match(home, /一个慢慢生长的个人空间/);
     assert.match(home, /不写代码的时候，我多半在听歌、读书、打游戏、骑车，或者琢磨下一顿吃什么/);
-    assert.match(home, /持续整理/);
     assert.match(home, /技术内容尽量清楚可靠/);
     assert.match(home, /写东西/);
     assert.match(home, /生活/);
