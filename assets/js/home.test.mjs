@@ -138,8 +138,9 @@ test('software major article follows the expanded volunteer-advice structure', a
     assert.match(article, /就业去向/);
     assert.match(article, /行业前景/);
     assert.match(article, /报考建议/);
-    assert.match(article, /不要只看专业名称/);
-    assert.match(article, /别把专业当彩票/);
+    assert.match(article, /人工智能发展迅速/);
+    assert.match(article, /学校层次很重要/);
+    assert.match(article, /南京大学的软件学科/);
 });
 
 test('reader pages place the article before the table of contents inside a document layout', async () => {
