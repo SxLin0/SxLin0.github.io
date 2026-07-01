@@ -6,7 +6,7 @@ export const works = [
         href: 'content/blog/operating-system.html',
         date: '课程笔记',
         summary: '课程笔记与核心概念整理，适合按知识点快速回看。',
-        tags: ['系统', '课程笔记', 'C/C++'],
+        tags: ['系统', '课程笔记'],
         featured: true,
         featuredOrder: 1
     },
@@ -45,7 +45,7 @@ export const works = [
         source: 'content/articles-html/software-major.html',
         date: '2026',
         summary: '写给考生的专业选择建议，兼顾现实就业与长期兴趣。',
-        tags: ['专业选择', '软件工程', '长文'],
+        tags: ['专业选择', '长文'],
         featured: true,
         featuredOrder: 3
     },

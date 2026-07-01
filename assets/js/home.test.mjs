@@ -17,6 +17,7 @@ const {
     getLibrarySearchStatus,
     getActiveWorkIdFromLocation,
     getArticleTocHeadings,
+    createFeaturedWorkCard,
     getFeaturedWorks,
     getPlaybackProgress,
     getLibraryToggleLabel,
@@ -173,12 +174,74 @@ test('featured works include quiet card metadata for homepage display', () => {
     });
 });
 
-test('homepage hero clearly introduces identity content and contact paths', async () => {
+test('featured work cards render metadata summary tags and action text', () => {
+    const originalDocument = globalThis.document;
+
+    globalThis.document = {
+        ...originalDocument,
+        createElement(tagName) {
+            return {
+                tagName,
+                attributes: {},
+                children: [],
+                className: '',
+                href: '',
+                textContent: '',
+                setAttribute(name, value) {
+                    this.attributes[name] = value;
+                },
+                append(...nodes) {
+                    this.children.push(...nodes);
+                }
+            };
+        }
+    };
+
+    try {
+        const rendered = createFeaturedWorkCard({
+            id: 'demo',
+            section: 'blog',
+            title: 'Demo Work',
+            href: 'content/blog/demo.html',
+            date: '课程笔记',
+            summary: 'A short summary.',
+            tags: ['JavaScript', 'Writing']
+        });
+
+        assert.equal(rendered.className, 'featured-work-card');
+        assert.equal(rendered.href, '/content/blog/demo.html');
+        assert.equal(rendered.attributes['aria-label'], '阅读Demo Work');
+        assert.ok(rendered.children.some((node) => node.className === 'featured-work-meta' && node.textContent === '博客 · 课程笔记'));
+        assert.ok(rendered.children.some((node) => node.tagName === 'strong' && node.textContent === 'Demo Work'));
+        assert.ok(rendered.children.some((node) => node.tagName === 'p' && node.textContent === 'A short summary.'));
+        assert.ok(rendered.children.some((node) => node.className === 'featured-work-tags' && node.children.map((child) => child.textContent).join(',') === 'JavaScript,Writing'));
+        assert.ok(rendered.children.some((node) => node.className === 'featured-work-action' && node.textContent === '打开阅读'));
+    } finally {
+        globalThis.document = originalDocument;
+    }
+});
+
+test('homepage uses the mature integrated profile structure', async () => {
     const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
 
-    assert.doesNotMatch(home, /hero-kicker|南京大学智能软件与工程学院本科生/);
-    assert.match(home, /Software Engineering \/ Personal Knowledge Base \/ Poems & Notes/);
-    assert.match(home, /href="#featured-title"/);
+    assert.match(home, /class="site-nav"/);
+    assert.match(home, /class="hero-profile"/);
+    assert.match(home, /id="works"/);
+    assert.match(home, /id="about"/);
+    assert.match(home, /id="music"/);
+    assert.match(home, /id="contact"/);
+    assert.match(home, /综合个人档案|个人主页|个人知识库/);
+    assert.doesNotMatch(home, /class="profile-card"/);
+    assert.doesNotMatch(home, /class="hero-panel"/);
+});
+
+test('homepage navigation points to primary sections and contact paths', async () => {
+    const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
+
+    assert.match(home, /href="#works"/);
+    assert.match(home, /href="#about"/);
+    assert.match(home, /href="#music"/);
+    assert.match(home, /href="#contact"/);
     assert.match(home, /mailto:2125808970@qq.com/);
     assert.match(home, /https:\/\/github.com\/SxLin0/);
 });
@@ -186,17 +249,19 @@ test('homepage hero clearly introduces identity content and contact paths', asyn
 test('homepage copy reads as a personal space instead of a resume showcase', async () => {
     const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
 
-    assert.match(home, /学习、写作和生活中的一些痕迹/);
-    assert.match(home, /慢慢生长的个人空间/);
+    assert.match(home, /<h1 id="hero-title">宵宵<\/h1>/);
+    assert.match(home, /一个慢慢生长的个人空间/);
+    assert.doesNotMatch(home, /南京大学|在读|Personal Knowledge Base|Poems & Notes|这里是我的综合个人档案|学习、写作和生活中的一些痕迹/);
     assert.doesNotMatch(home, /面试官|求职|审阅|展示给老师|开源朋友认真阅读/);
 });
 
-test('homepage exposes semantic content sections for blog poem and articles', async () => {
+test('homepage avoids duplicate library navigation cards', async () => {
     const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
 
-    assert.match(home, /课程笔记与技术文章/);
-    assert.match(home, /诗词创作/);
-    assert.match(home, /长文与观点/);
+    assert.doesNotMatch(home, /content-map-panel/);
+    assert.doesNotMatch(home, /section-map-title/);
+    assert.doesNotMatch(home, /网站内容/);
+    assert.doesNotMatch(home, /书架导航/);
 });
 
 test('site metadata supports SEO and social sharing', async () => {
@@ -223,12 +288,11 @@ test('site assets use a build version query to avoid stale browser cache', async
     assert.match(blogLayout, /assets\/js\/home\.js' \| relative_url }}\?v=/);
 });
 
-test('homepage introduction avoids stale strikethrough age and grade text', async () => {
+test('homepage introduction avoids stale school age and grade text', async () => {
     const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
 
     assert.doesNotMatch(home, /<s>/);
-    assert.doesNotMatch(home, /sophomore|junior/);
-    assert.match(home, /大三在读/);
+    assert.doesNotMatch(home, /sophomore|junior|大三在读|南京大学在读/);
 });
 
 test('homepage interface labels are localized for a Chinese personal blog', async () => {
@@ -250,15 +314,15 @@ test('homepage copy and tags stay personal instead of resume-like', async () => 
     const overdoneCopy = /面试官|老师|同学|开源朋友|作品集展示|快速了解|专业展示|简历|求职/;
     const inflatedTags = /全栈开发|AI|产品经理|创业|效率达人|未来主义|数字游民/;
 
-    assert.match(home, /学习、写作和生活中的一些痕迹/);
-    assert.match(home, /慢慢生长的个人空间/);
+    assert.match(home, /一个慢慢生长的个人空间/);
     assert.match(home, /不写代码的时候，我多半在听歌、读书、打游戏、骑车，或者琢磨下一顿吃什么/);
-    assert.match(home, /大三在读/);
+    assert.match(home, /持续整理/);
     assert.match(home, /技术内容尽量清楚可靠/);
     assert.match(home, /写东西/);
     assert.match(home, /生活/);
     assert.match(home, /📚 课程笔记/);
     assert.match(home, /🍜 美食/);
+    assert.doesNotMatch(home, /C\+\+|Python|JavaScript|Spring Boot|后端开发|软件工程本科生|南京大学|在读/);
     assert.doesNotMatch(home, /开源项目|个人作品集/);
     assert.doesNotMatch(home, overdoneCopy);
     assert.doesNotMatch(home, inflatedTags);
@@ -315,6 +379,16 @@ test('mobile library drawer can be dismissed with Escape', async () => {
     assert.match(homeScript, /keydown/);
     assert.match(homeScript, /event\.key === 'Escape'/);
     assert.match(homeScript, /saveLibraryPanelOpen\(false\)/);
+});
+
+test('homepage library entry links open the mobile library drawer', async () => {
+    const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
+    const homeScript = await readFile(new URL('../../assets/js/home.js', import.meta.url), 'utf8');
+
+    assert.match(home, /href="#library-panel-content"/);
+    assert.match(homeScript, /bindLibraryEntryLinks/);
+    assert.match(homeScript, /setLibraryPanelOpen\(libraryPanel, toggle, true\)/);
+    assert.match(homeScript, /saveLibraryPanelOpen\(true\)/);
 });
 
 test('site supports keyboard focus visibility and reduced motion preferences', async () => {
