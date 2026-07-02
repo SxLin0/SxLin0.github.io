@@ -15,75 +15,10 @@
     </div>
     <div class="library-panel-content" id="library-panel-content">
         <nav class="sidebar-nav" aria-label="主要导航">
-            <a class="is-active" href="{{ '/' | relative_url }}">首页</a>
-            <a href="{{ '/' | relative_url }}#works">精选内容</a>
-            <a href="#library-sections">书架</a>
-            <a href="{{ '/' | relative_url }}#music">播放列表</a>
-            <a href="{{ '/' | relative_url }}#contact">联系</a>
+            <a {% if page.sidebar_active == 'home' %}class="is-active"{% endif %} href="{{ '/' | relative_url }}">首页</a>
+            <a {% if page.sidebar_active == 'about' %}class="is-active"{% endif %} href="{{ '/about.html' | relative_url }}">关于我</a>
+            <a {% if page.sidebar_active == 'music' %}class="is-active"{% endif %} href="{{ '/music.html' | relative_url }}">播放列表</a>
+            <a {% if page.sidebar_active == 'contact' %}class="is-active"{% endif %} href="{{ '/contact.html' | relative_url }}">联系</a>
         </nav>
-        <label class="library-search" for="library-search">
-            <span>搜索文章或诗词</span>
-            <span class="library-search-control">
-                <input id="library-search" type="search" placeholder="输入标题..." autocomplete="off">
-                <button class="library-search-clear" id="library-search-clear" type="button" aria-label="清空搜索" title="清空搜索" hidden>×</button>
-            </span>
-            <span class="library-search-status" id="library-search-status" aria-live="polite"></span>
-        </label>
-        <div id="library-sections">
-            <details class="library-section">
-                <summary><span>Blog</span><span class="section-count">4</span></summary>
-                <ul class="work-list">
-                    <li><a class="work-card" href="{{ '/content/blog/operating-system.html' | relative_url }}"><span class="work-title">操作系统</span></a></li>
-                    <li><a class="work-card" href="{{ '/content/blog/database.html' | relative_url }}"><span class="work-title">数据库</span></a></li>
-                    <li><a class="work-card" href="{{ '/content/blog/internet-computing.html' | relative_url }}"><span class="work-title">互联网计算</span></a></li>
-                    <li><a class="work-card" href="{{ '/content/blog/compiler-principles.html' | relative_url }}"><span class="work-title">编译原理</span></a></li>
-                </ul>
-            </details>
-
-            <details class="library-section">
-                <summary><span>Poem</span><span class="section-count">21</span></summary>
-                <ul class="work-list">
-                    <li><a class="work-card" href="{{ '/reader.html?work=shang-yuan' | relative_url }}"><span class="work-title">上元</span></a></li>
-                    <li><a class="work-card" href="{{ '/reader.html?work=first-arrival-jiangning' | relative_url }}"><span class="work-title">初到江宁</span></a></li>
-                    <li><a class="work-card" href="{{ '/reader.html?work=three-kingdoms' | relative_url }}"><span class="work-title">叹三国</span></a></li>
-                    <li><a class="work-card" href="{{ '/reader.html?work=summer-thoughts' | relative_url }}"><span class="work-title">夏日咏怀</span></a></li>
-                    <li><a class="work-card" href="{{ '/reader.html?work=night-boat-home' | relative_url }}"><span class="work-title">夜行舟归家</span></a></li>
-                    <li><a class="work-card" href="{{ '/reader.html?work=rumengling-mid-autumn' | relative_url }}"><span class="work-title">如梦令·中秋</span></a></li>
-                    <li><a class="work-card" href="{{ '/reader.html?work=cold-night-family' | relative_url }}"><span class="work-title">寒夜怀亲</span></a></li>
-                    <li><a class="work-card" href="{{ '/reader.html?work=untitled-mid-autumn' | relative_url }}"><span class="work-title">无题</span></a></li>
-                    <li><a class="work-card" href="{{ '/reader.html?work=spring-tea' | relative_url }}"><span class="work-title">春茶</span></a></li>
-                    <li><a class="work-card" href="{{ '/reader.html?work=moonlit-hometown' | relative_url }}"><span class="work-title">月夜怀乡</span></a></li>
-                    <li><a class="work-card" href="{{ '/reader.html?work=wutong-shadow' | relative_url }}"><span class="work-title">梧桐影</span></a></li>
-                    <li><a class="work-card" href="{{ '/reader.html?work=taihang-north' | relative_url }}"><span class="work-title">登临太行北望</span></a></li>
-                    <li><a class="work-card" href="{{ '/reader.html?work=yellow-river' | relative_url }}"><span class="work-title">登黄河古迹怀古</span></a></li>
-                    <li><a class="work-card" href="{{ '/reader.html?work=kitchen-god-snow' | relative_url }}"><span class="work-title">祭灶遇风雪</span></a></li>
-                    <li><a class="work-card" href="{{ '/reader.html?work=red-beans' | relative_url }}"><span class="work-title">红豆</span></a></li>
-                    <li><a class="work-card" href="{{ '/reader.html?work=tiger-year' | relative_url }}"><span class="work-title">虎年</span></a></li>
-                    <li><a class="work-card" href="{{ '/reader.html?work=after-exam' | relative_url }}"><span class="work-title">试后述志</span></a></li>
-                    <li><a class="work-card" href="{{ '/reader.html?work=caisangzi-snow' | relative_url }}"><span class="work-title">采桑子·咏雪</span></a></li>
-                    <li><a class="work-card" href="{{ '/reader.html?work=qingyuan-birthday' | relative_url }}"><span class="work-title">青玉案·添岁有感</span></a></li>
-                    <li><a class="work-card" href="{{ '/reader.html?work=zhegutian-dongge-dream' | relative_url }}"><span class="work-title">鹧鸪天·东阁记梦</span></a></li>
-                    <li><a class="work-card" href="{{ '/reader.html?work=zhegutian-gray-hair' | relative_url }}"><span class="work-title">鹧鸪天·华发叹</span></a></li>
-                </ul>
-            </details>
-
-            <details class="library-section">
-                <summary><span>Articles</span><span class="section-count">5</span></summary>
-                <ul class="work-list">
-                    <li><a class="work-card" href="{{ '/reader.html?work=how-llm-is-born' | relative_url }}"><span class="work-title">大语言模型如何诞生</span></a></li>
-                    <li><a class="work-card" href="{{ '/reader.html?work=what-is-transformer' | relative_url }}"><span class="work-title">Transformer是什么？</span></a></li>
-                    <li><a class="work-card" href="{{ '/reader.html?work=mamba-paper-reading' | relative_url }}"><span class="work-title">Mamba 论文阅读：选择性状态空间模型如何挑战 Transformer</span></a></li>
-                    <li><a class="work-card" href="{{ '/reader.html?work=software-major' | relative_url }}"><span class="work-title">关于填报软件工程专业的一些看法</span></a></li>
-                    <li><a class="work-card" href="{{ '/reader.html?work=spring-essay' | relative_url }}"><span class="work-title">浅谈“春”</span></a></li>
-                </ul>
-            </details>
-        </div>
-        <p class="library-empty" id="library-search-empty" hidden>没有找到匹配的作品</p>
-        <div class="library-side-note" aria-label="联系入口">
-            <div class="library-side-actions">
-                <a href="https://github.com/SxLin0" target="_blank" rel="noreferrer">GitHub</a>
-                <a href="mailto:2125808970@qq.com">Email</a>
-            </div>
-        </div>
     </div>
 </aside>

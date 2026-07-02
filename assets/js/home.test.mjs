@@ -345,14 +345,22 @@ test('homepage uses the mature integrated profile structure', async () => {
 test('homepage navigation points to primary sections and contact paths', async () => {
     const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
     const libraryPanel = await readFile(new URL('../../_includes/library-panel.html', import.meta.url), 'utf8');
+    const libraryPage = await readFile(new URL('../../library.html', import.meta.url), 'utf8');
+    const libraryCatalog = await readFile(new URL('../../_includes/library-catalog.html', import.meta.url), 'utf8');
 
     assert.match(home, /href="#works"/);
     assert.match(home, /href="#about"/);
     assert.match(home, /href="#music"/);
     assert.match(home, /href="#contact"/);
-    assert.match(libraryPanel, /href="{{ '\/' \| relative_url }}#works"/);
-    assert.match(libraryPanel, /href="#library-sections"/);
-    assert.match(libraryPanel, /播放列表/);
+    assert.match(libraryPanel, /href="{{ '\/' \| relative_url }}">首页/);
+    assert.match(libraryPanel, /href="{{ '\/about\.html' \| relative_url }}">关于我/);
+    assert.match(libraryPanel, /href="{{ '\/music\.html' \| relative_url }}">播放列表/);
+    assert.match(libraryPanel, /href="{{ '\/contact\.html' \| relative_url }}">联系/);
+    assert.doesNotMatch(libraryPanel, /精选内容|>书架<|GitHub|Email/);
+    assert.doesNotMatch(libraryPanel, /href="#library-sections"|id="library-sections"|library-search/);
+    assert.match(home, /href="{{ '\/library\.html' \| relative_url }}">查看全部/);
+    assert.match(libraryPage, /include library-catalog\.html/);
+    assert.match(libraryCatalog, /id="library-sections"/);
     assert.match(home, /mailto:2125808970@qq.com/);
     assert.match(home, /https:\/\/github.com\/SxLin0/);
 });
@@ -423,9 +431,24 @@ test('homepage interface labels are localized for a Chinese personal blog', asyn
     assert.match(home, /关于我/);
     assert.match(home, /播放列表/);
     assert.match(libraryPanel, />首页</);
-    assert.match(libraryPanel, />精选内容</);
+    assert.match(libraryPanel, />关于我</);
+    assert.match(libraryPanel, />播放列表</);
+    assert.match(libraryPanel, />联系</);
     assert.match(homeScript, /播放选中的歌曲/);
     assert.doesNotMatch(combined, /Featured Works|Start reading|About Me|Now Playing|Select a track|Playlist ready|6 tracks|>Home</);
+});
+
+test('sidebar section entries have dedicated pages', async () => {
+    const about = await readFile(new URL('../../about.html', import.meta.url), 'utf8');
+    const music = await readFile(new URL('../../music.html', import.meta.url), 'utf8');
+    const contact = await readFile(new URL('../../contact.html', import.meta.url), 'utf8');
+
+    assert.match(about, /sidebar_active:\s*about/);
+    assert.match(about, /id="about-title"/);
+    assert.match(music, /sidebar_active:\s*music/);
+    assert.match(music, /id="music-title"/);
+    assert.match(contact, /sidebar_active:\s*contact/);
+    assert.match(contact, /id="contact-title"/);
 });
 
 test('homepage copy and tags stay personal instead of resume-like', async () => {
@@ -500,14 +523,11 @@ test('mobile library drawer can be dismissed with Escape', async () => {
     assert.match(homeScript, /saveLibraryPanelOpen\(false\)/);
 });
 
-test('homepage library entry links open the mobile library drawer', async () => {
+test('homepage library entry links point to the dedicated library page', async () => {
     const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
-    const homeScript = await readFile(new URL('../../assets/js/home.js', import.meta.url), 'utf8');
 
-    assert.match(home, /href="#library-panel-content"/);
-    assert.match(homeScript, /bindLibraryEntryLinks/);
-    assert.match(homeScript, /setLibraryPanelOpen\(libraryPanel, toggle, true\)/);
-    assert.match(homeScript, /saveLibraryPanelOpen\(true\)/);
+    assert.match(home, /href="{{ '\/library\.html' \| relative_url }}">查看全部/);
+    assert.doesNotMatch(home, /href="#library-panel-content"/);
 });
 
 test('site supports keyboard focus visibility and reduced motion preferences', async () => {

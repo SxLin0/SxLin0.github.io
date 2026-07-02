@@ -1,0 +1,40 @@
+---
+layout: ocean
+title: 书架
+permalink: /library.html
+description: 宵宵的作品目录，收纳课程笔记、技术文章、长文和诗词。
+sidebar_active: library
+---
+
+<div class="home-body">
+    <main class="page-shell">
+        {% include library-panel.html %}
+
+        <div class="home-stack library-page-stack">
+            <nav class="site-nav" aria-label="书架导航">
+                <a class="site-brand" href="{{ '/' | relative_url }}" aria-label="回到首页">宵宵</a>
+                <div class="site-nav-links">
+                    <a href="{{ '/' | relative_url }}">首页</a>
+                    <a href="{{ '/library.html' | relative_url }}">书架</a>
+                </div>
+            </nav>
+
+            <section class="content-panel library-page-panel" aria-labelledby="library-page-title">
+                <div class="section-title-row">
+                    <div>
+                        <span class="section-kicker">Library</span>
+                        <h1 id="library-page-title">书架</h1>
+                    </div>
+                    <span>共 30 篇作品</span>
+                </div>
+                {% include library-catalog.html %}
+            </section>
+
+            <footer class="license-note">
+                本博客网站所有文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议，转载请注明出处。
+            </footer>
+        </div>
+    </main>
+</div>
+
+<script type="module" src="{{ '/assets/js/home.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>

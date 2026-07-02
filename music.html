@@ -1,0 +1,95 @@
+---
+layout: ocean
+title: 播放列表
+permalink: /music.html
+description: 宵宵最近常听的音乐。
+sidebar_active: music
+---
+
+<div class="home-body">
+    <main class="page-shell">
+        {% include library-panel.html %}
+
+        <div class="home-stack">
+            <nav class="site-nav" aria-label="播放列表导航">
+                <a class="site-brand" href="{{ '/' | relative_url }}" aria-label="回到首页">宵宵</a>
+                <div class="site-nav-links">
+                    <a href="{{ '/' | relative_url }}">首页</a>
+                    <a href="{{ '/about.html' | relative_url }}">关于</a>
+                    <a href="{{ '/contact.html' | relative_url }}">联系</a>
+                </div>
+            </nav>
+
+            <section class="content-panel music-panel playlist standalone-panel" aria-labelledby="music-title">
+                <div class="section-title-row">
+                    <div>
+                        <span class="section-kicker">Listening</span>
+                        <h1 id="music-title">播放列表</h1>
+                    </div>
+                    <span>6 首歌</span>
+                </div>
+                <ul id="playlist">
+                    <li data-src="{{ '/src/music.mp3' | relative_url }}">
+                        <div class="cover" style="background-image: url('{{ '/src/cover.jpg' | relative_url }}');"></div>
+                        <div class="info"><div class="title">倔强</div><div class="artist">五月天</div></div>
+                        <div class="duration">4:23</div>
+                        <div class="play-icon"></div>
+                    </li>
+                    <li data-src="{{ '/src/music1.mp3' | relative_url }}">
+                        <div class="cover" style="background-image: url('{{ '/src/cover1.jpg' | relative_url }}');"></div>
+                        <div class="info"><div class="title">如烟</div><div class="artist">五月天</div></div>
+                        <div class="duration">5:13</div>
+                        <div class="play-icon"></div>
+                    </li>
+                    <li data-src="{{ '/src/music2.mp3' | relative_url }}">
+                        <div class="cover" style="background-image: url('{{ '/src/cover2.jpg' | relative_url }}');"></div>
+                        <div class="info"><div class="title">逆光</div><div class="artist">孙燕姿</div></div>
+                        <div class="duration">4:54</div>
+                        <div class="play-icon"></div>
+                    </li>
+                    <li data-src="{{ '/src/music3.mp3' | relative_url }}">
+                        <div class="cover" style="background-image: url('{{ '/src/cover3.jpg' | relative_url }}');"></div>
+                        <div class="info"><div class="title">搁浅</div><div class="artist">周杰伦</div></div>
+                        <div class="duration">3:58</div>
+                        <div class="play-icon"></div>
+                    </li>
+                    <li data-src="{{ '/src/music4.mp3' | relative_url }}">
+                        <div class="cover" style="background-image: url('{{ '/src/cover4.jpg' | relative_url }}');"></div>
+                        <div class="info"><div class="title">Lemon Tree</div><div class="artist">Fool's Garden</div></div>
+                        <div class="duration">3:11</div>
+                        <div class="play-icon"></div>
+                    </li>
+                    <li data-src="{{ '/src/music5.mp3' | relative_url }}">
+                        <div class="cover" style="background-image: url('{{ '/src/cover5.jpg' | relative_url }}');"></div>
+                        <div class="info"><div class="title">单车</div><div class="artist">陈奕迅</div></div>
+                        <div class="duration">3:31</div>
+                        <div class="play-icon"></div>
+                    </li>
+                </ul>
+                <div class="mini-player" id="mini-player" aria-label="音乐播放器">
+                    <button class="player-toggle" id="player-toggle" type="button" aria-label="播放选中的歌曲" disabled>
+                        <span class="player-toggle-icon" aria-hidden="true"></span>
+                    </button>
+                    <div class="player-now">
+                        <span class="player-label">正在播放</span>
+                        <strong id="player-title">选择一首歌</strong>
+                        <span id="player-artist">播放列表就绪</span>
+                    </div>
+                    <div class="player-progress-wrap">
+                        <input class="player-progress" id="player-progress" type="range" min="0" max="100" value="0" aria-label="播放进度" disabled>
+                        <div class="player-time">
+                            <span id="player-current-time">0:00</span>
+                            <span id="player-duration">0:00</span>
+                        </div>
+                    </div>
+                </div>
+                <audio id="audio-player" preload="metadata">
+                    <source src="" type="audio/mpeg">
+                    当前浏览器不支持音频播放。
+                </audio>
+            </section>
+        </div>
+    </main>
+</div>
+
+<script type="module" src="{{ '/assets/js/home.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>

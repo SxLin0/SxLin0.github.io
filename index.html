@@ -3,6 +3,7 @@ layout: ocean
 title: 首页
 permalink: /
 description: 宵宵的个人主页，记录课程笔记、技术文章、诗词创作与个人作品。
+sidebar_active: home
 ---
 
 <div class="home-body">
@@ -28,7 +29,7 @@ description: 宵宵的个人主页，记录课程笔记、技术文章、诗词�
                         <span class="section-kicker">Posts</span>
                         <h2 id="featured-title">精选内容</h2>
                     </div>
-                    <a class="section-link" href="#library-panel-content">查看全部</a>
+                    <a class="section-link" href="{{ '/library.html' | relative_url }}">查看全部</a>
                 </div>
                 <div class="featured-works" id="featured-works"></div>
             </section>
@@ -186,11 +187,11 @@ description: 宵宵的个人主页，记录课程笔记、技术文章、诗词�
                     <section class="home-aside-section" aria-labelledby="tags-title">
                         <h2 id="tags-title">热门标签</h2>
                         <div class="aside-tag-cloud">
-                            <a href="#library-panel-content">笔记</a>
-                            <a href="#library-panel-content">课程</a>
-                            <a href="#library-panel-content">技术</a>
-                            <a href="#library-panel-content">诗词</a>
-                            <a href="#library-panel-content">长文</a>
+                            <a href="{{ '/library.html' | relative_url }}">笔记</a>
+                            <a href="{{ '/library.html' | relative_url }}">课程</a>
+                            <a href="{{ '/library.html' | relative_url }}">技术</a>
+                            <a href="{{ '/library.html' | relative_url }}">诗词</a>
+                            <a href="{{ '/library.html' | relative_url }}">长文</a>
                             <a href="#music">音乐</a>
                         </div>
                     </section>

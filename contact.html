@@ -1,0 +1,40 @@
+---
+layout: ocean
+title: 联系
+permalink: /contact.html
+description: 宵宵的联系入口。
+sidebar_active: contact
+---
+
+<div class="home-body">
+    <main class="page-shell">
+        {% include library-panel.html %}
+
+        <div class="home-stack">
+            <nav class="site-nav" aria-label="联系页导航">
+                <a class="site-brand" href="{{ '/' | relative_url }}" aria-label="回到首页">宵宵</a>
+                <div class="site-nav-links">
+                    <a href="{{ '/' | relative_url }}">首页</a>
+                    <a href="{{ '/about.html' | relative_url }}">关于</a>
+                    <a href="{{ '/music.html' | relative_url }}">音乐</a>
+                </div>
+            </nav>
+
+            <section class="content-panel contact-panel standalone-panel" aria-labelledby="contact-title">
+                <div class="section-title-row">
+                    <div>
+                        <span class="section-kicker">Contact</span>
+                        <h1 id="contact-title">联系</h1>
+                    </div>
+                </div>
+                <ul class="contact-list">
+                    <li><span>邮箱</span><a class="contact-value" href="mailto:2125808970@qq.com" aria-label="发送邮件到 2125808970@qq.com">2125808970@qq.com</a></li>
+                    <li><span>GitHub</span><a class="contact-value" href="https://github.com/SxLin0" target="_blank" rel="noreferrer" aria-label="访问 GitHub 主页 SxLin0">SxLin0</a></li>
+                    <li><span>QQ</span><span class="contact-copy-row"><b class="contact-value">2125808970</b><button class="copy-contact" type="button" data-copy-value="2125808970" aria-label="复制 QQ 号 2125808970">复制</button></span></li>
+                </ul>
+            </section>
+        </div>
+    </main>
+</div>
+
+<script type="module" src="{{ '/assets/js/home.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
