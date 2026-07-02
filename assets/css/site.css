@@ -1157,6 +1157,32 @@ body.article-standalone .doc-list-line {
     color: #29495b;
 }
 
+.article-document .doc-formula,
+body.article-standalone .doc-formula {
+    max-width: 760px;
+    margin: 16px auto 18px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    border: 1px solid rgba(23, 107, 135, 0.14);
+    border-radius: 8px;
+    background: rgba(246, 250, 249, 0.92);
+    color: #143746;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.95rem;
+    line-height: 1.75;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.article-document .doc-reference,
+body.article-standalone .doc-reference {
+    max-width: 760px;
+    color: #526a74;
+    font-size: 0.94rem;
+    line-height: 1.75;
+    text-indent: 0;
+}
+
 .article-document .doc-lead {
     color: #29495b;
     font-size: 1rem;

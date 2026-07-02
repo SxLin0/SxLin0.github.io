@@ -26,16 +26,22 @@
     <p class="doc-list-line">Key：每个 token 提供一个可匹配的索引。</p>
     <p class="doc-list-line">Value：真正被汇总进来的内容。</p>
     <p class="doc-paragraph">可以把它想象成在图书馆找资料。你手里有一个问题，这就是 Query；每本书的目录关键词像 Key；书中真正有用的段落像 Value。你先用问题和目录匹配，判断哪些书更相关，再把相关书里的内容汇总起来。</p>
-    <p class="doc-paragraph">数学上，Transformer 会计算 Q 和 K 的相似度，再经过 softmax 得到权重，最后用这些权重对 V 做加权求和。这个过程让每个 token 都能从整段文本中收集与自己相关的信息。</p>
+    <p class="doc-paragraph">数学上，Transformer 会计算 Q 和 K 的相似度，再经过 softmax 得到权重，最后用这些权重对 V 做加权求和。原论文把这个操作称为 scaled dot-product attention，可以写成：</p>
+    <div class="doc-formula">Attention(Q, K, V) = softmax((QK<sup>T</sup>) / sqrt(d<sub>k</sub>))V</div>
+    <p class="doc-paragraph">这里的 d<sub>k</sub> 是 Key 向量的维度。除以 sqrt(d<sub>k</sub>) 是为了避免点积结果过大，让 softmax 后的分布不至于过早变得极端。这个公式背后的直觉很朴素：先算“我和谁最相关”，再按相关性把信息加权汇总回来。</p>
 
     <h2 class="doc-heading">为什么要多头注意力</h2>
     <p class="doc-paragraph">如果只有一个注意力头，模型可能只能从一个角度理解关系。但语言里的关系很多：指代关系、时间关系、因果关系、语法关系、主题关系，往往同时存在。</p>
     <p class="doc-paragraph">还是用刚才那句话。一个注意力头可能关注“它”和“钥匙”的指代关系；另一个头可能关注“明天”和“上课”的时间关系；还有一个头可能关注“放进”和“书包”的动作关系。多头注意力的意义，就是让模型在不同子空间里并行观察不同类型的联系。</p>
-    <p class="doc-paragraph">最后，这些头的结果会被拼接起来，再经过线性变换，形成更丰富的表示。它不是让模型变得玄学，而是给模型更多观察句子的角度。</p>
+    <p class="doc-paragraph">最后，这些头的结果会被拼接起来，再经过线性变换，形成更丰富的表示。用公式表示就是：</p>
+    <div class="doc-formula">head<sub>i</sub> = Attention(QW<sub>i</sub><sup>Q</sup>, KW<sub>i</sub><sup>K</sup>, VW<sub>i</sub><sup>V</sup>)<br>MultiHead(Q, K, V) = Concat(head<sub>1</sub>, ..., head<sub>h</sub>)W<sup>O</sup></div>
+    <p class="doc-paragraph">它不是让模型变得玄学，而是给模型更多观察句子的角度。每个 head 都有自己的一组投影矩阵，因此可以学习不同类型的关系。</p>
 
     <h2 class="doc-heading">没有顺序，模型怎么知道位置</h2>
     <p class="doc-paragraph">注意力机制有一个麻烦：它本身并不知道词的顺序。对 self-attention 来说，“我把钥匙放进书包”和“书包放进钥匙把我”在集合意义上只是同一批 token，顺序信息需要额外提供。</p>
-    <p class="doc-paragraph">所以 Transformer 引入了位置编码（positional encoding）。论文中使用的是正弦和余弦函数构造的位置编码，把每个位置的信息加到词向量上。这样模型不仅知道每个 token 是什么，也知道它大概处在句子的哪个位置。</p>
+    <p class="doc-paragraph">所以 Transformer 引入了位置编码（positional encoding）。论文中使用的是正弦和余弦函数构造的位置编码，把每个位置的信息加到词向量上：</p>
+    <div class="doc-formula">PE(pos, 2i) = sin(pos / 10000<sup>2i / d<sub>model</sub></sup>)<br>PE(pos, 2i + 1) = cos(pos / 10000<sup>2i / d<sub>model</sub></sup>)</div>
+    <p class="doc-paragraph">这样模型不仅知道每个 token 是什么，也知道它大概处在句子的哪个位置。正弦和余弦的位置编码还有一个好处：不同位置之间的相对距离会以一种平滑的方式体现在向量里，方便模型学习顺序关系。</p>
     <p class="doc-paragraph">可以把 token embedding 理解成“这个词是什么意思”，把 positional encoding 理解成“这个词站在队伍里的哪里”。两者加在一起，模型才既有内容信息，也有顺序信息。</p>
 
     <h2 class="doc-heading">Transformer 的整体结构</h2>
@@ -65,8 +71,9 @@
     <p class="doc-paragraph">如果说 RNN 像一个人按顺序读书并不断更新笔记，那么 Transformer 更像是在一张桌子上摊开整页内容，反复标注不同句子、词语和线索之间的关系。它不是像人一样理解语言，但它提供了一种非常强的统计结构，让模型能从海量数据中学到复杂模式。</p>
     <p class="doc-paragraph">这也是为什么 Transformer 会成为今天 AI 爆发的起点之一。它没有解决所有问题，却给出了一个足够通用、足够可扩展、足够适合硬件训练的答案。后来的大模型浪潮，很大程度上就是在这个答案上继续放大。</p>
 
-    <h2 class="doc-heading">参考</h2>
-    <p class="doc-list-line">1. Vaswani et al., <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noreferrer">Attention Is All You Need</a>, 2017.</p>
-    <p class="doc-list-line">2. Google Research Blog, <a href="https://research.google/pubs/attention-is-all-you-need/" target="_blank" rel="noreferrer">Attention Is All You Need</a>.</p>
+    <h2 class="doc-heading">参考文献</h2>
+    <p class="doc-reference">[1] Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Lukasz Kaiser, Illia Polosukhin. <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noreferrer">Attention Is All You Need</a>. NeurIPS, 2017.</p>
+    <p class="doc-reference">[2] Google Research. <a href="https://research.google/pubs/attention-is-all-you-need/" target="_blank" rel="noreferrer">Attention Is All You Need</a>.</p>
+    <p class="doc-reference">[3] Jay Alammar. <a href="https://jalammar.github.io/illustrated-transformer/" target="_blank" rel="noreferrer">The Illustrated Transformer</a>.</p>
 </body>
 </html>

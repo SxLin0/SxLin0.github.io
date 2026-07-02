@@ -150,9 +150,15 @@ test('mamba article reads like a complete paper-reading blog', async () => {
     assert.match(article, /状态空间模型/);
     assert.match(article, /线性时不变性/);
     assert.match(article, /选择性状态空间模型/);
+    assert.match(article, /class="doc-formula"/);
+    assert.match(article, /h<sub>t<\/sub> = A h<sub>t-1<\/sub> \+ B x<sub>t<\/sub>/);
+    assert.match(article, /B = s<sub>B<\/sub>\(x\)/);
+    assert.match(article, /⊙/);
     assert.match(article, /硬件感知/);
     assert.match(article, /selective scan/);
     assert.match(article, /我的理解/);
+    assert.match(article, /参考文献/);
+    assert.match(article, /https:\/\/arxiv\.org\/abs\/2312\.00752/);
     assert.doesNotMatch(article, /author|CONTENTS|谢谢观看/);
 });
 
@@ -162,12 +168,18 @@ test('transformer article explains the architecture with original examples', asy
     assert.match(article, /Transformer是什么？/);
     assert.match(article, /Attention Is All You Need/);
     assert.match(article, /Query、Key、Value/);
+    assert.match(article, /class="doc-formula"/);
+    assert.match(article, /Attention\(Q, K, V\) = softmax/);
     assert.match(article, /多头注意力/);
+    assert.match(article, /MultiHead\(Q, K, V\)/);
     assert.match(article, /位置编码/);
+    assert.match(article, /PE\(pos, 2i\)/);
     assert.match(article, /encoder-decoder/);
     assert.match(article, /masked self-attention/);
     assert.match(article, /钥匙放进书包/);
     assert.match(article, /图书馆找资料/);
+    assert.match(article, /参考文献/);
+    assert.match(article, /https:\/\/arxiv\.org\/abs\/1706\.03762/);
     assert.doesNotMatch(article, /10分钟速通|复制此链接|Dou音|抖音搜索/);
 });
 
@@ -183,6 +195,7 @@ test('article html pages use polished standalone reading styles', async () => {
     assert.match(css, /\.article-document \.doc-subtitle\s*\{[\s\S]*text-align:\s*center/);
     assert.match(css, /body\.article-standalone h1\s*\{[\s\S]*text-align:\s*center/);
     assert.match(css, /body\.article-standalone \.doc-subtitle\s*\{[\s\S]*text-align:\s*center/);
+    assert.match(css, /\.article-document \.doc-formula,[\s\S]*body\.article-standalone \.doc-formula\s*\{[\s\S]*overflow-x:\s*auto/);
 
     for (const articlePath of articlePaths) {
         const article = await readFile(new URL(articlePath, import.meta.url), 'utf8');
