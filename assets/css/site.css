@@ -2305,7 +2305,8 @@ body::after {
         display: flex;
     }
 
-    .home-body {
+    .home-body,
+    .reader-body {
         padding: 20px 14px 96px;
     }
 

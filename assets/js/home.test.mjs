@@ -99,7 +99,7 @@ test('library sections are reduced to blog poem and articles', () => {
 test('articles keep software advice and moved essays only', () => {
     const articleIds = works.filter((work) => work.section === 'articles').map((work) => work.id);
 
-    assert.deepEqual(articleIds, ['software-major', 'mamba-paper-reading', 'spring-essay']);
+    assert.deepEqual(articleIds, ['software-major', 'what-is-transformer', 'mamba-paper-reading', 'spring-essay']);
     assert.equal(works.some((work) => work.id === 'capital-scientific-thinking'), false);
     assert.equal(works.some((work) => work.id === 'digital-labor-alienation'), false);
 });
@@ -156,6 +156,21 @@ test('mamba article reads like a complete paper-reading blog', async () => {
     assert.doesNotMatch(article, /author|CONTENTS|谢谢观看/);
 });
 
+test('transformer article explains the architecture with original examples', async () => {
+    const article = await readFile(new URL('../../content/articles-html/what-is-transformer.html', import.meta.url), 'utf8');
+
+    assert.match(article, /Transformer是什么？/);
+    assert.match(article, /Attention Is All You Need/);
+    assert.match(article, /Query、Key、Value/);
+    assert.match(article, /多头注意力/);
+    assert.match(article, /位置编码/);
+    assert.match(article, /encoder-decoder/);
+    assert.match(article, /masked self-attention/);
+    assert.match(article, /钥匙放进书包/);
+    assert.match(article, /图书馆找资料/);
+    assert.doesNotMatch(article, /10分钟速通|复制此链接|Dou音|抖音搜索/);
+});
+
 test('reader pages place the article before the table of contents inside a document layout', async () => {
     const reader = await readFile(new URL('../../assets/js/reader.js', import.meta.url), 'utf8');
 
@@ -186,9 +201,9 @@ test('static blog detail pages receive shared meta and adjacent navigation chrom
 
 test('homepage keeps three quiet featured entries from real content', () => {
     assert.deepEqual(getFeaturedWorks(works, 3).map((work) => work.id), [
+        'what-is-transformer',
         'mamba-paper-reading',
-        'software-major',
-        'first-arrival-jiangning'
+        'software-major'
     ]);
 });
 

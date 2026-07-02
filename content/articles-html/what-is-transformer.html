@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Transformer是什么？</title>
+</head>
+<body>
+    <h1>Transformer是什么？</h1>
+    <p class="doc-subtitle">从注意力机制到大模型骨架，重新理解《Attention Is All You Need》</p>
+
+    <p class="doc-paragraph">如果只用一句话解释 Transformer，我会说：它是一种用“注意力机制”处理序列信息的神经网络结构。它最早在 2017 年的论文《Attention Is All You Need》中被系统提出，最初主要用于机器翻译，后来却成了今天大语言模型、图像生成、多模态模型背后的核心架构之一。</p>
+    <p class="doc-paragraph">这篇文章想回答几个基础问题：Transformer 到底解决了什么问题？为什么它不再依赖 RNN 那样一个词一个词地处理？“注意力”到底在注意什么？以及它为什么能成为后来大模型爆发的起点。</p>
+
+    <h2 class="doc-heading">先从一句话开始</h2>
+    <p class="doc-paragraph">假设我们要让模型理解这句话：</p>
+    <p class="doc-list-line">“我把钥匙放进书包，因为它明天上课还要用。”</p>
+    <p class="doc-paragraph">人读这句话时，很容易知道“它”大概率指的是“钥匙”，而不是“书包”。但对机器来说，这不是天然显然的。模型需要判断不同词之间的关系：谁在被使用，谁只是一个容器，哪个词和当前词最相关。</p>
+    <p class="doc-paragraph">传统的循环神经网络（RNN）会按顺序读句子：先读“我”，再读“把”，再读“钥匙”……它像一个人从左到右做笔记，后面的判断依赖前面留下的隐藏状态。这种方式直观，但有两个问题：一是很难并行，训练速度慢；二是句子很长时，早期信息容易被压缩和遗忘。</p>
+    <p class="doc-paragraph">Transformer 换了一个思路：与其一步一步读，不如让每个词直接去看整句话里和自己有关的词。也就是说，模型不再只靠顺序传递信息，而是通过注意力机制建立词与词之间的直接联系。</p>
+
+    <h2 class="doc-heading">注意力机制在做什么</h2>
+    <p class="doc-paragraph">注意力机制的直觉很简单：当模型处理某个词时，不应该平均看待所有其他词，而应该给更相关的词更高权重。比如处理“它”时，模型应该更关注“钥匙”；处理“上课”时，模型可能更关注“明天”。</p>
+    <p class="doc-paragraph">Transformer 里的 self-attention 就是在同一个句子内部计算这种相关性。每个 token 会被映射成三个向量：Query、Key、Value，常简写为 Q、K、V。</p>
+    <p class="doc-list-line">Query：当前 token 想找什么信息。</p>
+    <p class="doc-list-line">Key：每个 token 提供一个可匹配的索引。</p>
+    <p class="doc-list-line">Value：真正被汇总进来的内容。</p>
+    <p class="doc-paragraph">可以把它想象成在图书馆找资料。你手里有一个问题，这就是 Query；每本书的目录关键词像 Key；书中真正有用的段落像 Value。你先用问题和目录匹配，判断哪些书更相关，再把相关书里的内容汇总起来。</p>
+    <p class="doc-paragraph">数学上，Transformer 会计算 Q 和 K 的相似度，再经过 softmax 得到权重，最后用这些权重对 V 做加权求和。这个过程让每个 token 都能从整段文本中收集与自己相关的信息。</p>
+
+    <h2 class="doc-heading">为什么要多头注意力</h2>
+    <p class="doc-paragraph">如果只有一个注意力头，模型可能只能从一个角度理解关系。但语言里的关系很多：指代关系、时间关系、因果关系、语法关系、主题关系，往往同时存在。</p>
+    <p class="doc-paragraph">还是用刚才那句话。一个注意力头可能关注“它”和“钥匙”的指代关系；另一个头可能关注“明天”和“上课”的时间关系；还有一个头可能关注“放进”和“书包”的动作关系。多头注意力的意义，就是让模型在不同子空间里并行观察不同类型的联系。</p>
+    <p class="doc-paragraph">最后，这些头的结果会被拼接起来，再经过线性变换，形成更丰富的表示。它不是让模型变得玄学，而是给模型更多观察句子的角度。</p>
+
+    <h2 class="doc-heading">没有顺序，模型怎么知道位置</h2>
+    <p class="doc-paragraph">注意力机制有一个麻烦：它本身并不知道词的顺序。对 self-attention 来说，“我把钥匙放进书包”和“书包放进钥匙把我”在集合意义上只是同一批 token，顺序信息需要额外提供。</p>
+    <p class="doc-paragraph">所以 Transformer 引入了位置编码（positional encoding）。论文中使用的是正弦和余弦函数构造的位置编码，把每个位置的信息加到词向量上。这样模型不仅知道每个 token 是什么，也知道它大概处在句子的哪个位置。</p>
+    <p class="doc-paragraph">可以把 token embedding 理解成“这个词是什么意思”，把 positional encoding 理解成“这个词站在队伍里的哪里”。两者加在一起，模型才既有内容信息，也有顺序信息。</p>
+
+    <h2 class="doc-heading">Transformer 的整体结构</h2>
+    <p class="doc-paragraph">原始 Transformer 是一个 encoder-decoder 架构，主要面向机器翻译。</p>
+    <p class="doc-list-line">Encoder：读取输入句子，把它变成一组上下文表示。</p>
+    <p class="doc-list-line">Decoder：根据 encoder 的结果，一步步生成目标句子。</p>
+    <p class="doc-paragraph">Encoder 由多个相同层堆叠而成。每一层主要包含两个部分：多头自注意力和前馈神经网络。自注意力负责让 token 之间交换信息，前馈网络负责对每个位置的表示做进一步非线性变换。为了让深层网络更稳定，每个子层外面还会配合残差连接和层归一化。</p>
+    <p class="doc-paragraph">Decoder 也有类似结构，但多了两个关键设计。第一，它有 masked self-attention，也就是生成当前位置时不能偷看未来 token。第二，它还有 encoder-decoder attention，用来让 decoder 在生成时关注输入句子中的相关部分。</p>
+    <p class="doc-paragraph">如果把翻译任务比作“读中文，写英文”，encoder 像是先把中文句子读懂并整理成笔记；decoder 像是边看笔记边写英文，而且写第 5 个词时不能提前知道第 6 个词。</p>
+
+    <h2 class="doc-heading">它为什么比 RNN 更适合大规模训练</h2>
+    <p class="doc-paragraph">Transformer 的一个巨大优势是并行化。RNN 处理序列时天然有前后依赖，第 t 步要等第 t-1 步算完；Transformer 的 self-attention 可以一次性处理整个序列中所有 token 的关系，更适合 GPU 并行计算。</p>
+    <p class="doc-paragraph">这件事在小模型时代可能只是训练快一点，但在大模型时代就非常关键。模型参数越来越多，数据越来越大，如果结构本身不适合并行，训练成本会迅速变得不可接受。Transformer 的成功，很大程度上来自它把建模能力和硬件效率结合得很好。</p>
+    <p class="doc-paragraph">当然，Transformer 也不是没有代价。标准注意力的计算量会随序列长度平方增长，长上下文会带来显存和计算压力。这也是后来 Longformer、FlashAttention、Mamba 等一系列工作的出发点：保留 Transformer 的表达能力，同时降低长序列成本。</p>
+
+    <h2 class="doc-heading">为什么说它改变了 AI</h2>
+    <p class="doc-paragraph">2017 年的《Attention Is All You Need》并不是一开始就以“大语言模型革命宣言”的面貌出现的。它的实验主要集中在机器翻译上，但它提出的结构后来被证明具有极强的可扩展性。</p>
+    <p class="doc-paragraph">BERT 使用 Transformer encoder 做语言理解，GPT 系列使用 Transformer decoder 做自回归生成，ViT 把图像切成 patch 后也交给 Transformer 处理。后来的大语言模型、代码模型、多模态模型，很多都可以看作是在 Transformer 思想上的扩展。</p>
+    <p class="doc-paragraph">它的重要性不只是“效果更好”，而是提供了一种统一的建模方式：把文本、图像、音频甚至代码都表示成 token 序列，再用注意力机制建模 token 之间的关系。这个思路极大降低了不同任务之间的架构隔阂。</p>
+
+    <h2 class="doc-heading">一个容易误解的点</h2>
+    <p class="doc-paragraph">很多人会把 Transformer 简单理解成“注意力机制”，但这并不完整。注意力是核心，但 Transformer 的成功来自一整套组合：多头注意力、位置编码、前馈网络、残差连接、层归一化、mask 机制，以及适合并行训练的堆叠方式。</p>
+    <p class="doc-paragraph">单独拿出 attention，它只是一个信息汇聚操作；放进 Transformer 架构里，它才变成了可以大规模堆叠、训练和迁移的基础模块。</p>
+
+    <h2 class="doc-heading">我的理解</h2>
+    <p class="doc-paragraph">Transformer 最优雅的地方，是它把“理解一句话”变成了“计算这句话内部各部分之间的关系”。它不再强迫信息沿着时间一步步传递，而是允许每个位置直接和其他位置建立联系。这使得模型既能捕捉长距离依赖，又能高效并行训练。</p>
+    <p class="doc-paragraph">如果说 RNN 像一个人按顺序读书并不断更新笔记，那么 Transformer 更像是在一张桌子上摊开整页内容，反复标注不同句子、词语和线索之间的关系。它不是像人一样理解语言，但它提供了一种非常强的统计结构，让模型能从海量数据中学到复杂模式。</p>
+    <p class="doc-paragraph">这也是为什么 Transformer 会成为今天 AI 爆发的起点之一。它没有解决所有问题，却给出了一个足够通用、足够可扩展、足够适合硬件训练的答案。后来的大模型浪潮，很大程度上就是在这个答案上继续放大。</p>
+
+    <h2 class="doc-heading">参考</h2>
+    <p class="doc-list-line">1. Vaswani et al., <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noreferrer">Attention Is All You Need</a>, 2017.</p>
+    <p class="doc-list-line">2. Google Research Blog, <a href="https://research.google/pubs/attention-is-all-you-need/" target="_blank" rel="noreferrer">Attention Is All You Need</a>.</p>
+</body>
+</html>
