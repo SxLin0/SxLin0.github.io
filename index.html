@@ -15,14 +15,13 @@ sidebar_active: home
                 <a class="site-brand" href="{{ '/' | relative_url }}" aria-label="回到首页">宵宵</a>
                 <div class="site-nav-links">
                     <a href="#works">作品</a>
-                    <a href="#about">关于</a>
-                    <a href="#music">音乐</a>
-                    <a href="#contact">联系</a>
+                    <a href="{{ '/about.html' | relative_url }}">关于</a>
+                    <a href="{{ '/library.html' | relative_url }}">书架</a>
+                    <a href="{{ '/music.html' | relative_url }}">音乐</a>
+                    <a href="{{ '/contact.html' | relative_url }}">联系</a>
                 </div>
             </nav>
 
-            <div class="home-layout">
-                <div class="home-main">
             <section class="content-panel featured-panel" id="works" aria-labelledby="featured-title">
                 <div class="section-title-row">
                     <div>
@@ -33,170 +32,6 @@ sidebar_active: home
                 </div>
                 <div class="featured-works" id="featured-works"></div>
             </section>
-
-            <section class="content-panel about-panel" id="about" aria-labelledby="about-title">
-                <div class="section-title-row">
-                    <div>
-                        <span class="section-kicker">Profile</span>
-                        <h2 id="about-title">关于我</h2>
-                    </div>
-                </div>
-                <div class="about-layout">
-                    <div class="about-copy">
-                        <p>你好，我是 <b>宵宵</b>。</p>
-                        <p>我喜欢把个人知识管理当作长期练习。这个网站像一方书架，放着一些作品和想法：技术内容尽量清楚可靠，诗词和长文则保留一点自己的语气。</p>
-                        <p>不写代码的时候，我多半在听歌、读书、打游戏、骑车，或者琢磨下一顿吃什么。</p>
-                    </div>
-                </div>
-                <div class="skill-clusters" aria-label="个人标签">
-                    <div class="skill-cluster">
-                        <h3>写东西</h3>
-                        <div class="tag-cloud">
-                            <span>📚 课程笔记</span>
-                            <span>🧩 技术文章</span>
-                            <span>📝 长文思考</span>
-                            <span>🌙 诗词</span>
-                        </div>
-                    </div>
-                    <div class="skill-cluster">
-                        <h3>生活</h3>
-                        <div class="tag-cloud">
-                            <span>🎧 音乐</span>
-                            <span>📖 读书</span>
-                            <span>🎮 游戏</span>
-                            <span>🚲 骑行</span>
-                            <span>🍜 美食</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="content-panel music-panel playlist" id="music" aria-labelledby="music-title">
-                <div class="section-title-row">
-                    <div>
-                        <span class="section-kicker">Listening</span>
-                        <h2 id="music-title">播放列表</h2>
-                    </div>
-                    <span>6 首歌</span>
-                </div>
-                <ul id="playlist">
-                    <li data-src="{{ '/src/music.mp3' | relative_url }}">
-                        <div class="cover" style="background-image: url('{{ '/src/cover.jpg' | relative_url }}');"></div>
-                        <div class="info">
-                            <div class="title">倔强</div>
-                            <div class="artist">五月天</div>
-                        </div>
-                        <div class="duration">4:23</div>
-                        <div class="play-icon"></div>
-                    </li>
-                    <li data-src="{{ '/src/music1.mp3' | relative_url }}">
-                        <div class="cover" style="background-image: url('{{ '/src/cover1.jpg' | relative_url }}');"></div>
-                        <div class="info">
-                            <div class="title">如烟</div>
-                            <div class="artist">五月天</div>
-                        </div>
-                        <div class="duration">5:13</div>
-                        <div class="play-icon"></div>
-                    </li>
-                    <li data-src="{{ '/src/music2.mp3' | relative_url }}">
-                        <div class="cover" style="background-image: url('{{ '/src/cover2.jpg' | relative_url }}');"></div>
-                        <div class="info">
-                            <div class="title">逆光</div>
-                            <div class="artist">孙燕姿</div>
-                        </div>
-                        <div class="duration">4:54</div>
-                        <div class="play-icon"></div>
-                    </li>
-                    <li data-src="{{ '/src/music3.mp3' | relative_url }}">
-                        <div class="cover" style="background-image: url('{{ '/src/cover3.jpg' | relative_url }}');"></div>
-                        <div class="info">
-                            <div class="title">搁浅</div>
-                            <div class="artist">周杰伦</div>
-                        </div>
-                        <div class="duration">3:58</div>
-                        <div class="play-icon"></div>
-                    </li>
-                    <li data-src="{{ '/src/music4.mp3' | relative_url }}">
-                        <div class="cover" style="background-image: url('{{ '/src/cover4.jpg' | relative_url }}');"></div>
-                        <div class="info">
-                            <div class="title">Lemon Tree</div>
-                            <div class="artist">Fool's Garden</div>
-                        </div>
-                        <div class="duration">3:11</div>
-                        <div class="play-icon"></div>
-                    </li>
-                    <li data-src="{{ '/src/music5.mp3' | relative_url }}">
-                        <div class="cover" style="background-image: url('{{ '/src/cover5.jpg' | relative_url }}');"></div>
-                        <div class="info">
-                            <div class="title">单车</div>
-                            <div class="artist">陈奕迅</div>
-                        </div>
-                        <div class="duration">3:31</div>
-                        <div class="play-icon"></div>
-                    </li>
-                </ul>
-                <div class="mini-player" id="mini-player" aria-label="音乐播放器">
-                    <button class="player-toggle" id="player-toggle" type="button" aria-label="播放选中的歌曲" disabled>
-                        <span class="player-toggle-icon" aria-hidden="true"></span>
-                    </button>
-                    <div class="player-now">
-                        <span class="player-label">正在播放</span>
-                        <strong id="player-title">选择一首歌</strong>
-                        <span id="player-artist">播放列表就绪</span>
-                    </div>
-                    <div class="player-progress-wrap">
-                        <input class="player-progress" id="player-progress" type="range" min="0" max="100" value="0" aria-label="播放进度" disabled>
-                        <div class="player-time">
-                            <span id="player-current-time">0:00</span>
-                            <span id="player-duration">0:00</span>
-                        </div>
-                    </div>
-                </div>
-                <audio id="audio-player" preload="metadata">
-                    <source src="" type="audio/mpeg">
-                    当前浏览器不支持音频播放。
-                </audio>
-            </section>
-
-            <section class="content-panel contact-panel" id="contact" aria-labelledby="contact-title">
-                <div class="section-title-row">
-                    <div>
-                        <span class="section-kicker">Contact</span>
-                        <h2 id="contact-title">联系</h2>
-                    </div>
-                </div>
-                <ul class="contact-list">
-                    <li><span>邮箱</span><a class="contact-value" href="mailto:2125808970@qq.com" aria-label="发送邮件到 2125808970@qq.com">2125808970@qq.com</a></li>
-                    <li><span>GitHub</span><a class="contact-value" href="https://github.com/SxLin0" target="_blank" rel="noreferrer" aria-label="访问 GitHub 主页 SxLin0">SxLin0</a></li>
-                    <li><span>QQ</span><span class="contact-copy-row"><b class="contact-value">2125808970</b><button class="copy-contact" type="button" data-copy-value="2125808970" aria-label="复制 QQ 号 2125808970">复制</button></span></li>
-                </ul>
-            </section>
-                </div>
-
-                <aside class="home-aside" aria-label="首页辅助信息">
-                    <section class="home-aside-section" aria-labelledby="recent-title">
-                        <h2 id="recent-title">最近更新</h2>
-                        <ul class="recent-list">
-                            <li><a href="{{ '/reader.html?work=how-llm-is-born' | relative_url }}">🌱 大语言模型如何诞生</a></li>
-                            <li><a href="{{ '/reader.html?work=what-is-transformer' | relative_url }}">✨ Transformer是什么？</a></li>
-                            <li><a href="{{ '/reader.html?work=mamba-paper-reading' | relative_url }}">🧠 Mamba 论文阅读：选择性状态空间模型如何挑战 Transformer</a></li>
-                            <li><a href="{{ '/reader.html?work=software-major' | relative_url }}">💬 关于填报软件工程专业的一些看法</a></li>
-                            <li><a href="{{ '/content/blog/compiler-principles.html' | relative_url }}">📒 编译原理</a></li>
-                        </ul>
-                    </section>
-                    <section class="home-aside-section" aria-labelledby="tags-title">
-                        <h2 id="tags-title">热门标签</h2>
-                        <div class="aside-tag-cloud">
-                            <a href="{{ '/library.html' | relative_url }}">笔记</a>
-                            <a href="{{ '/library.html' | relative_url }}">课程</a>
-                            <a href="{{ '/library.html' | relative_url }}">技术</a>
-                            <a href="{{ '/library.html' | relative_url }}">诗词</a>
-                            <a href="{{ '/library.html' | relative_url }}">长文</a>
-                            <a href="#music">音乐</a>
-                        </div>
-                    </section>
-                </aside>
-            </div>
 
             <footer class="license-note">
                 本博客网站所有文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议，转载请注明出处。

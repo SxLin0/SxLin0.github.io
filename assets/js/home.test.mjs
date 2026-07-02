@@ -322,21 +322,14 @@ test('homepage uses the mature integrated profile structure', async () => {
     const libraryPanel = await readFile(new URL('../../_includes/library-panel.html', import.meta.url), 'utf8');
 
     assert.match(home, /class="site-nav"/);
-    assert.match(home, /class="home-layout"/);
-    assert.match(home, /class="home-main"/);
-    assert.match(home, /class="home-aside"/);
     assert.match(libraryPanel, /class="library-panel site-sidebar"/);
     assert.match(libraryPanel, /class="sidebar-nav"/);
     assert.match(home, /id="works"/);
-    assert.match(home, /id="about"/);
-    assert.match(home, /id="music"/);
-    assert.match(home, /id="contact"/);
+    assert.doesNotMatch(home, /id="about"|id="music"|id="contact"|class="home-aside"/);
     assert.match(libraryPanel, /<h2>宵宵<\/h2>/);
     assert.match(libraryPanel, /一个慢慢生长的个人空间/);
     assert.ok(home.indexOf('class="site-nav"') < home.indexOf('id="works"'));
-    assert.ok(home.indexOf('id="works"') < home.indexOf('id="about"'));
-    assert.match(home, /最近更新/);
-    assert.match(home, /热门标签/);
+    assert.doesNotMatch(home, /最近更新|热门标签/);
     assert.doesNotMatch(home, /class="profile-card"/);
     assert.doesNotMatch(home, /class="hero-panel"/);
     assert.doesNotMatch(home, /class="hero-profile"/);
@@ -347,11 +340,12 @@ test('homepage navigation points to primary sections and contact paths', async (
     const libraryPanel = await readFile(new URL('../../_includes/library-panel.html', import.meta.url), 'utf8');
     const libraryPage = await readFile(new URL('../../library.html', import.meta.url), 'utf8');
     const libraryCatalog = await readFile(new URL('../../_includes/library-catalog.html', import.meta.url), 'utf8');
+    const contact = await readFile(new URL('../../contact.html', import.meta.url), 'utf8');
 
     assert.match(home, /href="#works"/);
-    assert.match(home, /href="#about"/);
-    assert.match(home, /href="#music"/);
-    assert.match(home, /href="#contact"/);
+    assert.match(home, /href="{{ '\/about\.html' \| relative_url }}"/);
+    assert.match(home, /href="{{ '\/music\.html' \| relative_url }}"/);
+    assert.match(home, /href="{{ '\/contact\.html' \| relative_url }}"/);
     assert.match(libraryPanel, /href="{{ '\/' \| relative_url }}">首页/);
     assert.match(libraryPanel, /href="{{ '\/about\.html' \| relative_url }}">关于我/);
     assert.match(libraryPanel, /href="{{ '\/library\.html' \| relative_url }}">书架/);
@@ -362,8 +356,8 @@ test('homepage navigation points to primary sections and contact paths', async (
     assert.match(home, /href="{{ '\/library\.html' \| relative_url }}">查看全部/);
     assert.match(libraryPage, /include library-catalog\.html/);
     assert.match(libraryCatalog, /id="library-sections"/);
-    assert.match(home, /mailto:2125808970@qq.com/);
-    assert.match(home, /https:\/\/github.com\/SxLin0/);
+    assert.match(contact, /mailto:2125808970@qq.com/);
+    assert.match(contact, /https:\/\/github.com\/SxLin0/);
 });
 
 test('homepage copy reads as a personal space instead of a resume showcase', async () => {
@@ -428,9 +422,8 @@ test('homepage interface labels are localized for a Chinese personal blog', asyn
     const combined = `${home}\n${libraryPanel}\n${homeScript}`;
 
     assert.match(home, /精选内容/);
-    assert.match(home, /最近更新/);
-    assert.match(home, /关于我/);
-    assert.match(home, /播放列表/);
+    assert.match(home, /查看全部/);
+    assert.doesNotMatch(home, /最近更新|<h2 id="about-title">关于我<\/h2>|<h2 id="music-title">播放列表<\/h2>|<h2 id="contact-title">联系<\/h2>/);
     assert.match(libraryPanel, />首页</);
     assert.match(libraryPanel, />关于我</);
     assert.match(libraryPanel, />书架</);
@@ -444,42 +437,44 @@ test('sidebar section entries have dedicated pages', async () => {
     const about = await readFile(new URL('../../about.html', import.meta.url), 'utf8');
     const music = await readFile(new URL('../../music.html', import.meta.url), 'utf8');
     const contact = await readFile(new URL('../../contact.html', import.meta.url), 'utf8');
+    const css = await readFile(new URL('../../assets/css/site.css', import.meta.url), 'utf8');
 
     assert.match(about, /sidebar_active:\s*about/);
     assert.match(about, /id="about-title"/);
     assert.match(music, /sidebar_active:\s*music/);
     assert.match(music, /id="music-title"/);
+    assert.match(css, /\.standalone-panel\.playlist ul\s*\{[\s\S]*grid-template-columns:\s*1fr/);
     assert.match(contact, /sidebar_active:\s*contact/);
     assert.match(contact, /id="contact-title"/);
 });
 
-test('homepage copy and tags stay personal instead of resume-like', async () => {
-    const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
+test('about page copy and tags stay personal instead of resume-like', async () => {
+    const about = await readFile(new URL('../../about.html', import.meta.url), 'utf8');
     const libraryPanel = await readFile(new URL('../../_includes/library-panel.html', import.meta.url), 'utf8');
     const overdoneCopy = /面试官|老师|同学|开源朋友|作品集展示|快速了解|专业展示|简历|求职/;
     const inflatedTags = /全栈开发|AI|产品经理|创业|效率达人|未来主义|数字游民/;
 
     assert.match(libraryPanel, /一个慢慢生长的个人空间/);
-    assert.match(home, /不写代码的时候，我多半在听歌、读书、打游戏、骑车，或者琢磨下一顿吃什么/);
-    assert.match(home, /技术内容尽量清楚可靠/);
-    assert.match(home, /写东西/);
-    assert.match(home, /生活/);
-    assert.match(home, /📚 课程笔记/);
-    assert.match(home, /🍜 美食/);
-    assert.doesNotMatch(home, /C\+\+|Python|JavaScript|Spring Boot|后端开发|软件工程本科生|南京大学|在读/);
-    assert.doesNotMatch(home, /开源项目|个人作品集/);
-    assert.doesNotMatch(home, overdoneCopy);
-    assert.doesNotMatch(home, inflatedTags);
+    assert.match(about, /不写代码的时候，我多半在听歌、读书、打游戏、骑车，或者琢磨下一顿吃什么/);
+    assert.match(about, /技术内容尽量清楚可靠/);
+    assert.match(about, /写东西/);
+    assert.match(about, /生活/);
+    assert.match(about, /📚 课程笔记/);
+    assert.match(about, /🍜 美食/);
+    assert.doesNotMatch(about, /C\+\+|Python|JavaScript|Spring Boot|后端开发|软件工程本科生|南京大学|在读/);
+    assert.doesNotMatch(about, /开源项目|个人作品集/);
+    assert.doesNotMatch(about, overdoneCopy);
+    assert.doesNotMatch(about, inflatedTags);
 });
 
 test('contact card keeps calm copy values and a lightweight QQ copy affordance', async () => {
-    const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
+    const contact = await readFile(new URL('../../contact.html', import.meta.url), 'utf8');
     const css = await readFile(new URL('../../assets/css/site.css', import.meta.url), 'utf8');
     const homeScript = await readFile(new URL('../../assets/js/home.js', import.meta.url), 'utf8');
 
-    assert.match(home, /class="contact-value"/);
-    assert.match(home, /class="copy-contact"/);
-    assert.match(home, /data-copy-value="2125808970"/);
+    assert.match(contact, /class="contact-value"/);
+    assert.match(contact, /class="copy-contact"/);
+    assert.match(contact, /data-copy-value="2125808970"/);
     assert.match(css, /\.contact-copy-row/);
     assert.match(css, /overflow-wrap:\s*anywhere/);
     assert.match(homeScript, /bindContactCopy/);

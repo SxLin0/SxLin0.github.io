@@ -1842,6 +1842,10 @@ body::after {
     background: rgba(255, 255, 255, 0.82);
 }
 
+.standalone-panel {
+    padding: clamp(24px, 4vw, 44px);
+}
+
 .featured-works {
     display: grid;
     grid-template-columns: 1fr;
@@ -1971,6 +1975,17 @@ body::after {
     margin: 0;
     padding: 0;
     list-style: none;
+}
+
+.standalone-panel.playlist ul {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    max-width: 760px;
+}
+
+.standalone-panel.playlist li {
+    min-height: 74px;
+    padding: 12px 14px;
 }
 
 .playlist li {
