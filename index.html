@@ -14,24 +14,13 @@ sidebar_active: home
             <nav class="site-nav" aria-label="首页导航">
                 <a class="site-brand" href="{{ '/' | relative_url }}" aria-label="回到首页">宵宵</a>
                 <div class="site-nav-links">
-                    <a href="#works">作品</a>
                     <a href="#about">关于</a>
+                    <a href="#works">作品</a>
                     <a href="{{ '/library.html' | relative_url }}">书架</a>
                     <a href="{{ '/music.html' | relative_url }}">音乐</a>
                     <a href="#contact">联系</a>
                 </div>
             </nav>
-
-            <section class="content-panel featured-panel" id="works" aria-labelledby="featured-title">
-                <div class="section-title-row">
-                    <div>
-                        <span class="section-kicker">Posts</span>
-                        <h2 id="featured-title">精选内容</h2>
-                    </div>
-                    <a class="section-link" href="{{ '/library.html' | relative_url }}">查看全部</a>
-                </div>
-                <div class="featured-works" id="featured-works"></div>
-            </section>
 
             <section class="content-panel about-panel" id="about" aria-labelledby="about-title">
                 <div class="section-title-row">
@@ -42,7 +31,7 @@ sidebar_active: home
                 </div>
                 <div class="about-layout">
                     <div class="about-copy">
-                        <p>你好，我是 <b>宵宵</b>，南京大学软件工程（智能化软件）本科生在读。</p>
+                        <p>你好，我是宵宵，南京大学软件工程（智能化软件）本科生在读。</p>
                         <p>我喜欢把个人知识管理当作长期练习。这个网站像一方书架，放着一些作品和想法：技术内容尽量清楚可靠，诗词和长文则保留一点自己的语气。</p>
                         <p>不写代码的时候，我多半在听歌、读书、打游戏、骑车，或者琢磨下一顿吃什么。</p>
                     </div>
@@ -68,6 +57,17 @@ sidebar_active: home
                         </div>
                     </div>
                 </div>
+            </section>
+
+            <section class="content-panel featured-panel" id="works" aria-labelledby="featured-title">
+                <div class="section-title-row">
+                    <div>
+                        <span class="section-kicker">Posts</span>
+                        <h2 id="featured-title">精选内容</h2>
+                    </div>
+                    <a class="section-link" href="{{ '/library.html' | relative_url }}">查看全部</a>
+                </div>
+                <div class="featured-works" id="featured-works"></div>
             </section>
 
             <section class="content-panel contact-panel" id="contact" aria-labelledby="contact-title">

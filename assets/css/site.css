@@ -351,8 +351,7 @@ a:hover {
     justify-content: space-between;
     gap: 10px;
     margin-bottom: 0;
-    width: auto;
-    min-width: 132px;
+    width: 192px;
     max-width: 100%;
     padding: 8px 12px 8px 18px;
     border: 1px solid rgba(8, 118, 184, 0.12);

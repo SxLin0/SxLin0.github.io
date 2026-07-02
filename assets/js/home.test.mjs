@@ -330,8 +330,8 @@ test('homepage uses the mature integrated profile structure', async () => {
     assert.doesNotMatch(home, /id="music"|class="home-aside"/);
     assert.match(libraryPanel, /<h2>宵宵<\/h2>/);
     assert.match(libraryPanel, /一个慢慢生长的个人空间/);
-    assert.ok(home.indexOf('class="site-nav"') < home.indexOf('id="works"'));
-    assert.ok(home.indexOf('id="works"') < home.indexOf('id="about"'));
+    assert.ok(home.indexOf('class="site-nav"') < home.indexOf('id="about"'));
+    assert.ok(home.indexOf('id="about"') < home.indexOf('id="works"'));
     assert.ok(home.indexOf('id="about"') < home.indexOf('id="contact"'));
     assert.doesNotMatch(home, /最近更新|热门标签/);
     assert.doesNotMatch(home, /class="profile-card"/);
@@ -360,6 +360,8 @@ test('homepage navigation points to primary sections and contact paths', async (
     assert.doesNotMatch(libraryCatalog, />搜索文章或诗词</);
     assert.doesNotMatch(libraryCatalog, /library-search-status/);
     assert.match(libraryCatalog, /<summary><span>Article<\/span><span class="section-count">5<\/span><\/summary>/);
+    const css = await readFile(new URL('../../assets/css/site.css', import.meta.url), 'utf8');
+    assert.match(css, /\.library-section summary\s*\{[\s\S]*width:\s*192px/);
     assert.match(home, /mailto:2125808970@qq.com/);
     assert.match(home, /https:\/\/github.com\/SxLin0/);
 });
@@ -461,6 +463,8 @@ test('homepage about copy and tags stay personal instead of resume-like', async 
     assert.match(libraryPanel, /一个慢慢生长的个人空间/);
     assert.match(home, /不写代码的时候，我多半在听歌、读书、打游戏、骑车，或者琢磨下一顿吃什么/);
     assert.match(home, /技术内容尽量清楚可靠/);
+    assert.match(home, /我是宵宵，南京大学软件工程（智能化软件）本科生在读/);
+    assert.doesNotMatch(home, /我是\s+<b>宵宵<\/b>|我是 <b>宵宵<\/b>/);
     assert.match(home, /南京大学软件工程（智能化软件）本科生在读/);
     assert.match(home, /写东西/);
     assert.match(home, /生活/);
