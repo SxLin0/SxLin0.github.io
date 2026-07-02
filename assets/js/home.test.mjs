@@ -171,6 +171,26 @@ test('transformer article explains the architecture with original examples', asy
     assert.doesNotMatch(article, /10分钟速通|复制此链接|Dou音|抖音搜索/);
 });
 
+test('article html pages use polished standalone reading styles', async () => {
+    const articlePaths = [
+        '../../content/articles-html/software-major.html',
+        '../../content/articles-html/mamba-paper-reading.html',
+        '../../content/articles-html/what-is-transformer.html',
+        '../../content/print/spring-essay.html'
+    ];
+    const css = await readFile(new URL('../../assets/css/site.css', import.meta.url), 'utf8');
+
+    assert.match(css, /\.article-document \.doc-subtitle\s*\{[\s\S]*text-align:\s*center/);
+    assert.match(css, /body\.article-standalone h1\s*\{[\s\S]*text-align:\s*center/);
+    assert.match(css, /body\.article-standalone \.doc-subtitle\s*\{[\s\S]*text-align:\s*center/);
+
+    for (const articlePath of articlePaths) {
+        const article = await readFile(new URL(articlePath, import.meta.url), 'utf8');
+        assert.match(article, /<link rel="stylesheet" href="\.\.\/\.\.\/assets\/css\/site\.css">/);
+        assert.match(article, /<body class="article-standalone">/);
+    }
+});
+
 test('reader pages place the article before the table of contents inside a document layout', async () => {
     const reader = await readFile(new URL('../../assets/js/reader.js', import.meta.url), 'utf8');
 
