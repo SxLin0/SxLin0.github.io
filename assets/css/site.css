@@ -859,12 +859,12 @@ a:hover {
 }
 
 .reader-body {
-    padding: 28px 30px 46px 350px;
+    padding: 28px 30px 46px 316px;
 }
 
 .reader-shell {
     max-width: var(--reading-width);
-    margin: 0 auto;
+    margin: 0;
 }
 
 .reader-stage {
@@ -874,7 +874,7 @@ a:hover {
 .reading-container {
     width: 100%;
     max-width: var(--reading-width);
-    margin: 0 auto;
+    margin: 0;
 }
 
 .blog-document-layout,

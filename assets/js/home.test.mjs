@@ -237,6 +237,9 @@ test('reader detail pages wrap meta document and navigation in one reading conta
     assert.match(reader, /reading-container/);
     assert.match(reader, /has-toc/);
     assert.match(css, /\.reading-container\s*\{[\s\S]*max-width:\s*var\(--reading-width\)/);
+    assert.match(css, /\.reading-container\s*\{[\s\S]*margin:\s*0;/);
+    assert.match(css, /\.reader-shell\s*\{[\s\S]*margin:\s*0;/);
+    assert.match(css, /\.reader-body\s*\{[\s\S]*padding:\s*28px 30px 46px 316px/);
     assert.match(css, /\.reader-document-layout\.has-toc\s*\{/);
     assert.match(css, /\.poem-document\s*\{[\s\S]*width:\s*100%/);
     assert.match(css, /\.reader-nav\s*\{[\s\S]*width:\s*100%/);
