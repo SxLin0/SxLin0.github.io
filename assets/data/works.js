@@ -45,7 +45,19 @@ export const works = [
         summary: '从专业定位、就业去向和报考建议聊软件工程是否适合你。',
         tags: ['专业选择', '长文'],
         featured: true,
-        featuredOrder: 3
+        featuredOrder: 4
+    },
+    {
+        id: 'how-llm-is-born',
+        section: 'articles',
+        title: '大语言模型如何诞生',
+        kind: 'html',
+        source: 'content/articles-html/how-llm-is-born.html',
+        date: '2026',
+        summary: '从语料、Token、预训练、微调到偏好对齐，梳理一个大语言模型的训练流程。',
+        tags: ['大模型', '训练', 'AI'],
+        featured: true,
+        featuredOrder: 1
     },
     {
         id: 'what-is-transformer',
@@ -57,7 +69,7 @@ export const works = [
         summary: '从注意力机制到 encoder-decoder 架构，解释 Transformer 为什么成为大模型的基础。',
         tags: ['论文阅读', 'Transformer', 'AI'],
         featured: true,
-        featuredOrder: 1
+        featuredOrder: 2
     },
     {
         id: 'mamba-paper-reading',
@@ -69,7 +81,7 @@ export const works = [
         summary: '从 SSM 的长期记忆问题，到 Mamba 的选择性机制与硬件感知扫描。',
         tags: ['论文阅读', '大模型', 'SSM'],
         featured: true,
-        featuredOrder: 2
+        featuredOrder: 3
     },
     { id: 'shang-yuan', section: 'poem', title: '上元', kind: 'markdown-poem', source: 'content/poem-essay/上元.md' },
     { id: 'first-arrival-jiangning', section: 'poem', title: '初到江宁', kind: 'markdown-poem', source: 'content/poem-essay/初到江宁.md', summary: '初到江宁时写下的一首短诗，记一点新地与新心绪。', tags: ['诗词', '江宁'] },

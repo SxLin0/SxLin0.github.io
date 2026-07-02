@@ -99,7 +99,7 @@ test('library sections are reduced to blog poem and articles', () => {
 test('articles keep software advice and moved essays only', () => {
     const articleIds = works.filter((work) => work.section === 'articles').map((work) => work.id);
 
-    assert.deepEqual(articleIds, ['software-major', 'what-is-transformer', 'mamba-paper-reading', 'spring-essay']);
+    assert.deepEqual(articleIds, ['software-major', 'how-llm-is-born', 'what-is-transformer', 'mamba-paper-reading', 'spring-essay']);
     assert.equal(works.some((work) => work.id === 'capital-scientific-thinking'), false);
     assert.equal(works.some((work) => work.id === 'digital-labor-alienation'), false);
 });
@@ -183,9 +183,28 @@ test('transformer article explains the architecture with original examples', asy
     assert.doesNotMatch(article, /10分钟速通|复制此链接|Dou音|抖音搜索/);
 });
 
+test('llm birth article covers the training pipeline with formulas and references', async () => {
+    const article = await readFile(new URL('../../content/articles-html/how-llm-is-born.html', import.meta.url), 'utf8');
+
+    assert.match(article, /大语言模型如何诞生/);
+    assert.match(article, /预训练/);
+    assert.match(article, /监督微调/);
+    assert.match(article, /RLHF/);
+    assert.match(article, /DPO/);
+    assert.match(article, /class="doc-formula"/);
+    assert.match(article, /P\(x<sub>1:T<\/sub>\)/);
+    assert.match(article, /L<sub>SFT<\/sub>/);
+    assert.match(article, /L<sub>DPO<\/sub>/);
+    assert.match(article, /参考文献/);
+    assert.match(article, /https:\/\/arxiv\.org\/abs\/2005\.14165/);
+    assert.match(article, /https:\/\/arxiv\.org\/abs\/2203\.02155/);
+    assert.match(article, /https:\/\/arxiv\.org\/abs\/2305\.18290/);
+});
+
 test('article html pages use polished standalone reading styles', async () => {
     const articlePaths = [
         '../../content/articles-html/software-major.html',
+        '../../content/articles-html/how-llm-is-born.html',
         '../../content/articles-html/mamba-paper-reading.html',
         '../../content/articles-html/what-is-transformer.html',
         '../../content/print/spring-essay.html'
@@ -234,9 +253,9 @@ test('static blog detail pages receive shared meta and adjacent navigation chrom
 
 test('homepage keeps three quiet featured entries from real content', () => {
     assert.deepEqual(getFeaturedWorks(works, 3).map((work) => work.id), [
+        'how-llm-is-born',
         'what-is-transformer',
-        'mamba-paper-reading',
-        'software-major'
+        'mamba-paper-reading'
     ]);
 });
 
