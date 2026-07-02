@@ -15,10 +15,10 @@ sidebar_active: home
                 <a class="site-brand" href="{{ '/' | relative_url }}" aria-label="回到首页">宵宵</a>
                 <div class="site-nav-links">
                     <a href="#works">作品</a>
-                    <a href="{{ '/about.html' | relative_url }}">关于</a>
+                    <a href="#about">关于</a>
                     <a href="{{ '/library.html' | relative_url }}">书架</a>
                     <a href="{{ '/music.html' | relative_url }}">音乐</a>
-                    <a href="{{ '/contact.html' | relative_url }}">联系</a>
+                    <a href="#contact">联系</a>
                 </div>
             </nav>
 
@@ -31,6 +31,57 @@ sidebar_active: home
                     <a class="section-link" href="{{ '/library.html' | relative_url }}">查看全部</a>
                 </div>
                 <div class="featured-works" id="featured-works"></div>
+            </section>
+
+            <section class="content-panel about-panel" id="about" aria-labelledby="about-title">
+                <div class="section-title-row">
+                    <div>
+                        <span class="section-kicker">Profile</span>
+                        <h2 id="about-title">关于我</h2>
+                    </div>
+                </div>
+                <div class="about-layout">
+                    <div class="about-copy">
+                        <p>你好，我是 <b>宵宵</b>，南京大学软件工程（智能化软件）本科生在读。</p>
+                        <p>我喜欢把个人知识管理当作长期练习。这个网站像一方书架，放着一些作品和想法：技术内容尽量清楚可靠，诗词和长文则保留一点自己的语气。</p>
+                        <p>不写代码的时候，我多半在听歌、读书、打游戏、骑车，或者琢磨下一顿吃什么。</p>
+                    </div>
+                </div>
+                <div class="skill-clusters" aria-label="个人标签">
+                    <div class="skill-cluster">
+                        <h3>写东西</h3>
+                        <div class="tag-cloud">
+                            <span>📚 课程笔记</span>
+                            <span>🧩 技术文章</span>
+                            <span>📝 长文思考</span>
+                            <span>🌙 诗词</span>
+                        </div>
+                    </div>
+                    <div class="skill-cluster">
+                        <h3>生活</h3>
+                        <div class="tag-cloud">
+                            <span>🎧 音乐</span>
+                            <span>📖 读书</span>
+                            <span>🎮 游戏</span>
+                            <span>🚲 骑行</span>
+                            <span>🍜 美食</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-panel contact-panel" id="contact" aria-labelledby="contact-title">
+                <div class="section-title-row">
+                    <div>
+                        <span class="section-kicker">Contact</span>
+                        <h2 id="contact-title">联系</h2>
+                    </div>
+                </div>
+                <ul class="contact-list">
+                    <li><span>邮箱</span><a class="contact-value" href="mailto:2125808970@qq.com" aria-label="发送邮件到 2125808970@qq.com">2125808970@qq.com</a></li>
+                    <li><span>GitHub</span><a class="contact-value" href="https://github.com/SxLin0" target="_blank" rel="noreferrer" aria-label="访问 GitHub 主页 SxLin0">SxLin0</a></li>
+                    <li><span>QQ</span><span class="contact-copy-row"><b class="contact-value">2125808970</b><button class="copy-contact" type="button" data-copy-value="2125808970" aria-label="复制 QQ 号 2125808970">复制</button></span></li>
+                </ul>
             </section>
 
             <footer class="license-note">
