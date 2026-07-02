@@ -118,5 +118,5 @@ export const works = [
 export const workSections = [
     { id: 'blog', title: 'Blog', open: false },
     { id: 'poem', title: 'Poem', open: false },
-    { id: 'articles', title: 'Articles', open: false }
+    { id: 'articles', title: 'Article', open: false }
 ];

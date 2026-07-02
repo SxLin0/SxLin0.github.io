@@ -92,7 +92,7 @@ test('library links are rooted so they work from nested pages', () => {
 });
 
 test('library sections are reduced to blog poem and articles', () => {
-    assert.deepEqual(workSections.map((section) => section.title), ['Blog', 'Poem', 'Articles']);
+    assert.deepEqual(workSections.map((section) => section.title), ['Blog', 'Poem', 'Article']);
     assert.deepEqual(workSections.map((section) => section.id), ['blog', 'poem', 'articles']);
 });
 
@@ -357,6 +357,9 @@ test('homepage navigation points to primary sections and contact paths', async (
     assert.match(home, /href="{{ '\/library\.html' \| relative_url }}">查看全部/);
     assert.match(libraryPage, /include library-catalog\.html/);
     assert.match(libraryCatalog, /id="library-sections"/);
+    assert.doesNotMatch(libraryCatalog, />搜索文章或诗词</);
+    assert.doesNotMatch(libraryCatalog, /library-search-status/);
+    assert.match(libraryCatalog, /<summary><span>Article<\/span><span class="section-count">5<\/span><\/summary>/);
     assert.match(home, /mailto:2125808970@qq.com/);
     assert.match(home, /https:\/\/github.com\/SxLin0/);
 });
@@ -544,7 +547,7 @@ test('library search text is normalized before filtering', () => {
 });
 
 test('library search status summarizes total and filtered results', () => {
-    assert.equal(getLibrarySearchStatus('', 0, 27), '共 27 篇作品');
+    assert.equal(getLibrarySearchStatus('', 0, 27), '');
     assert.equal(getLibrarySearchStatus('春', 2, 29), '找到 2 篇作品');
     assert.equal(getLibrarySearchStatus('missing', 0, 29), '没有匹配的作品');
 });
@@ -603,7 +606,7 @@ test('reader metadata filters empty values and keeps useful labels', async () =>
         section: 'articles',
         date: '2026',
         summary: '一段说明'
-    }), ['Articles', '2026', '一段说明']);
+    }), ['Article', '2026', '一段说明']);
     assert.deepEqual(getReaderMetaItems({ section: 'missing' }), ['Writing']);
 });
 

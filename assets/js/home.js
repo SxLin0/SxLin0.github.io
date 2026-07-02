@@ -54,7 +54,7 @@ export function normalizeLibrarySearchQuery(value) {
 
 export function getLibrarySearchStatus(query, visibleCount, totalCount) {
     if (!query) {
-        return `共 ${totalCount} 篇作品`;
+        return '';
     }
 
     if (visibleCount > 0) {

@@ -1,10 +1,8 @@
 <label class="library-search" for="library-search">
-    <span>搜索文章或诗词</span>
     <span class="library-search-control">
         <input id="library-search" type="search" placeholder="输入标题..." autocomplete="off">
         <button class="library-search-clear" id="library-search-clear" type="button" aria-label="清空搜索" title="清空搜索" hidden>×</button>
     </span>
-    <span class="library-search-status" id="library-search-status" aria-live="polite"></span>
 </label>
 <div id="library-sections">
     <details class="library-section">
@@ -45,7 +43,7 @@
     </details>
 
     <details class="library-section">
-        <summary><span>Articles</span><span class="section-count">5</span></summary>
+        <summary><span>Article</span><span class="section-count">5</span></summary>
         <ul class="work-list">
             <li><a class="work-card" href="{{ '/reader.html?work=how-llm-is-born' | relative_url }}"><span class="work-title">大语言模型如何诞生</span></a></li>
             <li><a class="work-card" href="{{ '/reader.html?work=what-is-transformer' | relative_url }}"><span class="work-title">Transformer是什么？</span></a></li>
