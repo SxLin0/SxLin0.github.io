@@ -354,9 +354,10 @@ test('homepage navigation points to primary sections and contact paths', async (
     assert.match(home, /href="#contact"/);
     assert.match(libraryPanel, /href="{{ '\/' \| relative_url }}">首页/);
     assert.match(libraryPanel, /href="{{ '\/about\.html' \| relative_url }}">关于我/);
+    assert.match(libraryPanel, /href="{{ '\/library\.html' \| relative_url }}">书架/);
     assert.match(libraryPanel, /href="{{ '\/music\.html' \| relative_url }}">播放列表/);
     assert.match(libraryPanel, /href="{{ '\/contact\.html' \| relative_url }}">联系/);
-    assert.doesNotMatch(libraryPanel, /精选内容|>书架<|GitHub|Email/);
+    assert.doesNotMatch(libraryPanel, /精选内容|GitHub|Email/);
     assert.doesNotMatch(libraryPanel, /href="#library-sections"|id="library-sections"|library-search/);
     assert.match(home, /href="{{ '\/library\.html' \| relative_url }}">查看全部/);
     assert.match(libraryPage, /include library-catalog\.html/);
@@ -432,6 +433,7 @@ test('homepage interface labels are localized for a Chinese personal blog', asyn
     assert.match(home, /播放列表/);
     assert.match(libraryPanel, />首页</);
     assert.match(libraryPanel, />关于我</);
+    assert.match(libraryPanel, />书架</);
     assert.match(libraryPanel, />播放列表</);
     assert.match(libraryPanel, />联系</);
     assert.match(homeScript, /播放选中的歌曲/);

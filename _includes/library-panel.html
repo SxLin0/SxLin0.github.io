@@ -17,6 +17,7 @@
         <nav class="sidebar-nav" aria-label="主要导航">
             <a {% if page.sidebar_active == 'home' %}class="is-active"{% endif %} href="{{ '/' | relative_url }}">首页</a>
             <a {% if page.sidebar_active == 'about' %}class="is-active"{% endif %} href="{{ '/about.html' | relative_url }}">关于我</a>
+            <a {% if page.sidebar_active == 'library' %}class="is-active"{% endif %} href="{{ '/library.html' | relative_url }}">书架</a>
             <a {% if page.sidebar_active == 'music' %}class="is-active"{% endif %} href="{{ '/music.html' | relative_url }}">播放列表</a>
             <a {% if page.sidebar_active == 'contact' %}class="is-active"{% endif %} href="{{ '/contact.html' | relative_url }}">联系</a>
         </nav>
