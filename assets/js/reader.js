@@ -1,4 +1,4 @@
-import { works, workSections } from '../data/works.js';
+import { works, workSections } from '../data/works.js?v=20260702-llm';
 
 const params = new URLSearchParams(window.location.search);
 const work = works.find((item) => item.id === params.get('work'));

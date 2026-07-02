@@ -1,4 +1,4 @@
-import { works, workSections } from '../data/works.js';
+import { works, workSections } from '../data/works.js?v=20260702-llm';
 
 const library = document.getElementById('library-sections');
 const librarySearch = document.getElementById('library-search');
