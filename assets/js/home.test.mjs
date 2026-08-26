@@ -91,9 +91,9 @@ test('library links are rooted so they work from nested pages', () => {
     assert.equal(resolveWorkHref({ id: 'spring-essay' }), '/reader.html?work=spring-essay');
 });
 
-test('library sections are reduced to blog poem and articles', () => {
-    assert.deepEqual(workSections.map((section) => section.title), ['Blog', 'Poem', 'Article']);
-    assert.deepEqual(workSections.map((section) => section.id), ['blog', 'poem', 'articles']);
+test('library sections are ordered as blog articles and poem', () => {
+    assert.deepEqual(workSections.map((section) => section.title), ['Blog', 'Article', 'Poem']);
+    assert.deepEqual(workSections.map((section) => section.id), ['blog', 'articles', 'poem']);
 });
 
 test('articles keep software advice and moved essays only', () => {

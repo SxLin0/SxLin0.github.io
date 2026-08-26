@@ -1,4 +1,4 @@
-import { works, workSections } from '../data/works.js?v=20260702-llm';
+import { works, workSections } from '../data/works.js?v=20260826-library-order';
 
 const params = new URLSearchParams(window.location.search);
 const work = works.find((item) => item.id === params.get('work'));
@@ -169,7 +169,8 @@ function createReadingProgress(article) {
 
 function createReaderMeta(currentWork) {
     const metaItems = getReaderMetaItems(currentWork);
-    if (!metaItems.length) {
+    const tags = currentWork?.tags || [];
+    if (!metaItems.length && !tags.length) {
         return null;
     }
 
@@ -185,6 +186,17 @@ function createReaderMeta(currentWork) {
         element.textContent = item;
         details.append(element);
     });
+
+    if (tags.length) {
+        const tagGroup = document.createElement('div');
+        tagGroup.className = 'reader-meta-tags';
+        tags.forEach((tag) => {
+            const element = document.createElement('span');
+            element.textContent = tag;
+            tagGroup.append(element);
+        });
+        details.append(tagGroup);
+    }
 
     aside.append(details);
     return aside;

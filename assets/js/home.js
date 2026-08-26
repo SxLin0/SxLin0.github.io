@@ -1,4 +1,4 @@
-import { works, workSections } from '../data/works.js?v=20260702-llm';
+import { works, workSections } from '../data/works.js?v=20260826-library-order';
 
 const library = document.getElementById('library-sections');
 const librarySearch = document.getElementById('library-search');
@@ -182,16 +182,34 @@ export function resolveWorkHref(work) {
 function createWorkCard(work) {
     const item = document.createElement('li');
     const link = document.createElement('a');
+    const meta = document.createElement('span');
     const title = document.createElement('span');
+    const summary = document.createElement('span');
+    const tags = document.createElement('span');
+    const isLibraryPage = Boolean(document.querySelector('.library-page-panel'));
+    const shouldShowDetail = !(isLibraryPage && work.section === 'poem');
 
     link.className = 'work-card';
     link.href = resolveWorkHref(work);
-    link.dataset.title = work.title.toLowerCase();
+    link.dataset.title = [work.title, work.summary, ...(work.tags || [])].filter(Boolean).join(' ').toLowerCase();
     link.dataset.workId = work.id;
+    meta.className = 'work-meta';
+    meta.textContent = [getSectionTitle(work.section), work.date].filter(Boolean).join(' · ');
     title.className = 'work-title';
     title.textContent = work.title;
+    summary.className = 'work-summary';
+    summary.textContent = work.summary || '打开作品继续阅读。';
+    tags.className = 'work-tags';
+    (work.tags || []).slice(0, 3).forEach((tag) => {
+        const tagElement = document.createElement('span');
+        tagElement.textContent = tag;
+        tags.append(tagElement);
+    });
 
-    link.append(title);
+    link.append(meta, title);
+    if (shouldShowDetail) {
+        link.append(summary, tags);
+    }
     item.append(link);
     return item;
 }
@@ -206,6 +224,7 @@ function renderLibrary() {
     workSections.forEach((section) => {
         const sectionWorks = works.filter((work) => work.section === section.id);
         const activeWorkId = getActiveWorkIdFromLocation(window.location, works);
+        const isLibraryPage = Boolean(document.querySelector('.library-page-panel'));
         if (!sectionWorks.length) {
             return;
         }
@@ -219,7 +238,7 @@ function renderLibrary() {
 
         sectionEl.className = 'library-section';
         sectionEl.dataset.sectionId = section.id;
-        sectionEl.open = sectionWorks.some((sectionWork) => sectionWork.id === activeWorkId) || resolveLibrarySectionOpen(section, savedState);
+        sectionEl.open = isLibraryPage || sectionWorks.some((sectionWork) => sectionWork.id === activeWorkId) || resolveLibrarySectionOpen(section, savedState);
         headingText.textContent = section.title;
         count.className = 'section-count';
         count.textContent = sectionWorks.length;
@@ -364,6 +383,7 @@ function createDetailMeta(currentWork) {
         currentWork.date,
         currentWork.summary
     ].filter(Boolean);
+    const tags = currentWork.tags || [];
     const aside = document.createElement('aside');
     const details = document.createElement('div');
 
@@ -375,6 +395,16 @@ function createDetailMeta(currentWork) {
         element.textContent = item;
         details.append(element);
     });
+    if (tags.length) {
+        const tagGroup = document.createElement('div');
+        tagGroup.className = 'reader-meta-tags';
+        tags.forEach((tag) => {
+            const element = document.createElement('span');
+            element.textContent = tag;
+            tagGroup.append(element);
+        });
+        details.append(tagGroup);
+    }
 
     aside.append(details);
     return aside;
@@ -532,6 +562,7 @@ function bindLibrarySearch() {
         return;
     }
 
+    const isLibraryPage = Boolean(document.querySelector('.library-page-panel'));
     const applySearchFilter = () => {
         const query = normalizeLibrarySearchQuery(librarySearch.value);
         const totalCount = library.querySelectorAll('.work-card').length;
@@ -555,7 +586,7 @@ function bindLibrarySearch() {
                 section.open = Boolean(visibleCount);
             } else {
                 const sectionConfig = workSections.find((item) => item.id === section.dataset.sectionId);
-                section.open = resolveLibrarySectionOpen(sectionConfig, getLibraryState());
+                section.open = isLibraryPage || resolveLibrarySectionOpen(sectionConfig, getLibraryState());
             }
         });
 
