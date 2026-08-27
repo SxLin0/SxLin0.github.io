@@ -2657,6 +2657,39 @@ body::after {
     max-width: var(--reading-width);
 }
 
+.reading-container.no-toc {
+    max-width: var(--article-wide-width);
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.reading-container.no-toc .reader-document-layout {
+    max-width: var(--article-wide-width);
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.reading-container.no-toc .reader-meta,
+.reading-container.no-toc .reader-nav {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.reading-container.no-toc .poem-document {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.reading-container.no-toc:has(.poem-document) {
+    max-width: 720px;
+}
+
+.reading-container.no-toc:has(.poem-document) .reader-document-layout,
+.reading-container.no-toc:has(.poem-document) .reader-meta,
+.reading-container.no-toc:has(.poem-document) .reader-nav {
+    max-width: 720px;
+}
+
 .blog-document-layout.has-toc,
 .reader-document-layout.has-toc {
     grid-template-columns: minmax(0, var(--article-wide-width)) minmax(210px, 250px);

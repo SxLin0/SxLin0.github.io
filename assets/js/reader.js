@@ -221,13 +221,18 @@ function renderWorkDocument(article, options = {}) {
         }
         layout.append(article);
         if (toc) {
+            container.classList.add('has-toc');
             layout.classList.add('has-toc');
             layout.append(toc);
+        } else {
+            container.classList.add('no-toc');
         }
     } else if (meta) {
+        container.classList.add('no-toc');
         container.append(meta);
         layout.append(article);
     } else {
+        container.classList.add('no-toc');
         layout.append(article);
     }
 
