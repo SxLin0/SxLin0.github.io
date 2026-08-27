@@ -112,6 +112,16 @@ export const works = [
         source: 'content/print/spring-essay.html',
         summary: '一篇关于春天意象与个人感受的短文。',
         tags: ['散文', '春', '文学']
+    },
+    {
+        id: 'materialism-idealism',
+        section: 'articles',
+        title: '浅谈“唯物”与“唯心”',
+        kind: 'html',
+        source: 'content/print/materialism-idealism.html',
+        date: '2026年8月',
+        summary: '从雨、月亮、花和路上的感受聊物与心如何共同构成生活经验。',
+        tags: ['散文', '哲学', '生活']
     }
 ];
 

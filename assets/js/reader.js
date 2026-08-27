@@ -1,4 +1,4 @@
-import { works, workSections } from '../data/works.js?v=20260826-library-order';
+import { works, workSections } from '../data/works.js?v=20260827-materialism-idealism';
 
 const params = new URLSearchParams(window.location.search);
 const work = works.find((item) => item.id === params.get('work'));

@@ -96,10 +96,10 @@ test('library sections are ordered as blog articles and poem', () => {
     assert.deepEqual(workSections.map((section) => section.id), ['blog', 'articles', 'poem']);
 });
 
-test('articles keep software advice and moved essays only', () => {
+test('articles keep the visible advice tech and essay entries', () => {
     const articleIds = works.filter((work) => work.section === 'articles').map((work) => work.id);
 
-    assert.deepEqual(articleIds, ['software-major', 'how-llm-is-born', 'what-is-transformer', 'mamba-paper-reading', 'spring-essay']);
+    assert.deepEqual(articleIds, ['software-major', 'how-llm-is-born', 'what-is-transformer', 'mamba-paper-reading', 'spring-essay', 'materialism-idealism']);
     assert.equal(works.some((work) => work.id === 'capital-scientific-thinking'), false);
     assert.equal(works.some((work) => work.id === 'digital-labor-alienation'), false);
 });
@@ -122,10 +122,11 @@ test('removed article sources are not left behind in the published content tree'
     }
 });
 
-test('article conversion script only keeps the visible software-major article', async () => {
+test('article conversion script keeps the visible docx-backed articles', async () => {
     const script = await readFile(new URL('../../scripts/convert_articles.py', import.meta.url), 'utf8');
 
     assert.match(script, /software-major/);
+    assert.match(script, /materialism-idealism/);
     assert.doesNotMatch(script, /capital-scientific-thinking/);
     assert.doesNotMatch(script, /digital-labor-alienation/);
 });
@@ -359,7 +360,7 @@ test('homepage navigation points to primary sections and contact paths', async (
     assert.match(libraryCatalog, /id="library-sections"/);
     assert.doesNotMatch(libraryCatalog, />搜索文章或诗词</);
     assert.doesNotMatch(libraryCatalog, /library-search-status/);
-    assert.match(libraryCatalog, /<summary><span>Article<\/span><span class="section-count">5<\/span><\/summary>/);
+    assert.match(libraryCatalog, /<summary><span>Article<\/span><span class="section-count">6<\/span><\/summary>/);
     const css = await readFile(new URL('../../assets/css/site.css', import.meta.url), 'utf8');
     assert.match(css, /\.library-section summary\s*\{[\s\S]*width:\s*192px/);
     assert.match(home, /mailto:2125808970@qq.com/);

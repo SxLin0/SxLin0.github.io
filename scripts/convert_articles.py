@@ -10,6 +10,7 @@ ARTICLE_SOURCES = {
 
 POEM_ESSAY_SOURCES = {
     "spring-essay": "浅谈“春”.docx",
+    "materialism-idealism": "浅谈“唯物”和“唯心”.docx",
 }
 
 SOURCE_DIR = Path("content/articles")
@@ -53,8 +54,9 @@ def render_docx(source, output):
         "<head>",
         '    <meta charset="UTF-8">',
         f"    <title>{escape(title)}</title>",
+        '    <link rel="stylesheet" href="../../assets/css/site.css">',
         "</head>",
-        "<body>",
+        '<body class="article-standalone">',
         *body,
         "</body>",
         "</html>",
@@ -85,8 +87,9 @@ def render_essay_docx(source, output):
         "<head>",
         '    <meta charset="UTF-8">',
         f"    <title>{escape(title)}</title>",
+        '    <link rel="stylesheet" href="../../assets/css/site.css">',
         "</head>",
-        "<body>",
+        '<body class="article-standalone">',
         *body,
         "</body>",
         "</html>",
