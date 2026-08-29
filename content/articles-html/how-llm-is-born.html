@@ -7,68 +7,197 @@
 </head>
 <body class="article-standalone">
     <h1>大语言模型如何诞生</h1>
-    <p class="doc-subtitle">从语料、预训练到对齐，理解一个聊天模型背后的漫长流水线</p>
+    <p class="doc-subtitle">
+      从语料、预训练到对齐，理解一个聊天模型背后的漫长流水线
+    </p>
 
-    <p class="doc-paragraph">很多人第一次接触大语言模型，是从一个聊天框开始的。你输入一个问题，它给出一段回答，看起来像是在理解、思考、组织语言。但如果把这个过程往前追溯，就会发现一个大语言模型并不是凭空出现的，而是经历了数据收集、分词、预训练、微调、对齐、评测和部署等一整套工程流程。</p>
-    <p class="doc-paragraph">这篇文章想从宏观上回答一个问题：大语言模型是如何诞生的？它不是要覆盖所有训练细节，而是帮助你建立一张地图，知道一个模型从“读大量文本”到“能和人对话”中间大概发生了什么。</p>
+    <p class="doc-paragraph">
+      第一次使用大语言模型时，最强烈的感觉不是“它怎么这么聪明”，而是好奇：一个只在屏幕上吐字的程序，背后到底经历了什么，才会像模像样地回答问题、解释概念，甚至写代码？
+    </p>
+    <p class="doc-paragraph">
+      如果只说“它博览群书”，答案显然太粗糙；如果直接钻进论文和训练细节，又很容易迷路。所以本文就用质朴的语言回答这个问题：从文本进入机器开始，看一个模型怎样一步步从“会续写”到“能对话”。文中的公式主要用来帮助建立直觉，不需要严肃对待。
+    </p>
 
     <h2 class="doc-heading">第一步：收集足够多的文本</h2>
-    <p class="doc-paragraph">语言模型的原始材料是文本。网页、书籍、论文、代码、问答、百科、新闻、论坛内容，都可能成为训练语料的一部分。模型并不是先被人手写规则，然后再去回答问题；它更多是从大量文本中学习语言模式、事实关联、表达方式和推理痕迹。</p>
-    <p class="doc-paragraph">但“数据越多越好”并不完整。训练前还要做数据清洗：去重、过滤乱码、剔除低质量内容、处理隐私和版权风险、平衡不同来源和语言的比例。数据质量会直接影响模型习惯。如果训练语料里充满重复、错误或低质量文本，模型也会更容易生成类似内容。</p>
-    <p class="doc-paragraph">这一步很像给一个学生准备图书馆。图书馆越大，学生可能见识越广；但如果书架上混进大量错书、重复资料和噪声，学习效果也会被拖累。</p>
+    <p class="doc-paragraph">
+      语言模型的原始材料是文本。网页、书籍、论文、代码、问答、百科、新闻、论坛内容，都可能成为训练语料的一部分。模型不是先被人写好一套回答规则，再照着规则说话；它更多是在大量文本里见过无数表达方式、事实关联和推理痕迹，然后慢慢形成自己的统计习惯。
+    </p>
+    <p class="doc-paragraph">
+      不过，数据并非越多越好。海量数据里也会混进乱码、重复内容、低质量文本、隐私信息和版权风险。所以训练前要做清洗、去重、过滤，也要尽量平衡不同来源和语言的比例。数据质量会影响模型的脾气：它见过太多粗糙文字，生成内容也容易跟着粗糙；它长期接触偏见和错误，也可能会把这些东西带到回答里。
+    </p>
+    <p class="doc-paragraph">
+      这一步有点像给学生建造图书馆。书越多，学生的见识可能越广；但如果书架上混进大量错书、重复资料和低质量内容，学生的学习效果也会大打折扣。
+    </p>
 
     <h2 class="doc-heading">第二步：把文本切成 token</h2>
-    <p class="doc-paragraph">模型并不直接阅读自然语言中的“字”或“词”，它处理的是 token。Token 可以是一个汉字、一个英文单词的一部分、一个标点，甚至是一段常见字符串。分词器会把原始文本转换成 token 序列，再映射成整数编号。</p>
+    <p class="doc-paragraph">
+      人读文章时，会自然地看见字、词和句子；模型能处理的不是这些。它处理的基本单位叫
+      token。Token
+      可以是一个汉字、一个英文单词的一部分、一个标点，甚至是一段常见字符串。分词器先把原始文本切成
+      token 序列，再把它们映射成整数编号。
+    </p>
     <p class="doc-paragraph">例如一句话可以被处理成：</p>
     <div class="doc-formula">文本 → token 序列 → token id 序列 → 向量表示</div>
-    <p class="doc-paragraph">之后，每个 token id 会通过 embedding 表变成向量。模型真正处理的是这些向量，而不是人眼看到的文字。Embedding 可以理解为给每个 token 一个可学习的坐标，让模型在高维空间中表示语义、语法和上下文关系。</p>
+    <p class="doc-paragraph">
+      之后，每个 token id 会通过 embedding
+      表变成向量。模型真正计算的是这些向量，而不是我们眼前的文字。Embedding
+      可以粗略理解成给每个 token
+      安排一个可学习的坐标，让语义、语法和上下文关系有地方落脚。
+    </p>
 
     <h2 class="doc-heading">第三步：预训练，学习预测下一个 token</h2>
-    <p class="doc-paragraph">大语言模型最核心的训练任务通常很简单：给定前面的 token，预测下一个 token。比如看到“今天南京的天气”，模型要预测后面可能接“很好”“有点热”“预报显示”等。这个目标看起来朴素，却能逼迫模型学习大量语言和世界知识。</p>
-    <p class="doc-paragraph">对于自回归语言模型，训练目标可以写成最大化整段文本的概率：</p>
-    <div class="doc-formula">P(x<sub>1:T</sub>) = ∏<sub>t=1</sub><sup>T</sup> P(x<sub>t</sub> | x<sub>&lt;t</sub>)</div>
-    <p class="doc-paragraph">实际训练时，常用交叉熵损失来衡量预测分布和真实下一个 token 之间的差距：</p>
-    <div class="doc-formula">L<sub>pretrain</sub> = - Σ<sub>t=1</sub><sup>T</sup> log P<sub>θ</sub>(x<sub>t</sub> | x<sub>&lt;t</sub>)</div>
-    <p class="doc-paragraph">这里的 θ 表示模型参数。训练过程就是不断调整 θ，让模型对真实下一个 token 给出更高概率。GPT-3 这类模型展示了一个重要现象：当模型规模、数据规模和计算量一起增大时，模型在许多任务上的能力会明显增强。</p>
+    <p class="doc-paragraph">
+      大语言模型最核心的训练任务，听起来反而很朴素：给定前面的 token，预测下一个
+      token。比如看到“今天南京的天气”，模型要判断后面更可能接“很好”，还是“有点热”。只是当这个任务被放到海量文本和巨大模型上时，它会逼着模型学会语言结构、常识关联。
+    </p>
+    <p class="doc-paragraph">
+      对于自回归语言模型，训练目标可以写成最大化整段文本的概率：
+    </p>
+    <div class="doc-formula">
+      P(x<sub>1:T</sub>) = ∏<sub>t=1</sub><sup>T</sup> P(x<sub>t</sub> |
+      x<sub>&lt;t</sub>)
+    </div>
+    <p class="doc-paragraph">
+      实际训练时，常用交叉熵损失来衡量预测分布和真实下一个 token 之间的差距：
+    </p>
+    <div class="doc-formula">
+      L<sub>pretrain</sub> = - Σ<sub>t=1</sub><sup>T</sup> log
+      P<sub>θ</sub>(x<sub>t</sub> | x<sub>&lt;t</sub>)
+    </div>
+    <p class="doc-paragraph">
+      这里的 θ 表示模型参数。训练过程就是不断调整 θ，让模型对真实下一个 token
+      给出更高概率。GPT-3
+      这类模型展示了一个很重要的现象：当模型规模、数据规模和计算量一起增大时，模型在许多任务上的能力会明显增强。
+    </p>
 
     <h2 class="doc-heading">第四步：规模化训练，不只是把模型变大</h2>
-    <p class="doc-paragraph">大语言模型之所以“大”，不只体现在参数数量，还体现在训练 token 数和计算量上。参数更大，模型有更强的容量；数据更多，模型有更多可学习的样本；计算更多，模型才能完成足够充分的优化。</p>
-    <p class="doc-paragraph">一个常见的粗略估算是，Transformer 语言模型训练计算量与参数量 N 和训练 token 数 D 近似成正比：</p>
+    <p class="doc-paragraph">
+      大语言模型之所以“大”，不只是在说参数多。参数、训练 token
+      数和计算量像是三根支柱，少了哪一根都会站不稳。参数更多，模型容量就更大；数据更多，可学习的样本就更丰富；计算更多，模型才有机会被充分优化。
+    </p>
+    <p class="doc-paragraph">
+      一个常见的粗略估算是，Transformer 语言模型训练计算量与参数量 N 和训练
+      token 数 D 近似成正比：
+    </p>
     <div class="doc-formula">C ≈ 6ND</div>
-    <p class="doc-paragraph">这个式子不需要死记，它想表达的是：训练大模型不是只买更大的网络，还要准备足够多的数据和算力。Chinchilla 一类工作进一步指出，在固定计算预算下，模型参数和训练 token 数需要更平衡地增长；只把参数做大而数据不够，模型可能会“欠训练”。</p>
+    <p class="doc-paragraph">
+      这个式子表明：训练大模型并不是只把网络做大，还要配上足够多的数据和算力。Chinchilla
+      一类工作进一步指出，在固定计算预算下，模型参数和训练 token
+      数需要更平衡地增长；只把参数堆上去而数据不够，模型可能会“欠训练”。
+    </p>
 
     <h2 class="doc-heading">第五步：监督微调，让模型学会回答问题</h2>
-    <p class="doc-paragraph">预训练模型学会的是“续写文本”，但用户希望它“听懂指令并完成任务”。这两者不完全一样。一个只经过预训练的模型，可能会把问题当成网页片段继续写，而不是直接给出有帮助的回答。</p>
-    <p class="doc-paragraph">因此，需要监督微调（Supervised Fine-Tuning, SFT）。研究者会准备一批“指令 - 理想回答”数据，让模型学习什么样的输入应该对应什么样的输出。SFT 的目标仍然可以写成交叉熵形式：</p>
-    <div class="doc-formula">L<sub>SFT</sub> = - Σ log P<sub>θ</sub>(y | x)</div>
-    <p class="doc-paragraph">这里 x 是用户指令，y 是人工编写或筛选出来的理想回答。经过这一步，模型会更像一个助手：知道要回答问题、总结文本、写代码、解释概念，而不是漫无目的地续写。</p>
+    <p class="doc-paragraph">
+      预训练模型学会的是“续写文本”，但我们打开聊天框时，希望它做的是“听懂指令并完成任务”。这两件事并不完全一样。一个只经过预训练的模型，可能会把问题当成网页片段继续写，而不是直接给出有帮助的回答。
+    </p>
+    <p class="doc-paragraph">
+      因此，需要监督微调（Supervised Fine-Tuning, SFT）。研究者会准备一批“指令 -
+      理想回答”数据，让模型学习什么样的输入应该对应什么样的输出。SFT
+      的目标仍然可以写成交叉熵形式：
+    </p>
+    <div class="doc-formula">
+      L<sub>SFT</sub> = - Σ log P<sub>θ</sub>(y | x)
+    </div>
+    <p class="doc-paragraph">
+      这里 x 是用户指令，y
+      是人工编写或筛选出来的理想回答。经过这一步，模型才更像一个助手：知道要回答问题、总结文本、写代码、解释概念，而不是顺着开头漫无目的地续写。
+    </p>
 
     <h2 class="doc-heading">第六步：偏好对齐，让回答更符合人类期待</h2>
-    <p class="doc-paragraph">即使模型会回答问题，也不代表它的回答一定有帮助、真实、无害。为了让模型更符合人类偏好，还需要对齐训练。InstructGPT 的路线通常被概括为 RLHF：先收集人类对多个回答的偏好排序，再训练奖励模型，最后用强化学习方法优化语言模型。</p>
+    <p class="doc-paragraph">
+      模型学会回答问题之后，问题还没有结束。它可能答非所问，可能一本正经地胡说，也可能在敏感场景里给出危险内容。为了让回答更有帮助、更诚实、更安全，还需要做偏好对齐。InstructGPT
+      的路线通常被概括为
+      RLHF：先收集人类对多个回答的偏好排序，再训练奖励模型，最后用强化学习方法优化语言模型。
+    </p>
     <p class="doc-paragraph">一个简化的 RLHF 目标可以写成：</p>
-    <div class="doc-formula">maximize&nbsp; E[r<sub>φ</sub>(x, y)] - β KL(π<sub>θ</sub>(y|x) || π<sub>ref</sub>(y|x))</div>
-    <p class="doc-paragraph">前半部分希望模型生成更高奖励的回答，后半部分限制模型不要偏离原来的参考模型太远。这样做是为了避免模型为了追求奖励而产生奇怪行为。</p>
-    <p class="doc-paragraph">后来也出现了 DPO 这类更直接的偏好优化方法。它不显式训练奖励模型，而是直接利用偏好数据调整模型，使被人类偏好的回答概率更高。DPO 的一个常见形式是：</p>
-    <div class="doc-formula">L<sub>DPO</sub> = - log σ(β log(π<sub>θ</sub>(y<sub>w</sub>|x) / π<sub>ref</sub>(y<sub>w</sub>|x)) - β log(π<sub>θ</sub>(y<sub>l</sub>|x) / π<sub>ref</sub>(y<sub>l</sub>|x)))</div>
-    <p class="doc-paragraph">这里 y<sub>w</sub> 是更受偏好的回答，y<sub>l</sub> 是较差的回答。这个公式看起来复杂，但直觉很简单：在不偏离参考模型太多的前提下，让好回答更可能出现，让差回答更不可能出现。</p>
+    <div class="doc-formula">
+      maximize&nbsp; E[r<sub>φ</sub>(x, y)] - β KL(π<sub>θ</sub>(y|x) ||
+      π<sub>ref</sub>(y|x))
+    </div>
+    <p class="doc-paragraph">
+      前半部分希望模型生成更高奖励的回答，后半部分限制模型不要偏离原来的参考模型太远。这样做是为了避免模型为了追求奖励而跑偏，学出一些看似得分高、实际很奇怪的行为。
+    </p>
+    <p class="doc-paragraph">
+      后来也出现了 DPO
+      这类更直接的偏好优化方法。它不显式训练奖励模型，而是直接利用偏好数据调整模型，使被人类偏好的回答概率更高。DPO
+      的一个常见形式是：
+    </p>
+    <div class="doc-formula">
+      L<sub>DPO</sub> = - log σ(β log(π<sub>θ</sub>(y<sub>w</sub>|x) /
+      π<sub>ref</sub>(y<sub>w</sub>|x))<br>- β
+      log(π<sub>θ</sub>(y<sub>l</sub>|x) / π<sub>ref</sub>(y<sub>l</sub>|x)))
+    </div>
+    <p class="doc-paragraph">
+      这里 y<sub>w</sub> 是更受偏好的回答，y<sub>l</sub>
+      是较差的回答。公式看起来绕，但直觉并不神秘：在不偏离参考模型太多的前提下，让好回答更可能出现，让差回答更不容易出现。
+    </p>
 
     <h2 class="doc-heading">第七步：评测、红队和安全检查</h2>
-    <p class="doc-paragraph">模型训练完并不意味着可以直接上线。还要做大量评测：知识问答、数学推理、代码生成、多语言能力、长文本理解、幻觉率、安全性、偏见、隐私泄露风险等。不同模型可能在不同维度上表现差异很大。</p>
-    <p class="doc-paragraph">除了标准 benchmark，还需要红队测试。测试者会故意提出诱导性、危险或边界模糊的问题，观察模型是否会输出不该输出的内容。这一步不是为了让模型“永远不犯错”，而是尽量发现高风险场景并降低损害。</p>
+    <p class="doc-paragraph">
+      模型训练完，并不意味着它就能直接上线。还要做大量评测：知识问答、数学推理、代码生成、多语言能力、长文本理解、幻觉率、安全性、偏见、隐私泄露风险等。不同模型可能各有所长，也各有短板。
+    </p>
+    <p class="doc-paragraph">
+      除了标准
+      benchmark，还需要红队测试。测试者会故意提出诱导性、危险或边界模糊的问题，观察模型是否会输出不该输出的内容。这一步不是为了证明模型永远不犯错，而是尽量提前发现高风险场景，把损害降下来。
+    </p>
 
     <h2 class="doc-heading">第八步：压缩和部署</h2>
-    <p class="doc-paragraph">一个训练好的大模型往往非常昂贵。真正服务用户时，还要考虑推理速度、显存占用、延迟和成本。因此会用到量化、蒸馏、缓存、并行推理、混合专家、模型裁剪等技术。</p>
-    <p class="doc-paragraph">部署阶段的目标不是“让模型在论文表格里最好看”，而是让它在真实用户请求中稳定、快速、可控。一个模型能不能成为好产品，除了能力本身，还取决于系统工程。</p>
+    <p class="doc-paragraph">
+      一个训练好的大模型往往很昂贵。真正服务用户时，不能只看它在评测榜上的分数，还要看推理速度、显存占用、延迟和成本。因此会用到量化、蒸馏、缓存、并行推理、混合专家、模型裁剪等技术。
+    </p>
+    <p class="doc-paragraph">
+      部署阶段的目标不是“让模型在论文表格里最好看”，而是让它在真实用户请求中稳定、快速、可控。一个模型能不能成为好产品，除了能力本身，还取决于一整套系统工程。
+    </p>
 
     <h2 class="doc-heading">我的理解</h2>
-    <p class="doc-paragraph">大语言模型的诞生，不是一瞬间的魔法，而是一条很长的流水线。预训练让模型学会语言和知识，监督微调让模型学会听指令，对齐训练让模型更接近人的偏好，评测和部署让模型有机会进入真实世界。</p>
-    <p class="doc-paragraph">如果说 Transformer 提供了模型骨架，那么数据、算力和训练流程共同把这个骨架变成了可用的大语言模型。今天我们在聊天框里看到的回答，背后其实是海量文本、巨大计算、人工标注、偏好学习和工程优化共同作用的结果。</p>
-    <p class="doc-paragraph">理解这一点，也能帮助我们更冷静地看待大模型。它确实强大，但不是凭空拥有智慧；它擅长从大规模数据中学习模式，也会继承数据和训练目标中的局限。把它看成一个复杂工程系统，可能比把它神化更接近事实。</p>
+    <p class="doc-paragraph">
+      所以，大语言模型的诞生并不是一瞬间的魔法，而是一条很长的流水线。预训练让模型学会语言和知识，监督微调让模型学会听指令，对齐训练让模型更接近人的偏好，评测和部署让模型有机会进入真实世界。
+    </p>
+    <p class="doc-paragraph">
+      如果说 Transformer
+      提供了模型骨架，那么数据、算力和训练流程共同把这个骨架变成了可用的大语言模型。今天我们在聊天框里看到的一段回答，背后其实站着海量文本、巨大计算、人工标注、偏好学习和工程优化。
+    </p>
+    <p class="doc-paragraph">
+      理解这一点，也能帮助我们更冷静地看待大模型。它确实强大，但不是凭空拥有智慧；它擅长从大规模数据中学习模式，也会继承数据和训练目标中的局限。把它看成一个复杂工程系统，可能比把它神化更接近事实。
+    </p>
 
     <h2 class="doc-heading">参考文献</h2>
-    <p class="doc-reference">[1] Tom B. Brown et al. <a href="https://arxiv.org/abs/2005.14165" target="_blank" rel="noreferrer">Language Models are Few-Shot Learners</a>. NeurIPS, 2020.</p>
-    <p class="doc-reference">[2] Long Ouyang et al. <a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noreferrer">Training language models to follow instructions with human feedback</a>. NeurIPS, 2022.</p>
-    <p class="doc-reference">[3] Jordan Hoffmann et al. <a href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noreferrer">Training Compute-Optimal Large Language Models</a>. NeurIPS, 2022.</p>
-    <p class="doc-reference">[4] Rafael Rafailov et al. <a href="https://arxiv.org/abs/2305.18290" target="_blank" rel="noreferrer">Direct Preference Optimization: Your Language Model is Secretly a Reward Model</a>. NeurIPS, 2023.</p>
+    <p class="doc-reference">
+      [1] Tom B. Brown et al.
+      <a
+        href="https://arxiv.org/abs/2005.14165"
+        target="_blank"
+        rel="noreferrer"
+        >Language Models are Few-Shot Learners</a
+      >. NeurIPS, 2020.
+    </p>
+    <p class="doc-reference">
+      [2] Long Ouyang et al.
+      <a
+        href="https://arxiv.org/abs/2203.02155"
+        target="_blank"
+        rel="noreferrer"
+        >Training language models to follow instructions with human feedback</a
+      >. NeurIPS, 2022.
+    </p>
+    <p class="doc-reference">
+      [3] Jordan Hoffmann et al.
+      <a
+        href="https://arxiv.org/abs/2203.15556"
+        target="_blank"
+        rel="noreferrer"
+        >Training Compute-Optimal Large Language Models</a
+      >. NeurIPS, 2022.
+    </p>
+    <p class="doc-reference">
+      [4] Rafael Rafailov et al.
+      <a
+        href="https://arxiv.org/abs/2305.18290"
+        target="_blank"
+        rel="noreferrer"
+        >Direct Preference Optimization: Your Language Model is Secretly a
+        Reward Model</a
+      >. NeurIPS, 2023.
+    </p>
 </body>
 </html>
