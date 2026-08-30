@@ -408,8 +408,8 @@ test('homepage uses the mature integrated profile structure', async () => {
     assert.match(libraryPanel, /class="sidebar-nav"/);
     assert.match(home, /id="works"/);
     assert.match(home, /id="about"/);
-    assert.match(home, /id="music"/);
     assert.match(home, /id="contact"/);
+    assert.doesNotMatch(home, /music-corner|id="music"/);
     assert.doesNotMatch(home, /class="home-aside"/);
     assert.match(libraryPanel, /<h2>宵宵<\/h2>/);
     assert.match(libraryPanel, /一个慢慢生长的个人空间/);
@@ -516,8 +516,7 @@ test('homepage interface labels are localized for a Chinese personal blog', asyn
     assert.match(home, /查看全部/);
     assert.match(home, /<h2 id="about-title">关于我<\/h2>/);
     assert.match(home, /<h2 id="contact-title">联系<\/h2>/);
-    assert.doesNotMatch(home, /最近更新|<h2 id="music-title">播放列表<\/h2>/);
-    assert.match(home, /<h2 id="music-title">音乐<\/h2>/);
+    assert.doesNotMatch(home, /最近更新|<h2 id="music-title">/);
     assert.match(libraryPanel, />首页</);
     assert.match(libraryPanel, />书架</);
     assert.match(libraryPanel, />播放列表</);

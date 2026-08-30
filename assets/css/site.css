@@ -677,28 +677,6 @@ a:hover {
     color: var(--seal);
 }
 
-.music-open-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 34px;
-    padding: 7px 12px;
-    border: 1px solid rgba(23, 107, 135, 0.12);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.72);
-    color: var(--primary-dark);
-    font: inherit;
-    font-size: 0.82rem;
-    font-weight: 850;
-    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
-}
-
-.music-open-link:hover {
-    background: rgba(255, 255, 255, 0.94);
-    transform: translateY(-1px);
-    text-decoration: none;
-}
-
 .music-embed-shell {
     display: grid;
     gap: 10px;
