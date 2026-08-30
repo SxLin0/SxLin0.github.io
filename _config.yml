@@ -23,11 +23,7 @@ author:
 
 music:
   provider: spotify
-  playlist_url: "https://open.spotify.com/playlist/3stiJxjy2he1ije4wJHxTu"
   playlist_id: "3stiJxjy2he1ije4wJHxTu"
-  featured:
-    title: "倔强"
-    artist: "五月天"
 
 defaults:
   - scope:

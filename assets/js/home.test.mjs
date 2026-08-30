@@ -17,13 +17,17 @@ const {
     getLibrarySearchStatus,
     getActiveWorkIdFromLocation,
     getArticleTocHeadings,
+    applyBaseUrl,
     createFeaturedWorkCard,
     getFeaturedWorks,
     getMusicEmbedUrl,
+    getRandomContentItems,
+    getRandomContentUrl,
     getLibraryToggleLabel,
     normalizeLibrarySearchQuery,
     normalizeLibraryPanelOpen,
     normalizeLibraryScrollTop,
+    navigateToRandomContent,
     getSpotifyPlaylistEmbedUrl,
     resolveLibrarySectionOpen,
     resolveWorkHref
@@ -89,6 +93,83 @@ test('article toc headings are built from h2 and h3 elements only', () => {
 test('library links are rooted so they work from nested pages', () => {
     assert.equal(resolveWorkHref({ href: 'content/blog/operating-system.html' }), '/content/blog/operating-system.html');
     assert.equal(resolveWorkHref({ id: 'spring-essay' }), '/reader.html?work=spring-essay');
+});
+
+test('baseurl is applied to rooted and reader URLs', () => {
+    assert.equal(applyBaseUrl('/reader.html?work=spring-essay', '/site'), '/site/reader.html?work=spring-essay');
+    assert.equal(applyBaseUrl('content/blog/database.html', '/site/'), '/site/content/blog/database.html');
+    assert.equal(applyBaseUrl('/content/blog/database.html', ''), '/content/blog/database.html');
+});
+
+test('random content pool is empty when no visible content exists', () => {
+    const randomItems = getRandomContentItems([
+        { section: 'music', href: '/music.html' },
+        { section: 'blog', href: 'content/blog/hidden.html', hidden: true },
+        { section: 'poem', id: 'draft-poem', draft: true },
+        { section: 'articles', id: 'unpublished', published: false }
+    ]);
+
+    assert.deepEqual(randomItems, []);
+    assert.equal(getRandomContentUrl(randomItems), '');
+    assert.equal(navigateToRandomContent(randomItems, { href: '' }), '');
+});
+
+test('random content returns the only available URL', () => {
+    const randomItems = getRandomContentItems([
+        { id: 'single-poem', section: 'poem', title: 'Single Poem' }
+    ]);
+
+    assert.equal(randomItems.length, 1);
+    assert.equal(getRandomContentUrl(randomItems, () => 0.99), '/reader.html?work=single-poem');
+});
+
+test('random content returns a valid URL from multiple items', () => {
+    const randomItems = getRandomContentItems([
+        { section: 'blog', title: 'Blog', href: 'content/blog/demo.html' },
+        { id: 'article-demo', section: 'articles', title: 'Article' },
+        { id: 'poem-demo', section: 'poem', title: 'Poem' }
+    ]);
+
+    assert.equal(getRandomContentUrl(randomItems, () => 0), '/content/blog/demo.html');
+    assert.equal(getRandomContentUrl(randomItems, () => 0.5), '/reader.html?work=article-demo');
+    assert.equal(getRandomContentUrl(randomItems, () => 0.99), '/reader.html?work=poem-demo');
+});
+
+test('random content pool deduplicates URLs', () => {
+    const randomItems = getRandomContentItems([
+        { section: 'blog', title: 'Original', href: 'content/blog/demo.html' },
+        { section: 'blog', title: 'Duplicate', href: '/content/blog/demo.html' },
+        { id: 'poem-demo', section: 'poem', title: 'Poem' },
+        { id: 'poem-demo', section: 'poem', title: 'Poem Duplicate' }
+    ]);
+
+    assert.deepEqual(randomItems.map((item) => item.url), [
+        '/content/blog/demo.html',
+        '/reader.html?work=poem-demo'
+    ]);
+});
+
+test('article poem and blog all enter the random content pool', () => {
+    const randomItems = getRandomContentItems(works);
+    const sections = new Set(randomItems.map((item) => item.section));
+
+    assert.equal(randomItems.length, 31);
+    assert.equal(randomItems.filter((item) => item.section === 'article').length, 6);
+    assert.equal(randomItems.filter((item) => item.section === 'poem').length, 21);
+    assert.equal(randomItems.filter((item) => item.section === 'blog').length, 4);
+    assert.deepEqual([...sections].sort(), ['article', 'blog', 'poem']);
+});
+
+test('random content navigation assigns the selected URL', () => {
+    const destination = {
+        assigned: '',
+        assign(url) {
+            this.assigned = url;
+        }
+    };
+
+    assert.equal(navigateToRandomContent([{ url: '/reader.html?work=demo' }], destination, () => 0), '/reader.html?work=demo');
+    assert.equal(destination.assigned, '/reader.html?work=demo');
 });
 
 test('library sections are ordered as blog articles and poem', () => {
@@ -436,7 +517,7 @@ test('homepage interface labels are localized for a Chinese personal blog', asyn
     assert.match(home, /<h2 id="about-title">关于我<\/h2>/);
     assert.match(home, /<h2 id="contact-title">联系<\/h2>/);
     assert.doesNotMatch(home, /最近更新|<h2 id="music-title">播放列表<\/h2>/);
-    assert.match(home, /<h2 id="music-title">最近在听<\/h2>/);
+    assert.match(home, /<h2 id="music-title">音乐<\/h2>/);
     assert.match(libraryPanel, />首页</);
     assert.match(libraryPanel, />书架</);
     assert.match(libraryPanel, />播放列表</);
@@ -456,9 +537,13 @@ test('sidebar section entries keep only library and music as dedicated pages', a
     assert.match(music, /href="{{ '\/' \| relative_url }}#about"/);
     assert.match(music, /href="{{ '\/' \| relative_url }}#contact"/);
     assert.doesNotMatch(music, /about\.html|contact\.html/);
-    assert.match(music, /data-music-provider="{{ site\.music\.provider }}"/);
+    assert.match(music, /src="{{ spotify_embed_url }}"/);
+    assert.match(music, /loading="lazy"/);
+    assert.match(music, /width="100%"/);
+    assert.match(music, /allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"/);
     assert.match(css, /\.music-playlist-block\s*\{/);
-    assert.match(config, /featured:\s*\n    title: "倔强"\s*\n    artist: "五月天"\s*\n\n/);
+    assert.match(config, /music:\s*\n  provider: spotify\s*\n  playlist_id: "3stiJxjy2he1ije4wJHxTu"/);
+    assert.doesNotMatch(config, new RegExp(`playlist${'_' }url`));
     assert.doesNotMatch(`${home}\n${music}`, /<p class="music-/);
 });
 

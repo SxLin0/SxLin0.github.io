@@ -6,11 +6,12 @@ const librarySearchClear = document.getElementById('library-search-clear');
 const librarySearchEmpty = document.getElementById('library-search-empty');
 const librarySearchStatus = document.getElementById('library-search-status');
 const featuredWorks = document.getElementById('featured-works');
-const musicEmbedToggles = document.querySelectorAll('.music-embed-toggle');
+const randomContentButton = document.getElementById('random-content-button');
 const contactCopyButtons = document.querySelectorAll('.copy-contact');
 const libraryStateKey = 'sxlin-library-open-sections';
 const libraryScrollKey = 'sxlin-library-scroll-top';
 const libraryPanelOpenKey = 'sxlin-library-panel-open';
+const randomContentSections = new Set(['articles', 'blog', 'poem']);
 
 function getLibraryStorage() {
     try {
@@ -172,6 +173,70 @@ export function resolveWorkHref(work) {
     return `/reader.html?work=${encodeURIComponent(work.id)}`;
 }
 
+function normalizeContentSection(section) {
+    return section === 'articles' ? 'article' : section;
+}
+
+export function applyBaseUrl(url, baseUrl = '') {
+    const normalizedUrl = String(url || '').trim();
+    const normalizedBaseUrl = String(baseUrl || '').trim().replace(/\/+$/, '');
+    if (!normalizedUrl || !normalizedBaseUrl || normalizedBaseUrl === '/') {
+        return normalizedUrl;
+    }
+    if (/^[a-z][a-z\d+.-]*:/i.test(normalizedUrl)) {
+        return normalizedUrl;
+    }
+
+    return normalizedUrl.startsWith('/') ? `${normalizedBaseUrl}${normalizedUrl}` : `${normalizedBaseUrl}/${normalizedUrl}`;
+}
+
+export function getRandomContentItems(allWorks = [], baseUrl = '') {
+    const seenUrls = new Set();
+    return allWorks.reduce((items, work) => {
+        if (!work || !randomContentSections.has(work.section) || work.hidden || work.draft || work.published === false) {
+            return items;
+        }
+
+        const url = applyBaseUrl(resolveWorkHref(work), baseUrl);
+        if (!url || seenUrls.has(url)) {
+            return items;
+        }
+
+        seenUrls.add(url);
+        items.push({
+            section: normalizeContentSection(work.section),
+            title: work.title || '',
+            url
+        });
+        return items;
+    }, []);
+}
+
+export function getRandomContentUrl(items = [], random = Math.random) {
+    if (!items.length) {
+        return '';
+    }
+
+    const index = Math.max(0, Math.min(items.length - 1, Math.floor(random() * items.length)));
+    const item = items[index];
+    return typeof item === 'string' ? item : item?.url || '';
+}
+
+export function navigateToRandomContent(items = [], destination = window.location, random = Math.random) {
+    const url = getRandomContentUrl(items, random);
+    if (!url) {
+        return '';
+    }
+
+    if (destination?.assign) {
+        destination.assign(url);
+    } else if (destination) {
+        destination.href = url;
+    }
+
+    return url;
+}
+
 function createWorkCard(work) {
     const item = document.createElement('li');
     const link = document.createElement('a');
@@ -295,6 +360,23 @@ function renderFeaturedWorks() {
     }
 
     featuredWorks.replaceChildren(...getFeaturedWorks(works, 3).map(createFeaturedWorkCard));
+}
+
+function bindRandomContentButton() {
+    if (!randomContentButton) {
+        return;
+    }
+
+    const randomItems = getRandomContentItems(works, randomContentButton.dataset.baseurl || '');
+    if (!randomItems.length) {
+        randomContentButton.disabled = true;
+        randomContentButton.setAttribute('aria-disabled', 'true');
+        return;
+    }
+
+    randomContentButton.addEventListener('click', () => {
+        navigateToRandomContent(randomItems);
+    });
 }
 
 export function getArticleTocHeadings(article) {
@@ -621,84 +703,6 @@ export function getMusicEmbedUrl(provider, playlistId) {
     return '';
 }
 
-function createMusicIframe(src, title) {
-    const iframe = document.createElement('iframe');
-    iframe.title = title;
-    iframe.src = src;
-    iframe.width = '100%';
-    iframe.height = '380';
-    iframe.loading = 'lazy';
-    iframe.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
-    iframe.setAttribute('allowfullscreen', '');
-    iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
-    return iframe;
-}
-
-function showMusicFallback(shell) {
-    const fallback = shell.querySelector('.music-fallback');
-    const status = shell.querySelector('.music-embed-status');
-    if (status) {
-        status.textContent = '';
-    }
-    if (fallback) {
-        fallback.hidden = false;
-    }
-}
-
-function loadMusicEmbed(button, shell) {
-    if (shell.dataset.loaded === 'true') {
-        return;
-    }
-
-    const embedUrl = getMusicEmbedUrl(button.dataset.musicProvider, button.dataset.playlistId);
-    const status = shell.querySelector('.music-embed-status');
-    if (!embedUrl) {
-        showMusicFallback(shell);
-        return;
-    }
-
-    const iframe = createMusicIframe(embedUrl, 'Spotify playlist player');
-    let loaded = false;
-    iframe.addEventListener('load', () => {
-        loaded = true;
-        shell.dataset.loaded = 'true';
-        if (status) {
-            status.textContent = '';
-        }
-    });
-
-    window.setTimeout(() => {
-        if (!loaded) {
-            showMusicFallback(shell);
-        }
-    }, 8000);
-
-    shell.prepend(iframe);
-}
-
-function bindMusicEmbeds() {
-    musicEmbedToggles.forEach((button) => {
-        const shell = document.getElementById(button.dataset.target || '');
-        if (!shell) {
-            return;
-        }
-
-        button.addEventListener('click', () => {
-            const isExpanded = button.getAttribute('aria-expanded') === 'true';
-            const nextExpanded = !isExpanded;
-            button.setAttribute('aria-expanded', String(nextExpanded));
-            button.textContent = nextExpanded ? '收起播放器' : (button.dataset.target === 'home-music-embed' ? '播放歌单' : '展开播放器');
-            button.setAttribute('aria-label', nextExpanded ? '收起 Spotify 播放器' : '展开 Spotify 播放器');
-            shell.hidden = !nextExpanded;
-            shell.classList.toggle('is-collapsed', !nextExpanded);
-
-            if (nextExpanded) {
-                loadMusicEmbed(button, shell);
-            }
-        });
-    });
-}
-
 async function copyTextToClipboard(text) {
     if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(text);
@@ -740,6 +744,7 @@ function bindContactCopy() {
 
 renderLibrary();
 renderFeaturedWorks();
+bindRandomContentButton();
 bindBlogArticleToc();
 bindStaticBlogDetailChrome();
 bindLibraryPanelToggle();
@@ -748,5 +753,4 @@ restoreLibraryScroll();
 bindLibrarySections();
 bindLibraryScroll();
 bindLibrarySearch();
-bindMusicEmbeds();
 bindContactCopy();

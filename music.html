@@ -5,6 +5,8 @@ permalink: /music.html
 description: 宵宵最近常听的音乐。
 sidebar_active: music
 ---
+{% assign spotify_url = 'https://open.spotify.com/playlist/' | append: site.music.playlist_id %}
+{% assign spotify_embed_url = 'https://open.spotify.com/embed/playlist/' | append: site.music.playlist_id %}
 
 <div class="home-body">
     <main class="page-shell">
@@ -21,37 +23,18 @@ sidebar_active: music
             </nav>
 
             <section class="content-panel music-panel standalone-panel music-page" aria-labelledby="music-title">
-                <div class="section-title-row">
-                    <div>
-                        <span class="section-kicker">Music</span>
-                        <h1 id="music-title">最近在听</h1>
-                    </div>
-                    <a class="section-link" href="{{ site.music.playlist_url }}" target="_blank" rel="noopener noreferrer">打开 Spotify</a>
-                </div>
-
-                <div class="music-feature music-feature-large">
-                    <div class="music-feature-symbol" aria-hidden="true">🎧</div>
-                    <div class="music-feature-copy">
-                        <span class="music-feature-label">最近在听</span>
-                        <strong>{{ site.music.featured.title | default: '播放列表' }}</strong>
-                        <span>{{ site.music.featured.artist | default: 'Spotify' }}</span>
-                    </div>
-                </div>
-
-                <div class="music-playlist-block" aria-labelledby="music-playlist-title">
+                <div class="music-playlist-block" aria-labelledby="music-title">
                     <div class="music-playlist-head">
                         <div>
                             <span class="section-kicker">Spotify Playlist</span>
-                            <h2 id="music-playlist-title">歌单</h2>
+                            <h1 id="music-title">歌单</h1>
                         </div>
-                        <button class="music-embed-toggle" type="button" data-music-provider="{{ site.music.provider }}" data-playlist-id="{{ site.music.playlist_id }}" data-playlist-url="{{ site.music.playlist_url }}" data-target="music-page-embed" aria-controls="music-page-embed" aria-expanded="false" aria-label="展开 Spotify 播放器">
-                            展开播放器
-                        </button>
+                        <a class="section-link" href="{{ spotify_url }}" target="_blank" rel="noopener noreferrer">打开 Spotify</a>
                     </div>
-                    <div class="music-embed-shell is-collapsed" id="music-page-embed" hidden>
-                        <div class="music-embed-status" role="status" aria-live="polite"></div>
-                        <div class="music-fallback" hidden>
-                            <a href="{{ site.music.playlist_url }}" target="_blank" rel="noopener noreferrer">在 Spotify 中打开歌单</a>
+                    <div class="music-embed-shell">
+                        <iframe title="Spotify playlist player" src="{{ spotify_embed_url }}" width="100%" height="380" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                        <div class="music-fallback">
+                            <a href="{{ spotify_url }}" target="_blank" rel="noopener noreferrer">在 Spotify 中打开歌单</a>
                         </div>
                     </div>
                 </div>

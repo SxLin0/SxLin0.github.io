@@ -5,6 +5,7 @@ permalink: /
 description: 宵宵的个人主页，记录课程笔记、技术文章、诗词创作与个人作品。
 sidebar_active: home
 ---
+{% assign spotify_url = 'https://open.spotify.com/playlist/' | append: site.music.playlist_id %}
 
 <div class="home-body">
     <main class="page-shell">
@@ -65,7 +66,12 @@ sidebar_active: home
                         <span class="section-kicker">Posts</span>
                         <h2 id="featured-title">精选内容</h2>
                     </div>
-                    <a class="section-link" href="{{ '/library.html' | relative_url }}">查看全部</a>
+                    <div class="section-actions">
+                        <button class="section-link random-content-button" id="random-content-button" type="button" data-baseurl="{{ site.baseurl | default: '' }}" aria-label="随机打开一篇站内内容">
+                            🎲 随便看看
+                        </button>
+                        <a class="section-link" href="{{ '/library.html' | relative_url }}">查看全部</a>
+                    </div>
                 </div>
                 <div class="featured-works" id="featured-works"></div>
             </section>
@@ -74,28 +80,11 @@ sidebar_active: home
                 <div class="section-title-row">
                     <div>
                         <span class="section-kicker">Music Corner</span>
-                        <h2 id="music-title">最近在听</h2>
+                        <h2 id="music-title">音乐</h2>
                     </div>
-                    <a class="section-link" href="{{ '/music.html' | relative_url }}">完整歌单</a>
-                </div>
-                <div class="music-feature">
-                    <div class="music-feature-symbol" aria-hidden="true">🎧</div>
-                    <div class="music-feature-copy">
-                        <span class="music-feature-label">最近在听</span>
-                        <strong>{{ site.music.featured.title | default: '播放列表' }}</strong>
-                        <span>{{ site.music.featured.artist | default: 'Spotify' }}</span>
-                    </div>
-                    <div class="music-actions">
-                        <button class="music-embed-toggle" type="button" data-music-provider="{{ site.music.provider }}" data-playlist-id="{{ site.music.playlist_id }}" data-playlist-url="{{ site.music.playlist_url }}" data-target="home-music-embed" aria-controls="home-music-embed" aria-expanded="false" aria-label="展开 Spotify 播放器">
-                            播放歌单
-                        </button>
-                        <a class="music-open-link" href="{{ site.music.playlist_url }}" target="_blank" rel="noopener noreferrer">打开 Spotify</a>
-                    </div>
-                </div>
-                <div class="music-embed-shell is-collapsed" id="home-music-embed" hidden>
-                    <div class="music-embed-status" role="status" aria-live="polite"></div>
-                    <div class="music-fallback" hidden>
-                        <a href="{{ site.music.playlist_url }}" target="_blank" rel="noopener noreferrer">在 Spotify 中打开歌单</a>
+                    <div class="section-actions">
+                        <a class="music-open-link" href="{{ spotify_url }}" target="_blank" rel="noopener noreferrer">打开 Spotify</a>
+                        <a class="section-link" href="{{ '/music.html' | relative_url }}">完整歌单</a>
                     </div>
                 </div>
             </section>
