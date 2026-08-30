@@ -19,12 +19,12 @@ const {
     getArticleTocHeadings,
     createFeaturedWorkCard,
     getFeaturedWorks,
-    getPlaybackProgress,
+    getMusicEmbedUrl,
     getLibraryToggleLabel,
     normalizeLibrarySearchQuery,
     normalizeLibraryPanelOpen,
     normalizeLibraryScrollTop,
-    renderPlaybackTime,
+    getSpotifyPlaylistEmbedUrl,
     resolveLibrarySectionOpen,
     resolveWorkHref
 } = await import('./home.js');
@@ -327,8 +327,9 @@ test('homepage uses the mature integrated profile structure', async () => {
     assert.match(libraryPanel, /class="sidebar-nav"/);
     assert.match(home, /id="works"/);
     assert.match(home, /id="about"/);
+    assert.match(home, /id="music"/);
     assert.match(home, /id="contact"/);
-    assert.doesNotMatch(home, /id="music"|class="home-aside"/);
+    assert.doesNotMatch(home, /class="home-aside"/);
     assert.match(libraryPanel, /<h2>宵宵<\/h2>/);
     assert.match(libraryPanel, /一个慢慢生长的个人空间/);
     assert.ok(home.indexOf('class="site-nav"') < home.indexOf('id="about"'));
@@ -435,24 +436,30 @@ test('homepage interface labels are localized for a Chinese personal blog', asyn
     assert.match(home, /<h2 id="about-title">关于我<\/h2>/);
     assert.match(home, /<h2 id="contact-title">联系<\/h2>/);
     assert.doesNotMatch(home, /最近更新|<h2 id="music-title">播放列表<\/h2>/);
+    assert.match(home, /<h2 id="music-title">最近在听<\/h2>/);
     assert.match(libraryPanel, />首页</);
     assert.match(libraryPanel, />书架</);
     assert.match(libraryPanel, />播放列表</);
     assert.doesNotMatch(libraryPanel, />关于我<|>联系</);
-    assert.match(homeScript, /播放选中的歌曲/);
+    assert.match(homeScript, /getSpotifyPlaylistEmbedUrl/);
     assert.doesNotMatch(combined, /Featured Works|Start reading|About Me|Now Playing|Select a track|Playlist ready|6 tracks|>Home</);
 });
 
 test('sidebar section entries keep only library and music as dedicated pages', async () => {
     const music = await readFile(new URL('../../music.html', import.meta.url), 'utf8');
     const css = await readFile(new URL('../../assets/css/site.css', import.meta.url), 'utf8');
+    const config = await readFile(new URL('../../_config.yml', import.meta.url), 'utf8');
+    const home = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
 
     assert.match(music, /sidebar_active:\s*music/);
     assert.match(music, /id="music-title"/);
     assert.match(music, /href="{{ '\/' \| relative_url }}#about"/);
     assert.match(music, /href="{{ '\/' \| relative_url }}#contact"/);
     assert.doesNotMatch(music, /about\.html|contact\.html/);
-    assert.match(css, /\.standalone-panel\.playlist ul\s*\{[\s\S]*grid-template-columns:\s*1fr/);
+    assert.match(music, /data-music-provider="{{ site\.music\.provider }}"/);
+    assert.match(css, /\.music-playlist-block\s*\{/);
+    assert.match(config, /featured:\s*\n    title: "倔强"\s*\n    artist: "五月天"\s*\n\n/);
+    assert.doesNotMatch(`${home}\n${music}`, /<p class="music-/);
 });
 
 test('homepage about copy and tags stay personal instead of resume-like', async () => {
@@ -636,16 +643,18 @@ test('active work id is resolved from reader query or rooted href', () => {
     assert.equal(getActiveWorkIdFromLocation({ search: '', pathname: '/content/blog/database.html' }, sampleWorks), 'blog');
 });
 
-test('playback time is rendered as minutes and seconds', () => {
-    assert.equal(renderPlaybackTime(0), '0:00');
-    assert.equal(renderPlaybackTime(7), '0:07');
-    assert.equal(renderPlaybackTime(245), '4:05');
-    assert.equal(renderPlaybackTime(Number.NaN), '0:00');
+test('Spotify playlist embed URL is built from a single playlist id', () => {
+    assert.equal(
+        getSpotifyPlaylistEmbedUrl('3stiJxjy2he1ije4wJHxTu'),
+        'https://open.spotify.com/embed/playlist/3stiJxjy2he1ije4wJHxTu'
+    );
+    assert.equal(getSpotifyPlaylistEmbedUrl(''), '');
 });
 
-test('playback progress is clamped to a percentage', () => {
-    assert.equal(getPlaybackProgress(30, 120), 25);
-    assert.equal(getPlaybackProgress(300, 120), 100);
-    assert.equal(getPlaybackProgress(-5, 120), 0);
-    assert.equal(getPlaybackProgress(30, 0), 0);
+test('music embed URLs keep provider switching explicit', () => {
+    assert.equal(
+        getMusicEmbedUrl('spotify', '3stiJxjy2he1ije4wJHxTu'),
+        'https://open.spotify.com/embed/playlist/3stiJxjy2he1ije4wJHxTu'
+    );
+    assert.equal(getMusicEmbedUrl('netease', 'demo'), '');
 });

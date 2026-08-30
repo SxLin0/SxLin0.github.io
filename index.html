@@ -70,6 +70,36 @@ sidebar_active: home
                 <div class="featured-works" id="featured-works"></div>
             </section>
 
+            <section class="content-panel music-panel music-corner" id="music" aria-labelledby="music-title">
+                <div class="section-title-row">
+                    <div>
+                        <span class="section-kicker">Music Corner</span>
+                        <h2 id="music-title">最近在听</h2>
+                    </div>
+                    <a class="section-link" href="{{ '/music.html' | relative_url }}">完整歌单</a>
+                </div>
+                <div class="music-feature">
+                    <div class="music-feature-symbol" aria-hidden="true">🎧</div>
+                    <div class="music-feature-copy">
+                        <span class="music-feature-label">最近在听</span>
+                        <strong>{{ site.music.featured.title | default: '播放列表' }}</strong>
+                        <span>{{ site.music.featured.artist | default: 'Spotify' }}</span>
+                    </div>
+                    <div class="music-actions">
+                        <button class="music-embed-toggle" type="button" data-music-provider="{{ site.music.provider }}" data-playlist-id="{{ site.music.playlist_id }}" data-playlist-url="{{ site.music.playlist_url }}" data-target="home-music-embed" aria-controls="home-music-embed" aria-expanded="false" aria-label="展开 Spotify 播放器">
+                            播放歌单
+                        </button>
+                        <a class="music-open-link" href="{{ site.music.playlist_url }}" target="_blank" rel="noopener noreferrer">打开 Spotify</a>
+                    </div>
+                </div>
+                <div class="music-embed-shell is-collapsed" id="home-music-embed" hidden>
+                    <div class="music-embed-status" role="status" aria-live="polite"></div>
+                    <div class="music-fallback" hidden>
+                        <a href="{{ site.music.playlist_url }}" target="_blank" rel="noopener noreferrer">在 Spotify 中打开歌单</a>
+                    </div>
+                </div>
+            </section>
+
             <section class="content-panel contact-panel" id="contact" aria-labelledby="contact-title">
                 <div class="section-title-row">
                     <div>

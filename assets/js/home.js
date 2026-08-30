@@ -5,15 +5,8 @@ const librarySearch = document.getElementById('library-search');
 const librarySearchClear = document.getElementById('library-search-clear');
 const librarySearchEmpty = document.getElementById('library-search-empty');
 const librarySearchStatus = document.getElementById('library-search-status');
-const playlist = document.getElementById('playlist');
-const audioPlayer = document.getElementById('audio-player');
 const featuredWorks = document.getElementById('featured-works');
-const playerToggle = document.getElementById('player-toggle');
-const playerTitle = document.getElementById('player-title');
-const playerArtist = document.getElementById('player-artist');
-const playerProgress = document.getElementById('player-progress');
-const playerCurrentTime = document.getElementById('player-current-time');
-const playerDuration = document.getElementById('player-duration');
+const musicEmbedToggles = document.querySelectorAll('.music-embed-toggle');
 const contactCopyButtons = document.querySelectorAll('.copy-contact');
 const libraryStateKey = 'sxlin-library-open-sections';
 const libraryScrollKey = 'sxlin-library-scroll-top';
@@ -611,133 +604,99 @@ function bindLibrarySearch() {
     applySearchFilter();
 }
 
-export function renderPlaybackTime(seconds) {
-    const normalizedSeconds = Number(seconds);
-    if (!Number.isFinite(normalizedSeconds) || normalizedSeconds <= 0) {
-        return '0:00';
+export function getSpotifyPlaylistEmbedUrl(playlistId) {
+    const normalizedPlaylistId = String(playlistId || '').trim();
+    if (!normalizedPlaylistId) {
+        return '';
     }
 
-    const minutes = Math.floor(normalizedSeconds / 60);
-    const remainingSeconds = Math.floor(normalizedSeconds % 60);
-    return `${minutes}:${String(remainingSeconds).padStart(2, '0')}`;
+    return `https://open.spotify.com/embed/playlist/${encodeURIComponent(normalizedPlaylistId)}`;
 }
 
-export function getPlaybackProgress(currentTime, duration) {
-    const normalizedCurrentTime = Number(currentTime);
-    const normalizedDuration = Number(duration);
-    if (!Number.isFinite(normalizedCurrentTime) || !Number.isFinite(normalizedDuration) || normalizedDuration <= 0) {
-        return 0;
+export function getMusicEmbedUrl(provider, playlistId) {
+    if (provider === 'spotify') {
+        return getSpotifyPlaylistEmbedUrl(playlistId);
     }
 
-    return Math.max(0, Math.min(100, Math.round((normalizedCurrentTime / normalizedDuration) * 100)));
+    return '';
 }
 
-function getTrackInfo(item) {
-    return {
-        artist: item.querySelector('.artist')?.textContent?.trim() || 'Unknown artist',
-        duration: item.querySelector('.duration')?.textContent?.trim() || '0:00',
-        title: item.querySelector('.title')?.textContent?.trim() || 'Untitled'
-    };
+function createMusicIframe(src, title) {
+    const iframe = document.createElement('iframe');
+    iframe.title = title;
+    iframe.src = src;
+    iframe.width = '100%';
+    iframe.height = '380';
+    iframe.loading = 'lazy';
+    iframe.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
+    iframe.setAttribute('allowfullscreen', '');
+    iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+    return iframe;
 }
 
-function setPlayerPlaying(isPlaying) {
-    playerToggle?.classList.toggle('is-playing', isPlaying);
-    playerToggle?.setAttribute('aria-label', isPlaying ? '暂停当前歌曲' : '播放选中的歌曲');
-}
-
-function playSelectedAudio() {
-    const playRequest = audioPlayer.play();
-    if (playRequest?.catch) {
-        playRequest.catch(() => setPlayerPlaying(false));
+function showMusicFallback(shell) {
+    const fallback = shell.querySelector('.music-fallback');
+    const status = shell.querySelector('.music-embed-status');
+    if (status) {
+        status.textContent = '';
+    }
+    if (fallback) {
+        fallback.hidden = false;
     }
 }
 
-function updatePlayerTimes() {
-    if (!audioPlayer || !playerProgress || !playerCurrentTime || !playerDuration) {
+function loadMusicEmbed(button, shell) {
+    if (shell.dataset.loaded === 'true') {
         return;
     }
 
-    const duration = Number.isFinite(audioPlayer.duration) ? audioPlayer.duration : 0;
-    playerProgress.value = String(getPlaybackProgress(audioPlayer.currentTime, duration));
-    playerCurrentTime.textContent = renderPlaybackTime(audioPlayer.currentTime);
-    if (duration) {
-        playerDuration.textContent = renderPlaybackTime(duration);
-    }
-}
-
-function selectPlaylistItem(item, shouldPlay = true) {
-    const items = Array.from(playlist.querySelectorAll('li'));
-    const track = getTrackInfo(item);
-
-    audioPlayer.src = item.dataset.src;
-    items.forEach((candidate) => candidate.classList.remove('active'));
-    item.classList.add('active');
-
-    if (playerTitle) {
-        playerTitle.textContent = track.title;
-    }
-    if (playerArtist) {
-        playerArtist.textContent = track.artist;
-    }
-    if (playerDuration) {
-        playerDuration.textContent = track.duration;
-    }
-    if (playerCurrentTime) {
-        playerCurrentTime.textContent = '0:00';
-    }
-    if (playerProgress) {
-        playerProgress.disabled = false;
-        playerProgress.value = '0';
-    }
-    if (playerToggle) {
-        playerToggle.disabled = false;
-    }
-
-    if (shouldPlay) {
-        playSelectedAudio();
-    }
-}
-
-function bindPlaylist() {
-    if (!playlist || !audioPlayer) {
+    const embedUrl = getMusicEmbedUrl(button.dataset.musicProvider, button.dataset.playlistId);
+    const status = shell.querySelector('.music-embed-status');
+    if (!embedUrl) {
+        showMusicFallback(shell);
         return;
     }
 
-    const items = Array.from(playlist.querySelectorAll('li'));
+    const iframe = createMusicIframe(embedUrl, 'Spotify playlist player');
+    let loaded = false;
+    iframe.addEventListener('load', () => {
+        loaded = true;
+        shell.dataset.loaded = 'true';
+        if (status) {
+            status.textContent = '';
+        }
+    });
 
-    items.forEach((item) => {
-        item.addEventListener('click', () => {
-            selectPlaylistItem(item);
+    window.setTimeout(() => {
+        if (!loaded) {
+            showMusicFallback(shell);
+        }
+    }, 8000);
+
+    shell.prepend(iframe);
+}
+
+function bindMusicEmbeds() {
+    musicEmbedToggles.forEach((button) => {
+        const shell = document.getElementById(button.dataset.target || '');
+        if (!shell) {
+            return;
+        }
+
+        button.addEventListener('click', () => {
+            const isExpanded = button.getAttribute('aria-expanded') === 'true';
+            const nextExpanded = !isExpanded;
+            button.setAttribute('aria-expanded', String(nextExpanded));
+            button.textContent = nextExpanded ? '收起播放器' : (button.dataset.target === 'home-music-embed' ? '播放歌单' : '展开播放器');
+            button.setAttribute('aria-label', nextExpanded ? '收起 Spotify 播放器' : '展开 Spotify 播放器');
+            shell.hidden = !nextExpanded;
+            shell.classList.toggle('is-collapsed', !nextExpanded);
+
+            if (nextExpanded) {
+                loadMusicEmbed(button, shell);
+            }
         });
     });
-
-    playerToggle?.addEventListener('click', () => {
-        if (!audioPlayer.src && items[0]) {
-            selectPlaylistItem(items[0]);
-            return;
-        }
-
-        if (audioPlayer.paused) {
-            playSelectedAudio();
-        } else {
-            audioPlayer.pause();
-        }
-    });
-
-    playerProgress?.addEventListener('input', () => {
-        if (!Number.isFinite(audioPlayer.duration) || audioPlayer.duration <= 0) {
-            return;
-        }
-
-        audioPlayer.currentTime = (Number(playerProgress.value) / 100) * audioPlayer.duration;
-        updatePlayerTimes();
-    });
-
-    audioPlayer.addEventListener('play', () => setPlayerPlaying(true));
-    audioPlayer.addEventListener('pause', () => setPlayerPlaying(false));
-    audioPlayer.addEventListener('ended', () => setPlayerPlaying(false));
-    audioPlayer.addEventListener('loadedmetadata', updatePlayerTimes);
-    audioPlayer.addEventListener('timeupdate', updatePlayerTimes);
 }
 
 async function copyTextToClipboard(text) {
@@ -789,5 +748,5 @@ restoreLibraryScroll();
 bindLibrarySections();
 bindLibraryScroll();
 bindLibrarySearch();
-bindPlaylist();
+bindMusicEmbeds();
 bindContactCopy();
