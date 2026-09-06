@@ -38,3 +38,7 @@ exclude:
   - README.md
   - node_modules
   - vendor/bundle
+
+collections:
+  novel:
+    output: true

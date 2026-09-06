@@ -153,8 +153,8 @@ test('article poem and blog all enter the random content pool', () => {
     const randomItems = getRandomContentItems(works);
     const sections = new Set(randomItems.map((item) => item.section));
 
-    assert.equal(randomItems.length, 31);
-    assert.equal(randomItems.filter((item) => item.section === 'article').length, 6);
+    assert.equal(randomItems.length, 32);
+    assert.equal(randomItems.filter((item) => item.section === 'article').length, 7);
     assert.equal(randomItems.filter((item) => item.section === 'poem').length, 21);
     assert.equal(randomItems.filter((item) => item.section === 'blog').length, 4);
     assert.deepEqual([...sections].sort(), ['article', 'blog', 'poem']);
@@ -180,7 +180,7 @@ test('library sections are ordered as blog articles and poem', () => {
 test('articles keep the visible advice tech and essay entries', () => {
     const articleIds = works.filter((work) => work.section === 'articles').map((work) => work.id);
 
-    assert.deepEqual(articleIds, ['software-major', 'how-llm-is-born', 'what-is-transformer', 'mamba-paper-reading', 'spring-essay', 'materialism-idealism']);
+    assert.deepEqual(articleIds, ['paoshen-novel', 'software-major', 'how-llm-is-born', 'what-is-transformer', 'mamba-paper-reading', 'spring-essay', 'materialism-idealism']);
     assert.equal(works.some((work) => work.id === 'capital-scientific-thinking'), false);
     assert.equal(works.some((work) => work.id === 'digital-labor-alienation'), false);
 });
@@ -442,7 +442,7 @@ test('homepage navigation points to primary sections and contact paths', async (
     assert.match(libraryCatalog, /id="library-sections"/);
     assert.doesNotMatch(libraryCatalog, />搜索文章或诗词</);
     assert.doesNotMatch(libraryCatalog, /library-search-status/);
-    assert.match(libraryCatalog, /<summary><span>Article<\/span><span class="section-count">6<\/span><\/summary>/);
+    assert.match(libraryCatalog, /<summary><span>Article<\/span><span class="section-count">7<\/span><\/summary>/);
     const css = await readFile(new URL('../../assets/css/site.css', import.meta.url), 'utf8');
     assert.match(css, /\.library-section summary\s*\{[\s\S]*width:\s*192px/);
     assert.match(home, /mailto:2125808970@qq.com/);

@@ -1,0 +1,18 @@
+---
+layout: ocean
+---
+{% assign chapters = site.novel | sort: 'order' %}
+<link rel="stylesheet" href="{{ '/assets/css/novel.css' | relative_url }}">
+<div class="novel-shell">
+    <nav class="novel-top" aria-label="小说导航"><a href="{{ '/novel/paoshen/' | relative_url }}">← 抛深历险记</a><a href="{{ '/library.html' | relative_url }}">书架</a></nav>
+    <main class="novel-paper" id="novel-text">
+        <header class="novel-heading"><p class="novel-eyebrow">抛深历险记 · 连载</p><h1>{{ page.title }}</h1><p class="novel-meta">约 {{ page.words }} 字 · 第 {{ page.order }} / {{ chapters.size }} 章</p></header>
+        <details class="novel-directory"><summary>章节目录</summary><ol>{% for chapter in chapters %}<li><a href="{{ chapter.url | relative_url }}" {% if chapter.url == page.url %}aria-current="page"{% endif %}>{{ chapter.title }}</a></li>{% endfor %}</ol></details>
+        <article class="novel-prose">{{ content }}</article>
+        <p class="novel-end">{% if page.order == chapters.size %}未完待续 · 感谢读到这里{% else %}本章完{% endif %}</p>
+        <nav class="novel-pagination" aria-label="章节翻页">
+        {% for chapter in chapters %}{% if chapter.order == page.order %}{% unless forloop.first %}{% assign prev = forloop.index0 | minus: 1 %}<a href="{{ chapters[prev].url | relative_url }}">← {{ chapters[prev].title }}</a>{% endunless %}<a href="{{ '/novel/paoshen/' | relative_url }}">目录</a>{% unless forloop.last %}{% assign next = forloop.index0 | plus: 1 %}<a href="{{ chapters[next].url | relative_url }}">{{ chapters[next].title }} →</a>{% endunless %}{% endif %}{% endfor %}
+        </nav>
+    </main>
+    <footer class="novel-footer">宵宵 · 抛深历险记</footer>
+</div>

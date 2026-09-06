@@ -1,4 +1,4 @@
-import { works, workSections } from '../data/works.js?v=20260827-materialism-idealism';
+import { works, workSections } from '../data/works.js?v=20260906-novel';
 
 const library = document.getElementById('library-sections');
 const librarySearch = document.getElementById('library-search');

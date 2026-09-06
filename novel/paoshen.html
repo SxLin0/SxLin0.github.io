@@ -1,0 +1,15 @@
+---
+layout: ocean
+title: 抛深历险记
+permalink: /novel/paoshen/
+description: 抛深历险记，宵宵的连载小说。从归寂院开始的一段历险。
+---
+{% assign chapters = site.novel | sort: 'order' %}
+<link rel="stylesheet" href="{{ '/assets/css/novel.css' | relative_url }}">
+<div class="novel-shell">
+<nav class="novel-top" aria-label="导航"><a href="{{ '/library.html' | relative_url }}">← Article · 书架</a><a href="{{ '/' | relative_url }}">首页</a></nav>
+<main class="novel-paper novel-cover">
+<header class="novel-heading"><p class="novel-eyebrow">宵宵 著 · 小说连载</p><h1>抛深历险记</h1><p class="novel-blurb">四月十七，山上的桃花还没落尽，<br>山阴已冷得要添衣。</p><p class="novel-meta">连载中 · 已更新 {{ chapters.size }} 章</p><a class="novel-start" href="{{ chapters.first.url | relative_url }}">开始阅读 →</a></header>
+<section aria-labelledby="chapters-title"><h2 id="chapters-title">卷页之间 <span>／ 章节目录</span></h2><ol class="novel-chapters">{% for chapter in chapters %}<li><a href="{{ chapter.url | relative_url }}"><span>{{ chapter.title }}</span><small>约 {{ chapter.words }} 字 <span aria-hidden="true">↗</span></small></a></li>{% endfor %}</ol></section>
+</main><footer class="novel-footer">故事还在继续。</footer>
+</div>

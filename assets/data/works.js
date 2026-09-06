@@ -1,4 +1,5 @@
 export const works = [
+    { id: 'paoshen-novel', section: 'articles', title: '抛深历险记 · 小说连载', href: 'novel/paoshen/', summary: '入山无路，灯下故人。一段从归寂院开始的历险。', tags: ['小说', '连载'], featured: true, featuredOrder: 5 },
     {
         id: 'operating-system-notes',
         section: 'blog',
